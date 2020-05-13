@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const impurities = {
+export const impurities = {
   cdcl3: {
     tms: [
       {
@@ -3130,5 +3130,3 @@ const impurities = {
     ],
   },
 };
-
-export default impurities;
