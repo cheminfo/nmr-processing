@@ -5,3 +5,5 @@
  */
 
 export * from './xy/peakPicking.js';
+export * from './peaks/filterImpurities';
+export * from './ranges/acs';

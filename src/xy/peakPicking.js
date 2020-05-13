@@ -7,7 +7,6 @@ import { extract } from 'ml-spectra-processing/src/xy/extract';
  * through Global Spectral Deconvolution (GSD)
  * http://www.spectrosco-pyeurope.com/images/stories/ColumnPDFs/TD_23_1.pdf
  * @param {object} data - Object of kind
- * @param {Object} peakList - nmr signals.
  * @param {Object} options - options object with some parameter for GSD.
  * @param {boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
  * @param {number} [options.minMaxRatio = 0.01] - Threshold to determine if a given peak should be considered as a noise, bases on its relative height compared to the highest peak.

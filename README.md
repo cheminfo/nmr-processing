@@ -7,11 +7,19 @@
 
 ## Introduction
 
-The goal is to have many methods allowing to process NMR spectra.
+The goal is to have [pure functions](https://medium.com/@jamesjefferyuk/javascript-what-are-pure-functions-4d4d5392d49c) allowing to process NMR spectra.
+
+All the functions use only native javascript object and will not use any classes.
+
+The functions are sorted by category on which they apply. Currently the categories are:
+
+- xy
+- peaks
+- ranges
 
 ## Debug
 
-A viewer is available in `/web` 
+A viewer for xy data is available in `/web`
 
 ## Installation
 
