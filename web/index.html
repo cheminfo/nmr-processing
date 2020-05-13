@@ -1,0 +1,86 @@
+<!-- showing graph using jsGraph -->
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script language="javascript" src="./jsgraph.min.js"></script>
+  </head>
+
+  <body>
+    <div id="graph"></div>
+
+    <script>
+      let dataSource = './data.json';
+      // dataSource = '../src/testdata/noise.json';
+      let annotationSource = './annotations.json';
+      // annotationSource = '';
+
+      createGraph();
+
+      async function createGraph() {
+        let data = { x: [], y: [] };
+        if (dataSource) {
+          let response = await fetch(dataSource);
+          data = await response.json();
+        }
+        let annotations = [];
+        if (annotationSource) {
+          let response = await fetch(annotationSource);
+          annotations = await response.json();
+        }
+
+        // options for zoom
+        const options = {
+          plugins: {
+            zoom: {
+              zoomMode: 'xy',
+            },
+          },
+          mouseActions: [
+            {
+              plugin: 'zoom',
+              shift: false,
+              ctrl: false,
+            },
+            {
+              plugin: 'zoom',
+              type: 'mousewheel',
+              options: {
+                direction: 'y',
+              },
+            },
+            {
+              plugin: 'zoom',
+              type: 'dblclick',
+              options: {
+                mode: 'total',
+              },
+            },
+          ],
+        };
+
+        var graph = new Graph('graph', options);
+        graph.resize(600, 400); // Resizes the container
+
+        let waveForm = Graph.newWaveform();
+        let arrayX = data.x;
+        let arrayY = data.y;
+        waveForm.setData(arrayY, arrayX);
+
+        graph
+          .newSerie('line serie', {}, 'line') // Creates a new serie
+          .autoAxis() // Assigns axes
+          .setWaveform(waveForm);
+
+        console.log(annotations);
+        for (let annotation of annotations) {
+          let shape = graph.newShape(annotation.type, annotation.data);
+          // shape.autoAxes();
+          shape.draw();
+        }
+
+        graph.draw(); // Draw
+      }
+    </script>
+  </body>
+</html>
