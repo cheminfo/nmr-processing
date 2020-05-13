@@ -1,6 +1,6 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
 
-import noisyBigPeakSmallPeak from '../../testdata/noisyBigPeakSmallPeak';
+import noisyBigPeakSmallPeak from 'nmr-xy-testdata/data/noisy/noisyBigPeakSmallPeak.json';
 import { peakPicking } from '../peakPicking';
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
