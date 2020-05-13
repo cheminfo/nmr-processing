@@ -1,7 +1,7 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
 
 import noisyBigPeakSmallPeak from '../../testdata/noisyBigPeakSmallPeak';
-import peakPicking from '../peakPicking';
+import { peakPicking } from '../peakPicking';
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 

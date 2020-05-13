@@ -21,7 +21,7 @@ import { extract } from 'ml-spectra-processing/src/xy/extract';
  * @return {Array}
  */
 
-export default function peakPicking(data, options = {}) {
+export function peakPicking(data, options = {}) {
   const {
     from,
     to,
