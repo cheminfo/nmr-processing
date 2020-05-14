@@ -14,7 +14,7 @@ export default {
    * @param {object} signal
    * @private
    */
-  compilePattern: function(signal) {
+  compilePattern: function (signal) {
     signal.multiplicity = 'm';
     // 1.1 symmetrize
     // It will add a set of peaks(signal.peaksComp) to the signal that will be used during
@@ -162,7 +162,7 @@ function updateSignal(signal, Jc) {
  * Returns the multiplet in the compact format
  * @param {object} signal
  * @param {object} Jc
- * @return {string}
+ * @return {String}
  * @private
  */
 function abstractPattern(signal, Jc) {
@@ -173,7 +173,7 @@ function abstractPattern(signal, Jc) {
   let newNmrJs = [];
 
   if (Jc && Jc.length > 0) {
-    Jc.sort(function(a, b) {
+    Jc.sort(function (a, b) {
       return b - a;
     });
 
@@ -239,7 +239,7 @@ function idealPattern(Jc) {
 /**
  * Find a combination of integer heights Hi, one from each Si, that sums to 2n.
  * @param {object} ranges
- * @param {number} value
+ * @param {Number} value
  * @return {*}
  * @private
  */
@@ -322,8 +322,8 @@ function getRanges(peaks) {
  * Performs a symmetrization of the signal by using different aproximations to the center.
  * It will return the result of the symmetrization that removes less peaks from the signal
  * @param {object} signal
- * @param {number} maxError
- * @param {number} iteration
+ * @param {Number} maxError
+ * @param {Number} iteration
  * @return {*}
  * @private
  */
@@ -349,9 +349,9 @@ function symmetrizeChoiseBest(signal, maxError, iteration) {
  * This function will return a set of symmetric peaks that will
  * be the enter point for the patter compilation process.
  * @param {object} signal
- * @param {number} maxError
- * @param {number} iteration
- * @return {number}
+ * @param {Number} maxError
+ * @param {Number} iteration
+ * @return {Number}
  * @private
  */
 function symmetrize(signal, maxError, iteration) {
@@ -510,8 +510,8 @@ function symmetrize(signal, maxError, iteration) {
 }
 /**
  * Error validator
- * @param {number} value
- * @return {number}
+ * @param {Number} value
+ * @return {Number}
  * @private
  */
 function error(value) {
@@ -529,7 +529,7 @@ function error(value) {
  * 2 stages normalizarion of the peaks heights to Math.pow(2,n).
  * Creates a new mask with the peaks that could contribute to the multiplete
  * @param {object} signal
- * @param {number} n
+ * @param {Number} n
  * @return {*}
  */
 function normalize(signal, n) {
@@ -569,7 +569,7 @@ function normalize(signal, n) {
  * Calculates the chemical shift as the weighted sum of the peaks
  * @param {Array} peaks
  * @param {Array} mask
- * @return {number}
+ * @return {Number}
  */
 function chemicalShift(peaks, mask) {
   let sum = 0;
@@ -596,7 +596,7 @@ function chemicalShift(peaks, mask) {
 /**
  * Return the area of a Lorentzian function
  * @param {object} peak - object with peak information
- * @return {number}
+ * @return {Number}
  * @private
  */
 function getArea(peak) {

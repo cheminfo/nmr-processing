@@ -6,17 +6,17 @@ import { extract } from 'ml-spectra-processing/src/xy/extract';
  * A new approach to improving automated analysis of proton NMR spectra
  * through Global Spectral Deconvolution (GSD)
  * http://www.spectrosco-pyeurope.com/images/stories/ColumnPDFs/TD_23_1.pdf
- * @param {object} data - Object of kind
- * @param {Object} options - options object with some parameter for GSD.
- * @param {boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
- * @param {number} [options.minMaxRatio = 0.01] - Threshold to determine if a given peak should be considered as a noise, bases on its relative height compared to the highest peak.
- * @param {number} [options.broadRatio = 0.00025] - If broadRatio is higher than 0, then all the peaks which second derivative smaller than broadRatio * maxAbsSecondDerivative will be marked with the soft mask equal to true.
- * @param {boolean} [options.smoothY = true] - Select the peak intensities from a smoothed version of the independent variables?
- * @param {number} [options.nL = 4] - factor to determine the width at the moment to group the peaks in signals in 'GSD.optimizePeaks' function.
- * @param {boolean} [options.optimize = true] - if it's true adjust an train of gaussian or lorentzian shapes to spectrum.
- * @param {string} [options.functionType = 'gaussian'] - This option allows us choose between 'gaussian' or 'lorentzian' function when options.optimize is true.
- * @param {number} [options.broadWidth = 0.25] - Threshold to determine if some peak is candidate to clustering into range.
- # @param {number} [options.noiseLevel]
+ * @param {DataXY} data - Object of kind
+ * @param {Object} [options={}] - options object with some parameter for GSD.
+ * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
+ * @param {Number} [options.minMaxRatio = 0.01] - Threshold to determine if a given peak should be considered as a noise, bases on its relative height compared to the highest peak.
+ * @param {Number} [options.broadRatio = 0.00025] - If broadRatio is higher than 0, then all the peaks which second derivative smaller than broadRatio * maxAbsSecondDerivative will be marked with the soft mask equal to true.
+ * @param {Boolean} [options.smoothY = true] - Select the peak intensities from a smoothed version of the independent variables?
+ * @param {Number} [options.nL = 4] - factor to determine the width at the moment to group the peaks in signals in 'GSD.optimizePeaks' function.
+ * @param {Boolean} [options.optimize = true] - if it's true adjust an train of gaussian or lorentzian shapes to spectrum.
+ * @param {String} [options.functionType = 'gaussian'] - This option allows us choose between 'gaussian' or 'lorentzian' function when options.optimize is true.
+ * @param {Number} [options.broadWidth = 0.25] - Threshold to determine if some peak is candidate to clustering into range.
+ # @param {Number} [options.noiseLevel]
  * @return {Array}
  */
 

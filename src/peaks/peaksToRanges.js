@@ -20,12 +20,12 @@ const defaultOptions = {
  * @param {SD} spectrum - SD instance
  * @param {Object} peakList - nmr signals
  * @param {Object} options - options object with some parameter for GSD, detectSignal functions.
- * @param {number} [options.nH = 100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
- * @param {string} [options.integralType = 'sum'] - option to chose between approx area with peaks or the sum of the points of given range ('sum', 'peaks')
- * @param {number} [options.frequencyCluster = 16] - distance limit to clustering peaks.
- * @param {number} [options.clean] - If exits it remove all the signals with integral < clean value
- * @param {boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
- * @param {boolean} [options.keepPeaks = false] - If true each signal will contain an array of peaks.
+ * @param {Number} [options.nH = 100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
+ * @param {String} [options.integralType = 'sum'] - option to chose between approx area with peaks or the sum of the points of given range ('sum', 'peaks')
+ * @param {Number} [options.frequencyCluster = 16] - distance limit to clustering peaks.
+ * @param {Number} [options.clean] - If exits it remove all the signals with integral < clean value
+ * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
+ * @param {Boolean} [options.keepPeaks = false] - If true each signal will contain an array of peaks.
  * @returns {Array}
  */
 
@@ -149,7 +149,7 @@ export function peaksToRanges(spectrum, peakList, options) {
  * @param {object} peakList - nmr signals
  * @param {object} options
  * @param {...number} options.nH - Number of hydrogens or some number to normalize the integral data, If it's zero return the absolute integral value
- * @param {string} options.integralType - option to chose between approx area with peaks or the sum of the points of given range
+ * @param {String} options.integralType - option to chose between approx area with peaks or the sum of the points of given range
  * @param {...number} options.frequencyCluster - distance limit to clustering the peaks.
  * range = frequencyCluster / observeFrequency -> Peaks withing this range are considered to belongs to the same signal1D
  * @return {Array} nmr signals
@@ -249,7 +249,7 @@ function detectSignals(spectrum, peakList, options = {}) {
 /**
  * Return the area of a Lorentzian function
  * @param {object} peak - object with peak information
- * @return {number}
+ * @return {Number}
  * @private
  */
 function computeArea(peak) {
