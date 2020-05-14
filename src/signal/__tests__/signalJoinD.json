@@ -1,0 +1,26 @@
+{
+  "nbAtoms": 1,
+  "delta": 3,
+  "j": [
+    {
+      "coupling": 1,
+      "multiplicity": "d",
+      "diaID": ["A"]
+    },
+    {
+      "coupling": 2,
+      "multiplicity": "d",
+      "diaID": ["B"]
+    },
+    {
+      "coupling": 3,
+      "multiplicity": "d",
+      "diaID": ["C"]
+    },
+    {
+      "coupling": 9,
+      "multiplicity": "d",
+      "diaID": ["D"]
+    }
+  ]
+}
