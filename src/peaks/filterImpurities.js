@@ -2,7 +2,7 @@ import impurities from '../constants/impurities';
 
 const toCheck = ['solvent_residual_peak', 'H2O', 'TMS'];
 
-function checkImpurity(peakList, impurity, options) {
+function filterImpurities(peakList, impurity, options) {
   let j, tolerance, difference;
   let i = impurity.length;
   while (i--) {
