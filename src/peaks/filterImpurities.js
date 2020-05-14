@@ -1,8 +1,23 @@
-import impurities from '../constants/impurities';
+import { impurities } from '../constants/impurities';
 
 const toCheck = ['solvent_residual_peak', 'H2O', 'TMS'];
 
-function filterImpurities(peakList, impurity, options) {
+export function filterImpurities(peakList, options = {}) {
+  let { solvent = '', error = 0.025 } = options;
+  solvent = solvent.toLowerCase();
+  if (solvent === '(cd3)2so') solvent = 'dmso';
+  if (solvent === 'meod') solvent = 'cd3od';
+  let solventImpurities = impurities[solvent];
+  if (solventImpurities) {
+    for (let impurity of toCheck) {
+      let impurityShifts = solventImpurities[impurity.toLowerCase()];
+      checkImpurity(peakList, impurityShifts, { error: error });
+    }
+  }
+  return peakList;
+}
+
+function checkImpurity(peakList, impurity, options) {
   let j, tolerance, difference;
   let i = impurity.length;
   while (i--) {
@@ -18,19 +33,4 @@ function filterImpurities(peakList, impurity, options) {
       }
     }
   }
-}
-
-export function filterImpurities(peakList, options = {}) {
-  let { solvent = '', error = 0.025 } = options;
-  solvent = solvent.toLowerCase();
-  if (solvent === '(cd3)2so') solvent = 'dmso';
-  if (solvent === 'meod') solvent = 'cd3od';
-  let solventImpurities = impurities[solvent];
-  if (solventImpurities) {
-    for (let impurity of toCheck) {
-      let impurityShifts = solventImpurities[impurity.toLowerCase()];
-      checkImpurity(peakList, impurityShifts, { error: error });
-    }
-  }
-  return peakList;
 }
