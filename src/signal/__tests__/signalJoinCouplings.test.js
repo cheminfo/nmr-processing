@@ -1,11 +1,12 @@
+import { signalJoinCouplings } from '../signalJoinCouplings';
+
 import signal from './signal.json';
 import signalJoinD from './signalJoinD.json';
 import signalJoinT from './signalJoinT.json';
-import { joinCouplings } from '../joinCouplings';
 
-describe('joinCouplings', () => {
+describe('signalJoinCouplings', () => {
   it('check dddd', () => {
-    const result = joinCouplings(signal);
+    const result = signalJoinCouplings(signal);
     expect(result).toBe([
       { coupling: 9, multiplicity: 'd' },
       { coupling: 8, multiplicity: 'd' },
@@ -17,7 +18,7 @@ describe('joinCouplings', () => {
   });
 
   it('check dddd with tolerance 1.1', () => {
-    const result = joinCouplings(signalJoinD, { tolerance: 1.1 });
+    const result = signalJoinCouplings(signalJoinD, { tolerance: 1.1 });
     expect(result).toBe([
       {
         nbAtoms: 1,
@@ -35,7 +36,7 @@ describe('joinCouplings', () => {
   });
 
   it('check ttt with tolerance 1.1', () => {
-    const result = joinCouplings(signalJoinT, { tolerance: 1.1 });
+    const result = signalJoinCouplings(signalJoinT, { tolerance: 1.1 });
     expect(result).toBe({
       nbAtoms: 1,
       delta: 3,

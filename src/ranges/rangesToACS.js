@@ -1,5 +1,5 @@
-import { joinCouplings } from '../signal/joinCouplings';
-import { getMultiplicityPattern } from '../signal/getMultiplicityPattern';
+import { signalMultiplicityPattern } from '../signal/signalMultiplicityPattern';
+import { signalJoinCouplings } from '../signal/signalJoinCouplings';
 
 const globalOptions = {
   h: {
@@ -22,7 +22,7 @@ const globalOptions = {
   },
 };
 
-export function toACS(ranges, options = {}) {
+export function rangesToACS(ranges, options = {}) {
   if (!options.nucleus) options.nucleus = '1H';
   let nucleus = options.nucleus.toLowerCase().replace(/[0-9]/g, '');
   let defaultOptions = globalOptions[nucleus];
@@ -148,8 +148,8 @@ function pushIntegral(range, parenthesis, options) {
 function pushMultiplicityFromSignal(signal, parenthesis) {
   let multiplicity = signal.multiplicity;
   if (!multiplicity) {
-    let joinedCouplings = joinCouplings(signal, { tolerance: 0.05 });
-    multiplicity = getMultiplicityPattern(joinedCouplings);
+    let joinedCouplings = signalJoinCouplings(signal, { tolerance: 0.05 });
+    multiplicity = signalMultiplicityPattern(joinedCouplings);
   }
   if (multiplicity.length > 0) parenthesis.push(multiplicity);
 }

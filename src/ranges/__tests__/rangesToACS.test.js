@@ -1,4 +1,5 @@
-import { toACS } from '../toACS';
+import { rangesToACS } from '../rangesToACS';
+
 import ranges from './ranges.json';
 
 // `<sup>1</sup>H NMR (CDCl3, 400MHz) δ: 1.50 (CH<sub>3CO, 2H, dd quint hex d hex, <i>J</i>= 7.0,6.0,5.0,4.0,3.0,2.0), 3.50 (1'H, s), 4.00-5.00 (1H, m), 6.00-7.00 (3H, m), 8.00-9.00 (m, 3H, 8.1 (s br), 8.4 (dt, <i>J</i> 7.0,3.0)).`
@@ -11,7 +12,7 @@ import ranges from './ranges.json';
 
 describe('ACS tests: formating and parsing', () => {
   it('format ACS', () => {
-    let acs = toACS(ranges, {
+    let acs = rangesToACS(ranges, {
       nbDecimal: 2,
       nucleus: '1H',
       frequencyObserved: 400,
@@ -23,7 +24,7 @@ describe('ACS tests: formating and parsing', () => {
       '<sup>1</sup>H NMR (C<sub>6</sub>D<sub>6</sub>, 400 MHz): δ 1.29 (1H, t, <i>J</i> = 4.5 Hz), 2.96 (3H, dd, <i>J</i> = 9.2, 2.7 Hz, COCH<sub>3</sub>), 3.35 (3H, d, <i>J</i> = 5.2 Hz, CH<sub>3</sub>OH),' +
         ' 4.09-4.34 (3H, 4.15 (t, <i>J</i> = 5.5, 5.2 Hz), 4.23 (d, <i>J</i> = 5.2 Hz)), 4.80 (3H, d, <i>J</i> = 5.2 Hz, D<sub>2</sub>O), 5.42-5.64 (3H, 5.46 (d, <i>J</i> = 5.2 Hz), 5.55 (dd, <i>J</i> = 5.5, 5.2 Hz)), 6.26-7.27 (8H, m).',
     );
-    acs = toACS(ranges, { nbDecimal: 2, nucleus: '1H', format: 'IMJA' });
+    acs = rangesToACS(ranges, { nbDecimal: 2, nucleus: '1H', format: 'IMJA' });
     expect(acs).toBe(
       '<sup>1</sup>H NMR: δ 2.96 (3H, dd, <i>J</i> = 9.2, 2.7 Hz, COCH<sub>3</sub>), 1.29 (1H, t, <i>J</i> = 4.5 Hz), 3.35 (3H, d, <i>J</i> = 5.2 Hz, CH<sub>3</sub>OH), 4.09-4.34 (3H, 4.23 (d, <i>J</i> = 5.2 Hz),' +
         ' 4.15 (t, <i>J</i> = 5.5, 5.2 Hz)), 4.80 (3H, d, <i>J</i> = 5.2 Hz, D<sub>2</sub>O), 5.42-5.64 (3H, 5.46 (d, <i>J</i> = 5.2 Hz), 5.55 (dd, <i>J</i> = 5.5, 5.2 Hz)), 6.26-7.27 (8H, m).',

@@ -20,7 +20,7 @@ import { extract } from 'ml-spectra-processing/src/xy/extract';
  * @return {Array}
  */
 
-export function autoPeaksPicking(data, options = {}) {
+export function xyAutoPeaksPicking(data, options = {}) {
   const {
     from,
     to,

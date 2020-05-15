@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "i": "^0.3.6",
+    "lodash.round": "^4.0.4",
     "ml-gsd": "^4.0.0",
     "ml-spectra-processing": "^2.4.0",
     "npm": "^6.14.5"

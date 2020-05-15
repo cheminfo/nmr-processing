@@ -6,7 +6,7 @@ import { couplingPatterns } from '../constants/couplingPatterns';
  * @param {*} signal
  * @param {*} options
  */
-export function joinCouplings(signal, options = {}) {
+export function signalJoinCouplings(signal, options = {}) {
   const { tolerance = 0.05 } = options;
   let couplings = signal.j;
   if (couplings && couplings.length > 0) {

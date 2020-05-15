@@ -3,7 +3,7 @@
  * @param {*} signal
  */
 
-export function getMultiplicityPattern(signal) {
+export function signalMultiplicityPattern(signal) {
   let js = signal.j;
   let pattern = '';
   if (js && js.length > 0) {

@@ -1,11 +1,11 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
-
 import noisyBigPeakSmallPeak from 'nmr-xy-testdata/data/noisy/noisyBigPeakSmallPeak.json';
-import { autoPeaksPicking } from '../autoPeaksPicking';
+
+import { xyAutoPeaksPicking } from '../xyAutoPeaksPicking';
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 
-describe('autoPeaksPicking', function () {
+describe('xyAutoPeaksPicking', function () {
   it('mixed spectrum with small and big peaks', () => {
     let options = {
       thresholdFactor: 3,
@@ -22,7 +22,7 @@ describe('autoPeaksPicking', function () {
       broadRatio: 0,
     };
 
-    let peaks = autoPeaksPicking(noisyBigPeakSmallPeak, options);
+    let peaks = xyAutoPeaksPicking(noisyBigPeakSmallPeak, options);
 
     expect(peaks).toMatchCloseTo(
       [

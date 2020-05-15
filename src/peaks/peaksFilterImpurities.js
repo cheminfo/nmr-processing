@@ -2,7 +2,7 @@ import { impurities } from '../constants/impurities';
 
 const toCheck = ['solvent_residual_peak', 'H2O', 'TMS'];
 
-export function filterImpurities(peakList, options = {}) {
+export function peaksFilterImpurities(peakList, options = {}) {
   let { solvent = '', error = 0.025 } = options;
   solvent = solvent.toLowerCase();
   if (solvent === '(cd3)2so') solvent = 'dmso';

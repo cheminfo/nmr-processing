@@ -1,8 +1,7 @@
-import { Ranges } from 'spectra-data-ranges';
 import round from 'lodash.round';
 
-import jAnalyzer from './jAnalyzer';
-import impurityRemover from './ImpurityRemover';
+import peaksFilterImpurities from './peaksFilterImpurities';
+import jAnalyzer from './util/jAnalyzer';
 
 const defaultOptions = {
   nH: 100,
@@ -33,7 +32,7 @@ export function peaksToRanges(spectrum, peakList, options) {
   options = Object.assign({}, defaultOptions, options);
   let i, j;
   let nH = options.nH;
-  peakList = impurityRemover(peakList, options.removeImpurity);
+  peakList = peaksFilterImpurities(peakList, options.removeImpurity);
   let signals = detectSignals(spectrum, peakList, options);
 
   if (options.clean) {
