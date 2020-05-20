@@ -1,6 +1,5 @@
 import { gsd, joinBroadPeaks, optimizePeaks } from 'ml-gsd';
-import { absoluteMedian } from 'ml-spectra-processing/src/x/absoluteMedian';
-import { extract } from 'ml-spectra-processing/src/xy/extract';
+import { xAbsoluteMedian, xyExtract } from 'ml-spectra-processing';
 /**
  * Implementation of the peak picking method described by Cobas in:
  * A new approach to improving automated analysis of proton NMR spectra
@@ -28,16 +27,16 @@ export function autoPeaksPicking(data, options = {}) {
     broadRatio = 0.00025,
     smoothY = true,
     optimize,
-    widthFactor = 4,
+    factorWidth = 4,
     realTopDetection = true,
     functionName = 'gaussian',
     broadWidth = 0.25,
-    noiseLevel = absoluteMedian(data.x) * (options.thresholdFactor || 3),
+    noiseLevel = xAbsoluteMedian(data.x) * (options.thresholdFactor || 3),
     sgOptions = { windowSize: 9, polynomial: 3 },
   } = options;
 
   if (from !== undefined && to !== undefined) {
-    data = extract(data, [{ from, to }]);
+    data = xyExtract(data, [{ from, to }]);
   }
 
   let peakList = gsd(data.x, data.y, {
@@ -54,7 +53,7 @@ export function autoPeaksPicking(data, options = {}) {
   }
   if (optimize) {
     peakList = optimizePeaks(peakList, data.x, data.y, {
-      widthFactor,
+      factorWidth,
       functionName,
     });
   }
