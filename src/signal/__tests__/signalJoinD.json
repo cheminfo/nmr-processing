@@ -5,22 +5,22 @@
     {
       "coupling": 1,
       "multiplicity": "d",
-      "diaID": ["A"]
+      "diaID": "A"
     },
     {
       "coupling": 2,
       "multiplicity": "d",
-      "diaID": ["B"]
+      "diaID": "B"
     },
     {
       "coupling": 3,
       "multiplicity": "d",
-      "diaID": ["C"]
+      "diaID": "C"
     },
     {
       "coupling": 9,
       "multiplicity": "d",
-      "diaID": ["D"]
+      "diaID": "D"
     }
   ]
 }
