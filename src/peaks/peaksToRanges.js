@@ -1,8 +1,8 @@
-import { Ranges } from 'spectra-data-ranges';
 import round from 'lodash.round';
+import { Ranges } from 'spectra-data-ranges';
 
-import jAnalyzer from './jAnalyzer';
-import impurityRemover from './ImpurityRemover';
+import { filterImpurities } from './filterImpurities';
+import jAnalyzer from './util/jAnalyzer';
 
 const defaultOptions = {
   nH: 100,
@@ -26,16 +26,17 @@ const defaultOptions = {
  * @param {Number} [options.clean] - If exits it remove all the signals with integral < clean value
  * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
  * @param {Boolean} [options.keepPeaks = false] - If true each signal will contain an array of peaks.
+ * @param {String} [options.nucleus = '1H'] - Nucleus
+ * @param {String} [options.frequency = 400] - Observed frequency
  * @returns {Array}
  */
 
-export function peaksToRanges(spectrum, peakList, options) {
+export function peaksToRanges(peakList, options) {
   options = Object.assign({}, defaultOptions, options);
   let i, j;
   let nH = options.nH;
-  peakList = impurityRemover(peakList, options.removeImpurity);
-  let signals = detectSignals(spectrum, peakList, options);
-
+  peakList = filterImpurities(peakList, options.removeImpurity);
+  let signals = detectSignals(peakList, options);
   if (options.clean) {
     for (i = 0; i < signals.length; i++) {
       if (signals[i].integralData.value < options.clean) {
@@ -78,7 +79,7 @@ export function peaksToRanges(spectrum, peakList, options) {
             peaks1.push(peaksO[j]);
           }
           options.nH = nHi;
-          let ranges = detectSignals(spectrum, peaks1, options);
+          let ranges = detectSignals(peaks1, options);
 
           for (j = 0; j < ranges.length; j++) {
             signals.push(ranges[j]);
@@ -155,12 +156,13 @@ export function peaksToRanges(spectrum, peakList, options) {
  * @return {Array} nmr signals
  * @private
  */
-function detectSignals(spectrum, peakList, options = {}) {
+function detectSignals(peakList, options = {}) {
   let {
     nH = 100,
     integralType = 'sum',
     frequencyCluster = 16,
-    frequency = spectrum.observeFrequencyX(),
+    frequency = 400,
+    nucleus = '1H',
   } = options;
 
   let i, j, signal1D, peaks;
@@ -178,7 +180,7 @@ function detectSignals(spectrum, peakList, options = {}) {
         multiplicity: '',
         pattern: '',
         observe: frequency,
-        nucleus: spectrum.getNucleus(1),
+        nucleus,
         integralData: {
           from: peakList[i].x - peakList[i].width * 3,
           to: peakList[i].x + peakList[i].width * 3,
@@ -228,7 +230,7 @@ function detectSignals(spectrum, peakList, options = {}) {
     signals[i].delta1 = chemicalShift / integralPeaks;
 
     if (integralType === 'sum') {
-      integral.value = spectrum.getArea(integral.from, integral.to);
+      integral.value = 10; //spectrum.getArea(integral.from, integral.to); //@TODO
     } else {
       integral.value = integralPeaks;
     }
