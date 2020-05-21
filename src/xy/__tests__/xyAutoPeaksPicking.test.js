@@ -1,7 +1,11 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
 import noisyBigPeakSmallPeak from 'nmr-xy-testdata/data/noisy/noisyBigPeakSmallPeak.json';
 
+<<<<<<< HEAD:src/xy/__tests__/xyAutoPeaksPicking.test.js
 import { xyAutoPeaksPicking } from '../xyAutoPeaksPicking';
+=======
+import { autoPeaksPicking } from '../autoPeaksPicking';
+>>>>>>> chore: refactor test cases and fix eslint in toACS:src/xy/__tests__/autoPeaksPicking.test.js
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 
