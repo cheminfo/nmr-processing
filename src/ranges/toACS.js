@@ -1,5 +1,5 @@
-import { joinCouplings } from '../signal/joinCouplings';
 import { getMultiplicityPattern } from '../signal/getMultiplicityPattern';
+import { joinCouplings } from '../signal/joinCouplings';
 
 const globalOptions = {
   h: {

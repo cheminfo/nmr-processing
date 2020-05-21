@@ -1,7 +1,7 @@
-import { peakPicking } from '..';
+import { autoPeaksPicking } from '..';
 
 describe('index', function () {
   it('check presence of functions', () => {
-    expect(peakPicking).toBeInstanceOf(Function);
+    expect(autoPeaksPicking).toBeInstanceOf(Function);
   });
 });
