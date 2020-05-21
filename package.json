@@ -57,6 +57,7 @@
     "i": "^0.3.6",
     "ml-gsd": "^5.0.0",
     "ml-spectra-processing": "^4.0.0",
-    "npm": "^6.14.5"
+    "npm": "^6.14.5",
+    "spectra-data-ranges": "^1.1.8"
   }
 }
