@@ -22,7 +22,7 @@ export function joinCouplings(signal, options = {}) {
       diaIDs = [couplings[0].diaID];
     }
     if (couplings[0].assignment) {
-      atoms = [ couplings[0].assignment ];
+      atoms = [couplings[0].assignment];
     }
     for (let i = 0; i < couplings.length - 1; i++) {
       if (
@@ -31,8 +31,10 @@ export function joinCouplings(signal, options = {}) {
         cont += couplings[i + 1].assignment
           ? couplings[i + 1].assignment.length
           : 1;
-        if (couplings[i+1].diaID) diaIDs.push(couplings[i+1].diaID);
-        if (couplings[i + 1].assignment) atoms.push(couplings[i + 1].assignment);
+        if (couplings[i + 1].diaID) diaIDs.push(couplings[i + 1].diaID);
+        if (couplings[i + 1].assignment) {
+          atoms.push(couplings[i + 1].assignment);
+        }
       } else {
         let jTemp = {
           coupling: Math.abs(couplings[i].coupling),
@@ -47,11 +49,11 @@ export function joinCouplings(signal, options = {}) {
 
         newNmrJs.push(jTemp);
 
-        if (couplings[i+1].diaID) {
-          diaIDs = [ couplings[i + 1].diaID ];
+        if (couplings[i + 1].diaID) {
+          diaIDs = [couplings[i + 1].diaID];
         }
         if (couplings[i + 1].assignment) {
-          atoms = [ couplings[i + 1].assignment ];
+          atoms = [couplings[i + 1].assignment];
         }
         cont = couplings[i + 1].assignment
           ? couplings[i + 1].assignment.length

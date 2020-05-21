@@ -1,7 +1,8 @@
+import { joinCouplings } from '../joinCouplings';
+
 import signal from './signal.json';
 import signalJoinD from './signalJoinD.json';
 import signalJoinT from './signalJoinT.json';
-import { joinCouplings } from '../joinCouplings';
 
 describe('joinCouplings', () => {
   it('check dddd', () => {
@@ -18,7 +19,6 @@ describe('joinCouplings', () => {
 
   it('check dddd with tolerance 1.1', () => {
     const result = joinCouplings(signalJoinD, { tolerance: 1.1 });
-    console.log(result.j)
     expect(result).toStrictEqual({
       nbAtoms: 1,
       delta: 3,
