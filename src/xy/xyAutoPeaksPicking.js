@@ -51,6 +51,7 @@ export function xyAutoPeaksPicking(data, options = {}) {
   if (broadWidth) {
     peakList = joinBroadPeaks(peakList, { width: broadWidth });
   }
+
   if (optimize) {
     peakList = optimizePeaks(peakList, data.x, data.y, {
       factorWidth,
