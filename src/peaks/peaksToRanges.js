@@ -35,14 +35,9 @@ export function peaksToRanges(peakList, options) {
   options = Object.assign({}, defaultOptions, options);
   let i, j;
   let nH = options.nH;
-<<<<<<< HEAD
   peakList = peaksFilterImpurities(peakList, options.removeImpurity);
-  let signals = detectSignals(spectrum, peakList, options);
-
-=======
-  peakList = filterImpurities(peakList, options.removeImpurity);
   let signals = detectSignals(peakList, options);
->>>>>>> chore: refactor peaksToRanges
+
   if (options.clean) {
     for (i = 0; i < signals.length; i++) {
       if (signals[i].integralData.value < options.clean) {
