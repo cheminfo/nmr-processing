@@ -1,10 +1,10 @@
-import { getMultiplicityPattern } from '../getMultiplicityPattern';
+import { signalMultiplicityPattern } from '../signalMultiplicityPattern';
 
 import signal from './signal.json';
 
-describe('getMultiplicityPattern', () => {
+describe('signalMultiplicityPattern', () => {
   it('check dddd', () => {
-    const result = getMultiplicityPattern(signal);
+    const result = signalMultiplicityPattern(signal);
     expect(result).toBe('dddd');
   });
 });

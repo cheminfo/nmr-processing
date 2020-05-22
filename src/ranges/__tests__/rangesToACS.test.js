@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/ranges/__tests__/rangesToACS.test.js
 import { rangesToACS } from '../rangesToACS';
-=======
-import { toACS } from '../toACS';
->>>>>>> chore: refactor test cases and fix eslint in toACS:src/ranges/__tests__/toACS.test.js
 
 import ranges from './ranges.json';
 
