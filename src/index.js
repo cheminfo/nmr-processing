@@ -4,6 +4,8 @@
  * @property {Array<Number>} y Array of y values
  */
 
-export * from './xy/peakPicking.js';
 export * from './peaks/peaksFilterImpurities';
-export * from './ranges/acs';
+export * from './xy/xyAutoPeaksPicking';
+export * from './xy/xyAutoRangesPicking';
+export * from './peaks/peaksFilterImpurities';
+export * from './ranges/rangesToACS';
