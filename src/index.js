@@ -7,5 +7,4 @@
 export * from './peaks/peaksFilterImpurities';
 export * from './xy/xyAutoPeaksPicking';
 export * from './xy/xyAutoRangesPicking';
-export * from './peaks/peaksFilterImpurities';
 export * from './ranges/rangesToACS';

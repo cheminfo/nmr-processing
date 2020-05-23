@@ -1,7 +1,6 @@
 import round from 'lodash.round';
-import { Ranges } from 'spectra-data-ranges';
 
-import peaksFilterImpurities from './peaksFilterImpurities';
+import { peaksFilterImpurities } from './peaksFilterImpurities';
 import jAnalyzer from './util/jAnalyzer';
 
 const defaultOptions = {
@@ -142,7 +141,7 @@ export function peaksToRanges(peakList, options) {
     }
   }
 
-  return new Ranges(ranges);
+  return ranges;
 }
 
 /**

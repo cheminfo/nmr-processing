@@ -9,6 +9,8 @@ describe('xyAutoRangesPicking', function () {
   it('a triplet and a quadruplet', () => {
     let ranges = xyAutoRangesPicking(tripletQuadruplet, {});
 
+    expect(ranges).toHaveLength(2);
+
     expect(ranges).toMatchCloseTo(
       [
         {

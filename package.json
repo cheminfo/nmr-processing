@@ -54,11 +54,8 @@
     "rollup": "^2.9.1"
   },
   "dependencies": {
-    "i": "^0.3.6",
     "lodash.round": "^4.0.4",
     "ml-gsd": "^5.0.0",
-    "ml-spectra-processing": "^4.0.0",
-    "npm": "^6.14.5",
-    "spectra-data-ranges": "^1.1.8"
+    "ml-spectra-processing": "^4.0.0"
   }
 }
