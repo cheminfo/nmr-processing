@@ -122,11 +122,7 @@ export function peaksToRanges(peakList, options) {
       integral: round(signal.integralData.value, 5),
       signal: [
         {
-          nbAtoms: 0,
-          diaID: [],
           multiplicity: signal.multiplicity,
-          kind: '',
-          remark: '',
         },
       ],
     };

@@ -5,7 +5,6 @@ import { xyAutoPeaksPicking } from './xyAutoPeaksPicking';
 
 export function xyAutoRangesPicking(data, options = {}) {
   let peaks = xyAutoPeaksPicking(data, options.peakPicking);
-  console.log(peaks);
   peaks = peaksFilterImpurities(peaks, options.impurities);
   let ranges = peaksToRanges(peaks, options.ranges);
 
