@@ -1,5 +1,5 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
-import tripletQuadruplet from 'nmr-xy-testdata/data/pure/d1-1.2_j7.json';
+import tripletQuadruplet from 'nmr-xy-testdata/data/pure/d1-2_j7.json';
 
 import { xyAutoRangesPicking } from '../xyAutoRangesPicking';
 
