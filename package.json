@@ -57,7 +57,10 @@
   },
   "dependencies": {
     "lodash.round": "^4.0.4",
+    "ml-fft": "^1.3.5",
     "ml-gsd": "^5.0.1",
+    "ml-matrix-peaks-finder": "^0.2.1",
+    "ml-simple-clustering": "^0.1.0",
     "ml-spectra-processing": "^4.0.0"
   }
 }
