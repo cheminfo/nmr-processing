@@ -1,5 +1,3 @@
-import round from 'lodash.round';
-
 // import { Ranges } from 'spectra-data-ranges';
 import { xyGetArea } from '../xy/xyGetArea';
 
@@ -120,9 +118,9 @@ export function peaksToRanges(data, peakList, options = {}) {
   for (let i = 0; i < signals.length; i++) {
     let signal = signals[i];
     ranges[i] = {
-      from: round(signal.integralData.from, 5),
-      to: round(signal.integralData.to, 5),
-      integral: round(signal.integralData.value, 5),
+      from: signal.integralData.from,
+      to: signal.integralData.to,
+      integral: signal.integralData.value,
       signal: [
         {
           multiplicity: signal.multiplicity,
@@ -136,7 +134,7 @@ export function peaksToRanges(data, peakList, options = {}) {
       ranges[i].signal[0].j = signal.nmrJs;
     }
     if (!signal.asymmetric || signal.multiplicity === 'm') {
-      ranges[i].signal[0].delta = round(signal.delta1, 5);
+      ranges[i].signal[0].delta = (signal.delta1);
     }
   }
 
