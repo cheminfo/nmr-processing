@@ -134,7 +134,7 @@ export function peaksToRanges(data, peakList, options = {}) {
       ranges[i].signal[0].j = signal.nmrJs;
     }
     if (!signal.asymmetric || signal.multiplicity === 'm') {
-      ranges[i].signal[0].delta = (signal.delta1);
+      ranges[i].signal[0].delta = signal.delta1;
     }
   }
 
