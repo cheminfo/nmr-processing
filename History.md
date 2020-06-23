@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/cheminfo/nmr-processing/compare/v0.1.5...v0.2.0) (2020-06-23)
+
+
+### Features
+
+* add gyromagneticRatio ([84a5fe9](https://github.com/cheminfo/nmr-processing/commit/84a5fe95c4fc8024344f37225005e6b2c287356d))
+
+
+
 # 0.1.0 (2020-05-23)
 
 
