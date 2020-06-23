@@ -9,3 +9,6 @@ export * from './xy/xyAutoPeaksPicking';
 export * from './xy/xyAutoRangesPicking';
 export * from './ranges/rangesToACS';
 export * from './xyz/xyzAutoPeaksPicking';
+export * from './constants/gyromagneticRatio';
+export * from './constants/impurities';
+export * from './constants/couplingPatterns';
