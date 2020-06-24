@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/cheminfo/nmr-processing/compare/v0.2.0...v0.2.1) (2020-06-24)
+
+
+### Bug Fixes
+
+* use number for gyromagneticRatio and add 1 digit for 13C ([1f77c67](https://github.com/cheminfo/nmr-processing/commit/1f77c67927749e41f3c4cbb5779ef5d7e075d9ad))
+
+
+
 # [0.2.0](https://github.com/cheminfo/nmr-processing/compare/v0.1.5...v0.2.0) (2020-06-23)
 
 
