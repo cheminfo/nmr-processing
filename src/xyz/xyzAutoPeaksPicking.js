@@ -17,7 +17,15 @@ const smallFilter = [
 ];
 
 export function xyzAutoPeaksPicking(spectraData, options = {}) {
-  let { thresholdFactor = 0.5, isHomoNuclear, nucleus, sfo1 } = options;
+  let {
+    thresholdFactor = 0.5,
+    isHomoNuclear,
+    nucleus = ['1H', '1H'],
+    observeFrequencies,
+    enhanceSymmetry = false,
+    clean = true,
+    maxPercentCutOff = 0.03,
+  } = options;
 
   if (thresholdFactor === 0) {
     thresholdFactor = 1;
@@ -44,46 +52,17 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
   let [nucleusX, nucleusY] = nucleus;
-  let [observeFrequencyX, observeFrequencyY] = sfo1;
+  let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
 
+  let convolutedSpectrum = FFTUtils.convolute(
+    data,
+    smallFilter,
+    nbSubSpectra,
+    nbPoints,
+  );
+
+  let signals = [];
   if (isHomoNuclear) {
-    let convolutedSpectrum = FFTUtils.convolute(
-      data,
-      smallFilter,
-      nbSubSpectra,
-      nbPoints,
-    );
-    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
-      filteredData: convolutedSpectrum,
-      rows: nbSubSpectra,
-      cols: nbPoints,
-      nStdDev: nStdDev * thresholdFactor,
-    }); // )1.5);
-    let peaksMax1 = matrixPeakFinders.findPeaks2DMax(data, {
-      filteredData: convolutedSpectrum,
-      rows: nbSubSpectra,
-      cols: nbPoints,
-      nStdDev: (nStdDev + 0.5) * thresholdFactor,
-    }); // 2.0);
-    for (let i = 0; i < peaksMC1.length; i++) {
-      peaksMax1.push(peaksMC1[i]);
-    }
-    return PeakOptimizer.enhanceSymmetry(
-      createSignals2D(peaksMax1, spectraData, {
-        tolerance: 24,
-        nucleusX,
-        nucleusY,
-        observeFrequencyX,
-        observeFrequencyY,
-      }),
-    );
-  } else {
-    let convolutedSpectrum = FFTUtils.convolute(
-      data,
-      smallFilter,
-      nbSubSpectra,
-      nbPoints,
-    );
     let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
       filteredData: convolutedSpectrum,
       rows: nbSubSpectra,
@@ -91,9 +70,42 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       nStdDev: nStdDev * thresholdFactor,
     });
 
-    // Peak2D[] peaksMC1 = matrixPeakFinders.findPeaks2DMax(data, nbSubSpectra, nbPoints, (nStdDev+0.5)*thresholdFactor);
-    // Remove peaks with less than 3% of the intensity of the highest peak
-    return createSignals2D(PeakOptimizer.clean(peaksMC1, 0.03), spectraData, {
+    let peaksMax1 = matrixPeakFinders.findPeaks2DMax(data, {
+      filteredData: convolutedSpectrum,
+      rows: nbSubSpectra,
+      cols: nbPoints,
+      nStdDev: (nStdDev + 0.5) * thresholdFactor,
+    });
+
+    for (let i = 0; i < peaksMC1.length; i++) {
+      peaksMax1.push(peaksMC1[i]);
+    }
+
+    signals = createSignals2D(peaksMax1, spectraData, {
+      tolerance: 24,
+      nucleusX,
+      nucleusY,
+      observeFrequencyX,
+      observeFrequencyY,
+    });
+
+    if (enhanceSymmetry) {
+      signals = PeakOptimizer.enhanceSymmetry(signals);
+    }
+  } else {
+    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
+      filteredData: convolutedSpectrum,
+      rows: nbSubSpectra,
+      cols: nbPoints,
+      nStdDev: nStdDev * thresholdFactor,
+    });
+
+    if (clean) {
+      // Remove peaks with less than x% of the intensity of the highest peak
+      peaksMC1 = PeakOptimizer.clean(peaksMC1, maxPercentCutOff);
+    }
+
+    signals = createSignals2D(peaksMC1, spectraData, {
       tolerance: 24,
       nucleusX,
       nucleusY,
@@ -101,6 +113,8 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       observeFrequencyY,
     });
   }
+
+  return signals;
 }
 
 // How noisy is the spectrum depending on the kind of experiment.
@@ -131,8 +145,9 @@ const createSignals2D = (peaks, spectraData, options) => {
   let firstX = spectraData.minX;
   let lastX = spectraData.maxX;
 
-  let dy = (lastY - firstY) / (spectraData.z[0].length - 1); //@TODO: check the dimensionality
-  let dx = (lastX - firstX) / (spectraData.z.length - 1);
+  let dy = (lastY - firstY) / (spectraData.z.length - 1); //@TODO: check the dimensionality
+  let dx = (lastX - firstX) / (spectraData.z[0].length - 1);
+
   for (let i = peaks.length - 1; i >= 0; i--) {
     peaks[i].x = firstX + dx * peaks[i].x;
     peaks[i].y = firstY + dy * peaks[i].y;
