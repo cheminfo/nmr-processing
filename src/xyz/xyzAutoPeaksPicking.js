@@ -51,18 +51,15 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       }
     }
   }
-
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
   let [nucleusX, nucleusY] = nucleus;
   let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
-
   let convolutedSpectrum = FFTUtils.convolute(
     data,
     smallFilter,
     nbSubSpectra,
     nbPoints,
   );
-
   let signals = [];
   if (isHomoNuclear) {
     let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
@@ -84,7 +81,8 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     }
 
     signals = createSignals2D(peaksMax1, spectraData, {
-      tolerance: 24,
+      toleranceX,
+      toleranceY,
       nucleusX,
       nucleusY,
       observeFrequencyX,
