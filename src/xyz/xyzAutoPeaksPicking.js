@@ -25,6 +25,8 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     enhanceSymmetry = false,
     clean = true,
     maxPercentCutOff = 0.03,
+    toleranceX = 24,
+    toleranceY = 24,
   } = options;
 
   if (thresholdFactor === 0) {
@@ -106,7 +108,8 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     }
 
     signals = createSignals2D(peaksMC1, spectraData, {
-      tolerance: 24,
+      toleranceX,
+      toleranceY,
       nucleusX,
       nucleusY,
       observeFrequencyX,
@@ -135,7 +138,8 @@ const createSignals2D = (peaks, spectraData, options) => {
   let {
     observeFrequencyX,
     observeFrequencyY,
-    tolerance = 24,
+    toleranceX,
+    toleranceY,
     nucleusX,
     nucleusY,
   } = options;
@@ -160,14 +164,15 @@ const createSignals2D = (peaks, spectraData, options) => {
   // The connectivity matrix is an square and symmetric matrix, so we'll only store the upper diagonal in an
   // array like form
   let connectivity = [];
-  let tmp = 0;
-  tolerance *= tolerance;
+  toleranceX *= toleranceX;
+  toleranceY *= toleranceY;
   for (let i = 0; i < peaks.length; i++) {
     for (let j = i; j < peaks.length; j++) {
-      tmp =
-        Math.pow((peaks[i].x - peaks[j].x) * observeFrequencyX, 2) +
-        Math.pow((peaks[i].y - peaks[j].y) * observeFrequencyY, 2);
-      if (tmp < tolerance) {
+      if (
+        Math.pow((peaks[i].x - peaks[j].x) * observeFrequencyX, 2) <
+          toleranceX &&
+        Math.pow((peaks[i].y - peaks[j].y) * observeFrequencyY, 2) < toleranceY
+      ) {
         // 30*30Hz We cannot distinguish peaks with less than 20 Hz of separation
         connectivity.push(1);
       } else {
