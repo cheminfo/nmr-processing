@@ -1,4 +1,4 @@
-import { FFTUtils } from 'ml-fft';
+import * as convolution from 'ml-matrix-convolution';
 import matrixPeakFinders from 'ml-matrix-peaks-finder';
 import simpleClustering from 'ml-simple-clustering';
 
@@ -27,6 +27,7 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     maxPercentCutOff = 0.03,
     toleranceX = 24,
     toleranceY = 24,
+    convolutionByFFT = true,
   } = options;
 
   if (thresholdFactor === 0) {
@@ -54,12 +55,13 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
   let [nucleusX, nucleusY] = nucleus;
   let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
-  let convolutedSpectrum = FFTUtils.convolute(
-    data,
-    smallFilter,
-    nbSubSpectra,
-    nbPoints,
-  );
+  let convolutedSpectrum = convolutionByFFT
+    ? convolution.fft(data, smallFilter, { rows: nbSubSpectra, cols: nbPoints })
+    : convolution.direct(data, smallFilter, {
+        rows: nbSubSpectra,
+        cols: nbPoints,
+      });
+
   let signals = [];
   if (isHomoNuclear) {
     let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
@@ -228,5 +230,6 @@ const createSignals2D = (peaks, spectraData, options) => {
       signals.push(signal);
     }
   }
+
   return signals;
 };
