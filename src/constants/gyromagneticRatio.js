@@ -1,7 +1,7 @@
 // sources:
 // https://en.wikipedia.org/wiki/Gyromagnetic_ratio
 
-// TODO: can we have a better source and more digits ? @jwist
+// TODO: #13 can we have a better source and more digits ? @jwist
 
 export const gyromagneticRatio = {
   '1H': 267.52218744e6,
