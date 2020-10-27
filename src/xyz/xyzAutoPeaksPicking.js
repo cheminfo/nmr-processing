@@ -1,5 +1,5 @@
 import * as convolution from 'ml-matrix-convolution';
-import matrixPeakFinders from 'ml-matrix-peaks-finder';
+import * as matrixPeakFinders from 'ml-matrix-peaks-finder';
 import simpleClustering from 'ml-simple-clustering';
 
 import * as PeakOptimizer from '../peaks/util/peakOptimizer';
