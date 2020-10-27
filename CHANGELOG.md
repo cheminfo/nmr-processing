@@ -1,13 +1,17 @@
-## [0.2.1](https://github.com/cheminfo/nmr-processing/compare/v0.2.0...v0.2.1) (2020-06-24)
 
+# Changelog
+
+## [0.3.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.2.5...v0.3.0) (2020-10-27)
 
 ### Bug Fixes
 
+* auto peaks picking dependency ([420c92a](https://www.github.com/cheminfo/nmr-processing/commit/420c92a45ad2ba7375694cee9f2bc6ae03f2d6cd))
 * use number for gyromagneticRatio and add 1 digit for 13C ([1f77c67](https://github.com/cheminfo/nmr-processing/commit/1f77c67927749e41f3c4cbb5779ef5d7e075d9ad))
 
+## [0.2.1](https://github.com/cheminfo/nmr-processing/compare/v0.2.0...v0.2.1) (2020-06-24)
 
 
-# [0.2.0](https://github.com/cheminfo/nmr-processing/compare/v0.1.5...v0.2.0) (2020-06-23)
+## [0.2.0](https://github.com/cheminfo/nmr-processing/compare/v0.1.5...v0.2.0) (2020-06-23)
 
 
 ### Features
@@ -15,8 +19,7 @@
 * add gyromagneticRatio ([84a5fe9](https://github.com/cheminfo/nmr-processing/commit/84a5fe95c4fc8024344f37225005e6b2c287356d))
 
 
-
-# 0.1.0 (2020-05-23)
+## 0.1.0 (2020-05-23)
 
 
 ### Features
@@ -28,6 +31,4 @@
 * add test data ([ab8cd2e](https://github.com/cheminfo/nmr-processing/commit/ab8cd2e449939de261a8178306af1aeff8f7baaf))
 * add toACS ([5225cb1](https://github.com/cheminfo/nmr-processing/commit/5225cb1285dd66a2fa568699b706d4b518e29461))
 * addn web folder allowing to debug ([965eabf](https://github.com/cheminfo/nmr-processing/commit/965eabf7335638cf7d150acb34118ef15c28a9d5))
-
-
 
