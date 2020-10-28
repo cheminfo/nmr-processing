@@ -31,6 +31,7 @@ export function xyAutoPeaksPicking(data, options = {}) {
     realTopDetection = true,
     functionName = 'gaussian',
     broadWidth = 0.25,
+    lookNegative = false,
     noiseLevel = xAbsoluteMedian(data.x) * (options.thresholdFactor || 3),
     sgOptions = { windowSize: 9, polynomial: 3 },
   } = options;
@@ -38,6 +39,39 @@ export function xyAutoPeaksPicking(data, options = {}) {
   if (from !== undefined && to !== undefined) {
     data = xyExtract(data, [{ from, to }]);
   }
+
+  let getPeakOptions = {
+    broadWidth,
+    optimize,
+    factorWidth,
+    functionName,
+    sgOptions,
+    minMaxRatio,
+    broadRatio,
+    noiseLevel,
+    smoothY,
+    realTopDetection,
+  };
+
+  let result = getPeakList(data, getPeakOptions);
+  return lookNegative
+    ? result.concat(getNegativePeaks(data, getPeakOptions))
+    : result;
+}
+
+function getPeakList(data, options) {
+  const {
+    broadWidth,
+    optimize,
+    factorWidth,
+    functionName,
+    sgOptions,
+    minMaxRatio,
+    broadRatio,
+    noiseLevel,
+    smoothY,
+    realTopDetection,
+  } = options;
 
   let peakList = gsd(data.x, data.y, {
     sgOptions,
@@ -59,5 +93,20 @@ export function xyAutoPeaksPicking(data, options = {}) {
     });
   }
 
+  return peakList;
+}
+
+function getNegativePeaks(data, options) {
+  let { x, y } = data;
+  let negativeDataY = new Float64Array(data.y.length);
+  for (let i = 0; i < negativeDataY.length; i++) {
+    negativeDataY[i] = -1 * y[i];
+  }
+
+  let peakList = getPeakList({ x, y: negativeDataY }, options);
+
+  for (let i = 0; i < peakList.length; i++) {
+    peakList[i].y *= -1;
+  }
   return peakList;
 }

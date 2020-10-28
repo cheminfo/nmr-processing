@@ -35,12 +35,10 @@ const defaultOptions = {
 export function peaksToRanges(data, peakList, options = {}) {
   options = Object.assign({}, defaultOptions, options);
   let { nH, joinOverlapRanges, clean, compile } = options;
-
   let signals = detectSignals(data, peakList, options);
-
   if (clean) {
     for (let i = 0; i < signals.length; i++) {
-      if (signals[i].integralData.value < clean) {
+      if (Math.abs(signals[i].integralData.value) < clean) {
         signals.splice(i, 1);
       }
     }
@@ -79,7 +77,7 @@ export function peaksToRanges(data, peakList, options = {}) {
           for (let j = peaksO.length - 1; j >= 0; j--) {
             peaks1.push(peaksO[j]);
           }
-          options.nH = nHi;
+          options.nH = Math.abs(nHi);
           let ranges = detectSignals(data, peaks1, options);
 
           for (let j = 0; j < ranges.length; j++) {
@@ -92,7 +90,7 @@ export function peaksToRanges(data, peakList, options = {}) {
     let sumIntegral = 0;
     let sumObserved = 0;
     for (let i = 0; i < signals.length; i++) {
-      sumObserved += Math.round(signals[i].integralData.value);
+      sumObserved += Math.abs(Math.round(signals[i].integralData.value));
     }
     if (sumObserved !== nH) {
       sumIntegral = nH / sumObserved;
@@ -108,7 +106,7 @@ export function peaksToRanges(data, peakList, options = {}) {
 
   if (clean) {
     for (let i = signals.length - 1; i >= 0; i--) {
-      if (signals[i].integralData.value < clean) {
+      if (Math.abs(signals[i].integralData.value) < clean) {
         signals.splice(i, 1);
       }
     }
@@ -139,7 +137,6 @@ export function peaksToRanges(data, peakList, options = {}) {
   }
 
   if (joinOverlapRanges) ranges = joinRanges(ranges);
-
   // return new Ranges(ranges);
   return ranges;
 }

@@ -60,4 +60,28 @@ describe('xyAutoPeaksPicking', function () {
       4,
     );
   });
+  it('negative spectrum', () => {
+    let y = tripletQuadruplet.y;
+    for (let i = 0; i < y.length; i++) {
+      y[i] *= -1;
+    }
+    tripletQuadruplet.y = y;
+    let options = { lookNegative: true };
+
+    let peaks = xyAutoPeaksPicking(tripletQuadruplet, options);
+    expect(peaks).toHaveLength(7);
+    expect(peaks[1]).toMatchCloseTo(
+      {
+        index: 43683,
+        x: 0.999831631801563,
+        y: -1484660289364.1968,
+        width: 0.0021514892578125,
+        soft: false,
+        left: { x: 0.998748779296875, index: 43636 },
+        right: { x: 1.0009002685546875, index: 43730 },
+        base: 4.499931335449219,
+      },
+      4,
+    );
+  });
 });
