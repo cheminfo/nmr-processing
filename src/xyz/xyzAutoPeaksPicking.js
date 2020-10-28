@@ -36,7 +36,6 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
   if (thresholdFactor < 0) {
     thresholdFactor = -thresholdFactor;
   }
-
   let nbPoints = spectraData.z[0].length;
   let nbSubSpectra = spectraData.z.length;
   let absoluteData = new Float64Array(nbPoints * nbSubSpectra);

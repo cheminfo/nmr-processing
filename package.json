@@ -58,7 +58,7 @@
   "dependencies": {
     "ml-gsd": "^5.0.2",
     "ml-matrix-convolution": "^0.5.2",
-    "ml-matrix-peaks-finder": "^0.3.1",
+    "ml-matrix-peaks-finder": "^0.3.2",
     "ml-simple-clustering": "^0.1.0",
     "ml-spectra-processing": "^4.5.1"
   }
