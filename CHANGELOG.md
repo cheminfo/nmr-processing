@@ -1,5 +1,11 @@
-
 # Changelog
+
+### [0.3.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.3.0...v0.3.1) (2020-10-28)
+
+
+### Bug Fixes
+
+* update matrix-peaks-finder ([#21](https://www.github.com/cheminfo/nmr-processing/issues/21)) ([d1abb05](https://www.github.com/cheminfo/nmr-processing/commit/d1abb058f52cda9dbb2aca23ab2fa9262a85c069))
 
 ## [0.3.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.2.5...v0.3.0) (2020-10-27)
 
@@ -31,4 +37,3 @@
 * add test data ([ab8cd2e](https://github.com/cheminfo/nmr-processing/commit/ab8cd2e449939de261a8178306af1aeff8f7baaf))
 * add toACS ([5225cb1](https://github.com/cheminfo/nmr-processing/commit/5225cb1285dd66a2fa568699b706d4b518e29461))
 * addn web folder allowing to debug ([965eabf](https://github.com/cheminfo/nmr-processing/commit/965eabf7335638cf7d150acb34118ef15c28a9d5))
-
