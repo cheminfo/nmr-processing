@@ -39,39 +39,42 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 
   let nbPoints = spectraData.z[0].length;
   let nbSubSpectra = spectraData.z.length;
-  let data = new Array(nbPoints * nbSubSpectra);
+  let absoluteData = new Float64Array(nbPoints * nbSubSpectra);
+  let originalData = new Float64Array(nbPoints * nbSubSpectra);
 
   for (let iSubSpectra = 0; iSubSpectra < nbSubSpectra; iSubSpectra++) {
     let spectrum = spectraData.z[iSubSpectra];
     for (let iCol = 0; iCol < nbPoints; iCol++) {
-      if (isHomoNuclear) {
-        data[iSubSpectra * nbPoints + iCol] =
-          spectrum[iCol] > 0 ? spectrum[iCol] : 0;
-      } else {
-        data[iSubSpectra * nbPoints + iCol] = Math.abs(spectrum[iCol]);
-      }
+      let index = iSubSpectra * nbPoints + iCol;
+      absoluteData[index] = Math.abs(spectrum[iCol]);
+      originalData[index] = spectrum[iCol];
     }
   }
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
   let [nucleusX, nucleusY] = nucleus;
   let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
   let convolutedSpectrum = convolutionByFFT
-    ? convolution.fft(data, smallFilter, { rows: nbSubSpectra, cols: nbPoints })
-    : convolution.direct(data, smallFilter, {
+    ? convolution.fft(absoluteData, smallFilter, {
+        rows: nbSubSpectra,
+        cols: nbPoints,
+      })
+    : convolution.direct(absoluteData, smallFilter, {
         rows: nbSubSpectra,
         cols: nbPoints,
       });
 
   let signals = [];
   if (isHomoNuclear) {
-    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
+    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
+      originalData: originalData,
       filteredData: convolutedSpectrum,
       rows: nbSubSpectra,
       cols: nbPoints,
       nStdDev: nStdDev * thresholdFactor,
     });
 
-    let peaksMax1 = matrixPeakFinders.findPeaks2DMax(data, {
+    let peaksMax1 = matrixPeakFinders.findPeaks2DMax(absoluteData, {
+      originalData: originalData,
       filteredData: convolutedSpectrum,
       rows: nbSubSpectra,
       cols: nbPoints,
@@ -95,7 +98,8 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       signals = PeakOptimizer.enhanceSymmetry(signals);
     }
   } else {
-    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(data, {
+    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
+      originalData: originalData,
       filteredData: convolutedSpectrum,
       rows: nbSubSpectra,
       cols: nbPoints,
