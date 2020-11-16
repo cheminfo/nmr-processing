@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.3.1...v0.4.0) (2020-11-16)
+
+
+### Features
+
+* update ml-gsd and improve documentation ([#23](https://www.github.com/cheminfo/nmr-processing/issues/23)) ([f0400ef](https://www.github.com/cheminfo/nmr-processing/commit/f0400ef10895920a4ae6f76a7c8b9418db12a425))
+
 ### [0.3.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.3.0...v0.3.1) (2020-10-28)
 
 
