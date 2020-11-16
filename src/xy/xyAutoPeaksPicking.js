@@ -30,7 +30,7 @@ export function xyAutoPeaksPicking(data, options = {}) {
     minMaxRatio = 0.01,
     broadRatio = 0.00025,
     smoothY = true,
-    optimize,
+    optimize = false,
     factorWidth = 4,
     realTopDetection = true,
     shape = { kind: 'gaussian' },
@@ -90,7 +90,11 @@ function getPeakList(data, options) {
   });
 
   if (broadWidth) {
-    peakList = joinBroadPeaks(peakList, { width: broadWidth });
+    peakList = joinBroadPeaks(peakList, {
+      width: broadWidth,
+      shape,
+      optimization,
+    });
   }
 
   if (optimize) {
