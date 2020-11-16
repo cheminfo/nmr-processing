@@ -12,19 +12,9 @@ describe('xyAutoPeaksPicking', function () {
 
     let peaks = xyAutoPeaksPicking(tripletQuadruplet, options);
     expect(peaks).toHaveLength(7);
-    expect(peaks[1]).toMatchCloseTo(
-      {
-        index: 43683,
-        x: 0.999831631801563,
-        y: 1484660289364.1968,
-        width: 0.0021514892578125,
-        soft: false,
-        left: { x: 0.998748779296875, index: 43636 },
-        right: { x: 1.0009002685546875, index: 43730 },
-        base: 4.499931335449219,
-      },
-      4,
-    );
+    expect(peaks[1].x).toBeDeepCloseTo(0.999831, 3);
+    expect(peaks[1].y / 100).toBeDeepCloseTo(14846602893.64, 1);
+    expect(peaks[1].width).toBeDeepCloseTo(0.0021514892578125, 3);
   });
   it('mixed spectrum with small and big peaks', () => {
     let options = {
@@ -38,7 +28,7 @@ describe('xyAutoPeaksPicking', function () {
       widthFactor: 4,
       smoothY: false,
       broadWidth: 0.2,
-      functionName: 'lorentzian',
+      shape: { kind: 'lorentzian' },
       broadRatio: 0,
     };
 
@@ -47,14 +37,24 @@ describe('xyAutoPeaksPicking', function () {
     expect(peaks).toMatchCloseTo(
       [
         {
-          index: 80,
-          x: 8,
-          y: 303.6113688708498,
-          width: 0.4,
+          index: 20,
+          x: 2,
+          y: 6.268335288755093,
+          width: 0.40000000000000013,
           soft: false,
-          left: { x: 7.8, index: 78 },
-          right: { x: 8.2, index: 82 },
-          base: 15,
+          left: { x: 1.8, index: 18 },
+          right: { x: 2.2, index: 22 },
+          base: 2.1074424043453726,
+        },
+        {
+          index: 80,
+          x: 7.999974896866125,
+          y: 316.503925630377,
+          width: 0.40000000000000036,
+          soft: false,
+          left: { x: 7.800000000000001, index: 78 },
+          right: { x: 8.200000000000001, index: 82 },
+          base: 2.1074424043453726,
         },
       ],
       4,
@@ -70,18 +70,8 @@ describe('xyAutoPeaksPicking', function () {
 
     let peaks = xyAutoPeaksPicking(tripletQuadruplet, options);
     expect(peaks).toHaveLength(7);
-    expect(peaks[1]).toMatchCloseTo(
-      {
-        index: 43683,
-        x: 0.999831631801563,
-        y: -1484660289364.1968,
-        width: 0.0021514892578125,
-        soft: false,
-        left: { x: 0.998748779296875, index: 43636 },
-        right: { x: 1.0009002685546875, index: 43730 },
-        base: 4.499931335449219,
-      },
-      4,
-    );
+    expect(peaks[1].x).toBeDeepCloseTo(0.999831, 3);
+    expect(peaks[1].y / 100).toBeDeepCloseTo(-14846602893.64, 1);
+    expect(peaks[1].width).toBeDeepCloseTo(0.0021514892578125, 3);
   });
 });

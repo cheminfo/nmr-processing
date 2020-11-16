@@ -6,16 +6,20 @@ import { xAbsoluteMedian, xyExtract } from 'ml-spectra-processing';
  * through Global Spectral Deconvolution (GSD)
  * http://www.spectrosco-pyeurope.com/images/stories/ColumnPDFs/TD_23_1.pdf
  * @param {DataXY} data - Object of kind
- * @param {Object} [options={}] - options object with some parameter for GSD.
+ * @param {object} [options={}] - options object with some parameter for GSD.
+ * @param {number} [options.minMaxRatio = 0.01] - Threshold to determine if a given peak should be considered as a noise, bases on its relative height compared to the highest peak.
+ * @param {number} [options.broadRatio = 0.00025] - If broadRatio is higher than 0, then all the peaks which second derivative smaller than broadRatio * maxAbsSecondDerivative will be marked with the soft mask equal to true.
+ * @param {number} [options.broadWidth = 0.25] - Threshold to determine if some peak is candidate to clustering into range.
+ * @param {number} [options.noiseLevel = median(data.y) * (options.thresholdFactor || 3)] - Noise threshold in spectrum y units. Default is three/thresholdFactor times the absolute median of data.y.
+ * @param {number} [options.factorWidth = 4] - factor to determine the width at the moment to group the peaks in signals in 'GSD.optimizePeaks' function.
+ * @param {object} [options.shape={}] - it's specify the kind of shape used to fitting.
+ * @param {string} [options.shape.kind = 'gaussian'] - kind of shape; lorentzian, gaussian and pseudovoigt are supported.
+ * @param {object} [options.optimization = {}] - it's specify the kind and options of the algorithm use to optimize parameters.
+ * @param {string} [options.optimization.kind = 'lm'] - kind of algorithm. By default it's levenberg-marquardt.
+ * @param {object} [options.optimization.options = {}] - options for the specific kind of algorithm.
  * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
- * @param {Number} [options.minMaxRatio = 0.01] - Threshold to determine if a given peak should be considered as a noise, bases on its relative height compared to the highest peak.
- * @param {Number} [options.broadRatio = 0.00025] - If broadRatio is higher than 0, then all the peaks which second derivative smaller than broadRatio * maxAbsSecondDerivative will be marked with the soft mask equal to true.
  * @param {Boolean} [options.smoothY = true] - Select the peak intensities from a smoothed version of the independent variables?
- * @param {Number} [options.nL = 4] - factor to determine the width at the moment to group the peaks in signals in 'GSD.optimizePeaks' function.
  * @param {Boolean} [options.optimize = true] - if it's true adjust an train of gaussian or lorentzian shapes to spectrum.
- * @param {String} [options.functionType = 'gaussian'] - This option allows us choose between 'gaussian' or 'lorentzian' function when options.optimize is true.
- * @param {Number} [options.broadWidth = 0.25] - Threshold to determine if some peak is candidate to clustering into range.
- # @param {Number} [options.noiseLevel]
  * @return {Array}
  */
 
@@ -26,13 +30,14 @@ export function xyAutoPeaksPicking(data, options = {}) {
     minMaxRatio = 0.01,
     broadRatio = 0.00025,
     smoothY = true,
-    optimize,
+    optimize = false,
     factorWidth = 4,
     realTopDetection = true,
-    functionName = 'gaussian',
+    shape = { kind: 'gaussian' },
+    optimization = { kind: 'lm' },
     broadWidth = 0.25,
     lookNegative = false,
-    noiseLevel = xAbsoluteMedian(data.x) * (options.thresholdFactor || 3),
+    noiseLevel = xAbsoluteMedian(data.y) * (options.thresholdFactor || 3),
     sgOptions = { windowSize: 9, polynomial: 3 },
   } = options;
 
@@ -41,15 +46,16 @@ export function xyAutoPeaksPicking(data, options = {}) {
   }
 
   let getPeakOptions = {
+    shape,
     broadWidth,
     optimize,
     factorWidth,
-    functionName,
     sgOptions,
     minMaxRatio,
     broadRatio,
     noiseLevel,
     smoothY,
+    optimization,
     realTopDetection,
   };
 
@@ -61,19 +67,20 @@ export function xyAutoPeaksPicking(data, options = {}) {
 
 function getPeakList(data, options) {
   const {
+    shape,
     broadWidth,
     optimize,
     factorWidth,
-    functionName,
     sgOptions,
     minMaxRatio,
     broadRatio,
     noiseLevel,
     smoothY,
+    optimization,
     realTopDetection,
   } = options;
 
-  let peakList = gsd(data.x, data.y, {
+  let peakList = gsd(data, {
     sgOptions,
     minMaxRatio,
     broadRatio,
@@ -83,13 +90,18 @@ function getPeakList(data, options) {
   });
 
   if (broadWidth) {
-    peakList = joinBroadPeaks(peakList, { width: broadWidth });
+    peakList = joinBroadPeaks(peakList, {
+      width: broadWidth,
+      shape,
+      optimization,
+    });
   }
 
   if (optimize) {
-    peakList = optimizePeaks(peakList, data.x, data.y, {
+    peakList = optimizePeaks(data, peakList, {
+      shape,
       factorWidth,
-      functionName,
+      optimization,
     });
   }
 

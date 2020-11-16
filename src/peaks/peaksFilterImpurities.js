@@ -2,6 +2,14 @@ import { impurities } from '../constants/impurities';
 
 const toCheck = ['solvent_residual_peak', 'H2O', 'TMS'];
 
+/**
+ * Try to remove peaks of impurities.
+ * @param {array} peakList - A list of initial parameters to be optimized. e.g. coming from a peak picking [{x, y, width}].
+ * @param {object} [options = {}] - options
+ * @param {string} [options.solvent = ''] - solvent name.
+ * @param {string} [options.error = 0.025] - tolerance in ppm to assign a impurity.
+ */
+
 export function peaksFilterImpurities(peakList, options = {}) {
   let { solvent = '', error = 0.025 } = options;
   solvent = solvent.toLowerCase();
