@@ -56,7 +56,7 @@
     "rollup": "^2.32.1"
   },
   "dependencies": {
-    "ml-gsd": "^5.0.2",
+    "ml-gsd": "^6.1.1",
     "ml-matrix-convolution": "^0.5.2",
     "ml-matrix-peaks-finder": "^0.3.2",
     "ml-simple-clustering": "^0.1.0",

@@ -38,7 +38,7 @@ describe('xyAutoPeaksPicking', function () {
       widthFactor: 4,
       smoothY: false,
       broadWidth: 0.2,
-      functionName: 'lorentzian',
+      shape: { kind: 'lorentzian' },
       broadRatio: 0,
     };
 
