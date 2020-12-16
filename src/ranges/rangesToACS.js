@@ -26,6 +26,11 @@ const globalOptions = {
  *
  * @param {array} ranges
  * @param {object} [options={}]
+ * @param {boolean} [options.filter=true] remove annotated signals as solvent and impurities
+ * @param {number} [options.nucleus]
+ * @param {number} [options.nbDecimalDelta] default value depends of nucleus
+ * @param {number} [options.nbDecimalJ] default value depends of nucleus
+ * @param {number} [options.observedFrequency] default value depends of nucleus 1H: 400MHz
  */
 export function rangesToACS(ranges, options = {}) {
   if (!options.nucleus) options.nucleus = '1H';
@@ -58,6 +63,7 @@ function formatAcs(ranges, options) {
   if (acs.length === 0) acs = 'δ ';
   let acsRanges = [];
   for (let range of ranges) {
+    if (uselessKind(range.kind, options.filter)) continue;
     pushDelta(range, acsRanges, options);
   }
   if (acsRanges.length > 0) {
@@ -88,6 +94,13 @@ function pushDelta(range, acsRanges, options) {
   let strings = '';
   let parenthesis = [];
   let fromTo = [range.from, range.to];
+
+  if (Array.isArray(range.signal)) {
+    range.signal = range.signal.filter(
+      (signal) => !uselessKind(signal.kind, options.filter),
+    );
+  }
+
   if (Array.isArray(range.signal) && range.signal.length > 0) {
     let signals = range.signal;
     if (signals.length > 1) {
@@ -225,4 +238,10 @@ function pushAssignment(signal, parenthesis) {
   } else if (signal.assignment) {
     parenthesis.push(formatAssignment(signal.assignment));
   }
+}
+
+function uselessKind(kind = '', filter = true) {
+  kind = kind.toLowerCase();
+  if (filter && (kind === 'impurity' || kind === 'solvent')) return true;
+  return false;
 }
