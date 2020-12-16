@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.4.0...v0.5.0) (2020-12-16)
+
+
+### Features
+
+* by default filter solvent and impurity in rangesToACS ([319e595](https://www.github.com/cheminfo/nmr-processing/commit/319e595462a17c834699249dea8757bd87008dca))
+
 ## [0.4.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.3.1...v0.4.0) (2020-11-16)
 
 
