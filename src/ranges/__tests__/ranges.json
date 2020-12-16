@@ -8,7 +8,7 @@
         "nbAtoms": 0,
         "diaID": [],
         "multiplicity": "dd",
-        "kind": "",
+        "kind": "solvent",
         "remark": "",
         "delta": 2.96306693,
         "assignment": "COCH3",
@@ -110,6 +110,7 @@
   {
     "from": 4.86,
     "to": 4.79123,
+    "kind": "impurity",
     "integral": 3.231412397661983,
     "signal": [
       {

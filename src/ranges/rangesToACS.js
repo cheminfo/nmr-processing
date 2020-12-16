@@ -22,6 +22,11 @@ const globalOptions = {
   },
 };
 
+/**
+ *
+ * @param {array} ranges
+ * @param {object} [options={}]
+ */
 export function rangesToACS(ranges, options = {}) {
   if (!options.nucleus) options.nucleus = '1H';
   let nucleus = options.nucleus.toLowerCase().replace(/[0-9]/g, '');
