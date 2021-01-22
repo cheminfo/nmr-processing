@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.5.0...v0.6.0) (2021-01-22)
+
+
+### Features
+
+* generate version with 2D peak picking improvement ([ae62c20](https://www.github.com/cheminfo/nmr-processing/commit/ae62c2067ab491c1c6e4a9e0e271bb39935fa203))
+
 ## [0.5.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.4.0...v0.5.0) (2020-12-16)
 
 
