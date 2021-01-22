@@ -138,6 +138,9 @@ const getLoGnStdDevNMR = (isHomoNuclear) => {
  * @private
  */
 const createSignals2D = (peaks, spectraData, options) => {
+
+  if (peaks.length === 0) return peaks;
+  
   let {
     observeFrequencyX,
     observeFrequencyY,
