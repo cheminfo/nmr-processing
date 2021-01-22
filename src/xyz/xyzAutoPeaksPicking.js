@@ -155,20 +155,16 @@ const createSignals2D = (peaks, spectraData, options) => {
   let dy = (lastY - firstY) / (spectraData.z.length - 1); //@TODO: check the dimensionality
   let dx = (lastX - firstX) / (spectraData.z[0].length - 1);
 
-  peaks = getFromTo(peaks, spectraData);
-
   for (let i = peaks.length - 1; i >= 0; i--) {
     peaks[i].x = firstX + dx * peaks[i].x;
     peaks[i].y = firstY + dy * peaks[i].y;
-    peaks[i].fromY = firstY + dy * peaks[i].fromY;
-    peaks[i].toY = firstY + dy * peaks[i].toY;
-    peaks[i].fromX = firstX + dx * peaks[i].fromX;
-    peaks[i].toX = firstX + dx * peaks[i].toX;
+
     // Still having problems to correctly detect peaks on those areas. So I'm removing everything there.
     if (peaks[i].y < -1 || peaks[i].y >= 210) {
       peaks.splice(i, 1);
     }
   }
+
   // The connectivity matrix is an square and symmetric matrix, so we'll only store the upper diagonal in an
   // array like form
   let connectivity = [];
@@ -181,7 +177,7 @@ const createSignals2D = (peaks, spectraData, options) => {
           toleranceX &&
         Math.pow((peaks[i].y - peaks[j].y) * observeFrequencyY, 2) < toleranceY
       ) {
-        // 30*30Hz We cannot distinguish peaks with less than 20 Hz of separation
+        // 24*24Hz We cannot distinguish peaks with less than 20 Hz of separation
         connectivity.push(1);
       } else {
         connectivity.push(0);
@@ -189,6 +185,7 @@ const createSignals2D = (peaks, spectraData, options) => {
     }
   }
   let clusters = simpleClustering(connectivity);
+
   let signals = [];
   if (peaks != null) {
     for (let iCluster = 0; iCluster < clusters.length; iCluster++) {
@@ -214,17 +211,17 @@ const createSignals2D = (peaks, spectraData, options) => {
           signal.shiftX += peaks[jPeak].x * peaks[jPeak].z;
           signal.shiftY += peaks[jPeak].y * peaks[jPeak].z;
           sumZ += peaks[jPeak].z;
-          if (peaks[jPeak].toX < minMax1[0]) {
-            minMax1[0] = peaks[jPeak].toX;
+          if (peaks[jPeak].x < minMax1[0]) {
+            minMax1[0] = peaks[jPeak].x;
           }
-          if (peaks[jPeak].fromX > minMax1[1]) {
-            minMax1[1] = peaks[jPeak].fromX;
+          if (peaks[jPeak].x > minMax1[1]) {
+            minMax1[1] = peaks[jPeak].x;
           }
-          if (peaks[jPeak].toY < minMax2[0]) {
-            minMax2[0] = peaks[jPeak].toY;
+          if (peaks[jPeak].y < minMax2[0]) {
+            minMax2[0] = peaks[jPeak].y;
           }
-          if (peaks[jPeak].fromY > minMax2[1]) {
-            minMax2[1] = peaks[jPeak].fromY;
+          if (peaks[jPeak].y > minMax2[1]) {
+            minMax2[1] = peaks[jPeak].y;
           }
         }
       }
@@ -238,50 +235,5 @@ const createSignals2D = (peaks, spectraData, options) => {
       signals.push(signal);
     }
   }
-
   return signals;
 };
-
-function getFromTo(peaks, spectraData) {
-  let z = spectraData.z;
-  for (let i = 0; i < peaks.length; i++) {
-    let peak = peaks[i];
-    let xIndex = Math.floor(peak.x);
-    let yIndex = Math.floor(peak.y);
-    let value = z[yIndex][xIndex] / 4;
-    let fromX = xIndex;
-    let toX = xIndex;
-    let fromY = yIndex;
-    let toY = yIndex;
-    for (let j = xIndex + 1; j < z[0].length; j++) {
-      if (z[yIndex][j] <= value) {
-        fromX = j;
-        // j = z[0].length;
-        break;
-      }
-    }
-    for (let j = yIndex + 1; j < z.length; j++) {
-      if (z[j][xIndex] <= value) {
-        fromY = j;
-        // j = z.length;
-        break;
-      }
-    }
-    for (let j = xIndex - 1; j >= 0; j--) {
-      if (z[yIndex][j] <= value) {
-        toX = j;
-        // j = -1;
-        break;
-      }
-    }
-    for (let j = yIndex - 1; j >= 0; j--) {
-      if (z[j][xIndex] <= value) {
-        toY = j;
-        // j = -1;
-        break;
-      }
-    }
-    peaks[i] = Object.assign(peak, { fromX, toX, fromY, toY });
-  }
-  return peaks;
-}
