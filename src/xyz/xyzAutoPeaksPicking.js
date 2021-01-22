@@ -138,9 +138,6 @@ const getLoGnStdDevNMR = (isHomoNuclear) => {
  * @private
  */
 const createSignals2D = (peaks, spectraData, options) => {
-
-  if (peaks.length === 0) return peaks;
-  
   let {
     observeFrequencyX,
     observeFrequencyY,
@@ -190,7 +187,7 @@ const createSignals2D = (peaks, spectraData, options) => {
   let clusters = simpleClustering(connectivity);
 
   let signals = [];
-  if (peaks != null) {
+  if (clusters) {
     for (let iCluster = 0; iCluster < clusters.length; iCluster++) {
       let signal = {
         nucleusX,
