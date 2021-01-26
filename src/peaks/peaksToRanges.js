@@ -121,6 +121,7 @@ export function peaksToRanges(data, peakList, options = {}) {
       integral: signal.integralData.value,
       signal: [
         {
+          kind: signal.kind || 'signal',
           multiplicity: signal.multiplicity,
         },
       ],
@@ -190,6 +191,7 @@ function detectSignals(data, peakList, options = {}) {
           },
         ],
       };
+      if (peakList[i].kind) signal1D.kind = peakList[i].kind;
       signals.push(signal1D);
     } else {
       let tmp = peakList[i].x + peakList[i].width;
@@ -209,6 +211,7 @@ function detectSignals(data, peakList, options = {}) {
         signal1D.integralData.to,
         peakList[i].x + peakList[i].width * 3,
       );
+      if (peakList[i].kind) signal1D.kind = peakList[i].kind;
     }
     prevPeak = peakList[i];
   }

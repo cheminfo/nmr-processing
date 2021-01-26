@@ -9,7 +9,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -481,7 +481,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -947,7 +947,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -1405,7 +1405,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -1871,7 +1871,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -2349,7 +2349,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
@@ -2803,7 +2803,7 @@ export const impurities = {
         shift: 0,
       },
     ],
-    solvent_residual_peak: [
+    solvent: [
       {
         proton: 'X',
         coupling: 0,
