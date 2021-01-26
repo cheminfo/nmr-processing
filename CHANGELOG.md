@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.6.0...v0.7.0) (2021-01-26)
+
+
+### Features
+
+* add kind to signal in auto range detection ([#28](https://www.github.com/cheminfo/nmr-processing/issues/28)) ([90a1ecd](https://www.github.com/cheminfo/nmr-processing/commit/90a1ecd65363f21603d07aa8b6cfd0c15045f829))
+
 ## [0.6.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.5.0...v0.6.0) (2021-01-22)
 
 
