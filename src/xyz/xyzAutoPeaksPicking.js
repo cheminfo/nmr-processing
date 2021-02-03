@@ -2,6 +2,8 @@ import * as convolution from 'ml-matrix-convolution';
 import * as matrixPeakFinders from 'ml-matrix-peaks-finder';
 import simpleClustering from 'ml-simple-clustering';
 
+import { Matrix } from 'ml-matrix';
+
 import * as PeakOptimizer from '../peaks/util/peakOptimizer';
 
 const smallFilter = [
@@ -18,6 +20,7 @@ const smallFilter = [
 
 export function xyzAutoPeaksPicking(spectraData, options = {}) {
   let {
+    sizeToPad = 14,
     thresholdFactor = 0.5,
     isHomoNuclear,
     nucleus = ['1H', '1H'],
@@ -28,6 +31,7 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     toleranceX = 24,
     toleranceY = 24,
     convolutionByFFT = true,
+    kernel: kernelOptions,
   } = options;
 
   if (thresholdFactor === 0) {
@@ -38,6 +42,13 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
   }
   let nbPoints = spectraData.z[0].length;
   let nbSubSpectra = spectraData.z.length;
+
+  if (nbSubSpectra < sizeToPad) {
+    spectraData = padData(spectraData, { width: sizeToPad });
+    nbPoints = spectraData.z[0].length;
+    nbSubSpectra = spectraData.z.length;
+  }
+
   let absoluteData = new Float64Array(nbPoints * nbSubSpectra);
   let originalData = new Float64Array(nbPoints * nbSubSpectra);
 
@@ -49,15 +60,18 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       originalData[index] = spectrum[iCol];
     }
   }
+
+  let kernel = kernelOptions ? getKernel(kernelOptions) : smallFilter;
+
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
   let [nucleusX, nucleusY] = nucleus;
   let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
   let convolutedSpectrum = convolutionByFFT
-    ? convolution.fft(absoluteData, smallFilter, {
+    ? convolution.fft(absoluteData, kernel, {
         rows: nbSubSpectra,
         cols: nbPoints,
       })
-    : convolution.direct(absoluteData, smallFilter, {
+    : convolution.direct(absoluteData, kernel, {
         rows: nbSubSpectra,
         cols: nbPoints,
       });
@@ -236,4 +250,61 @@ const createSignals2D = (peaks, spectraData, options) => {
     }
   }
   return signals;
+};
+
+const getKernel = (options = {}) => {
+  let { sigma = 1, xLength = 9, yLength = 9 } = options;
+
+  let factor = 40 / laplacianOfGaussian(0, 0, sigma);
+
+  const xCenter = (xLength - 1) / 2;
+  const yCenter = (yLength - 1) / 2;
+  let matrix = new Array(xLength);
+  for (let x = 0; x < xLength; x++) {
+    matrix[x] = new Array(yLength);
+    for (let y = 0; y < yLength; y++) {
+      matrix[x][y] =
+        laplacianOfGaussian(x - xCenter, y - yCenter, sigma) * factor;
+    }
+  }
+
+  return matrix;
+};
+
+const laplacianOfGaussian = (x, y, sigma) => {
+  let factor = -(Math.pow(x, 2) + Math.pow(y, 2)) / 2 / Math.pow(sigma, 2);
+  return -(1 / Math.PI / Math.pow(sigma, 4)) * (1 + factor) * Math.exp(factor);
+};
+
+const padData = (spectraData, options = {}) => {
+  let { minX, maxX, minY, maxY } = spectraData;
+  let { width } = options;
+
+  let nbPoints = spectraData.z[0].length;
+  let nbSubSpectra = spectraData.z.length;
+
+  let yInterval = (maxY - minY) / (nbSubSpectra - 1);
+  let xInterval = (maxX - minX) / (nbPoints - 1);
+
+  let yDiff = width - nbSubSpectra;
+  let xDiff = Math.max(width - nbPoints, 0);
+  if (xDiff % 2) xDiff++;
+  if (yDiff % 2) yDiff++;
+
+  let xOffset = xDiff / 2;
+  let yOffset = yDiff / 2;
+  let newMatrix = Matrix.zeros(nbSubSpectra + yDiff, nbPoints + xDiff);
+  for (let i = 0; i < nbSubSpectra; i++) {
+    for (let j = 0; j < nbPoints; j++) {
+      newMatrix.set(i + yOffset, j + xOffset, spectraData.z[i][j]);
+    }
+  }
+
+  return {
+    z: newMatrix.to2DArray(),
+    minX: minX - xOffset * xInterval,
+    maxX: maxX + xOffset * xInterval,
+    minY: minY - yOffset * yInterval,
+    maxY: maxY + yOffset * yInterval,
+  };
 };
