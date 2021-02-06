@@ -3,9 +3,9 @@ import * as convolution from 'ml-matrix-convolution';
 import * as matrixPeakFinders from 'ml-matrix-peaks-finder';
 import simpleClustering from 'ml-simple-clustering';
 
-import * as PeakOptimizer from '../peaks/util/peakOptimizer';
-import { getKernel } from '../peaks/util/getKernel';
 import { determineRealTop } from '../peaks/util/determineRealTop';
+import { getKernel } from '../peaks/util/getKernel';
+import * as PeakOptimizer from '../peaks/util/peakOptimizer';
 
 const smallFilter = [
   [0, 0, 1, 2, 2, 2, 1, 0, 0],
@@ -39,9 +39,6 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
   thresholdFactor = thresholdFactor === 0 ? 1 : Math.abs(thresholdFactor);
 
   let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
-  let [nucleusX, nucleusY] = nucleus;
-  let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
-
 
   let nbPoints = spectraData.z[0].length;
   let nbSubSpectra = spectraData.z.length;
@@ -75,8 +72,22 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
         rows: nbSubSpectra,
         cols: nbPoints,
       });
-    
-  let { minX, maxX, minY, maxY } = spectraData;
+
+  let createSignalOptions = {
+    nRows: nbSubSpectra,
+    nCols: nbPoints,
+    minX: spectraData.minX,
+    maxX: spectraData.maxX,
+    minY: spectraData.minY,
+    maxY: spectraData.maxY,
+    absoluteData,
+    originalData,
+    toleranceX,
+    toleranceY,
+    nucleus,
+    observeFrequencies,
+    realTopDetection,
+  };
 
   let signals = [];
   if (isHomoNuclear) {
@@ -100,23 +111,7 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       peaksMax1.push(peaksMC1[i]);
     }
 
-    signals = createSignals2D(peaksMax1, {
-      nRows: nbSubSpectra,
-      nCols: nbPoints,
-      minX,
-      maxX,
-      minY,
-      maxY,
-      absoluteData,
-      originalData,
-      toleranceX,
-      toleranceY,
-      nucleusX,
-      nucleusY,
-      observeFrequencyX,
-      observeFrequencyY,
-      realTopDetection,
-    });
+    signals = createSignals2D(peaksMax1, createSignalOptions);
 
     if (enhanceSymmetry) {
       signals = PeakOptimizer.enhanceSymmetry(signals);
@@ -135,23 +130,7 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
       peaksMC1 = PeakOptimizer.clean(peaksMC1, maxPercentCutOff);
     }
 
-    signals = createSignals2D(peaksMC1, {
-      nRows: nbSubSpectra,
-      nCols: nbPoints,
-      minX,
-      maxX,
-      minY,
-      maxY,
-      absoluteData,
-      originalData,
-      toleranceX,
-      toleranceY,
-      nucleusX,
-      nucleusY,
-      observeFrequencyX,
-      observeFrequencyY,
-      realTopDetection,
-    });
+    signals = createSignals2D(peaksMC1, createSignalOptions);
   }
 
   return signals;
@@ -177,12 +156,10 @@ const createSignals2D = (peaks, options) => {
     nRows,
     absoluteData,
     originalData,
-    observeFrequencyX,
-    observeFrequencyY,
+    observeFrequencies,
     toleranceX,
     toleranceY,
-    nucleusX,
-    nucleusY,
+    nucleus,
     realTopDetection,
     minY,
     maxY,
@@ -190,17 +167,26 @@ const createSignals2D = (peaks, options) => {
     maxX,
   } = options;
 
+  let [nucleusX, nucleusY] = nucleus;
+  let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
 
   let dy = (maxY - minY) / (nRows - 1);
   let dx = (maxX - minX) / (nCols - 1);
 
   if (realTopDetection) {
-    peaks = determineRealTop(peaks, { nCols, absoluteData, minX, maxX, minY, maxY });
+    peaks = determineRealTop(peaks, {
+      nCols,
+      absoluteData,
+      originalData,
+      minX,
+      maxX,
+      minY,
+      maxY,
+    });
   }
 
   for (let i = peaks.length - 1; i >= 0; i--) {
-    let {x, y} = peaks[i];
-    peaks[i].z = originalData[x + y * nCols];
+    let { x, y } = peaks[i];
     peaks[i].x = minX + dx * x;
     peaks[i].y = minY + dy * y;
 
@@ -313,5 +299,3 @@ const padData = (spectraData, options = {}) => {
     maxY: maxY + yOffset * yInterval,
   };
 };
-
-

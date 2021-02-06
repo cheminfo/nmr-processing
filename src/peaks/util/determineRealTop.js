@@ -1,5 +1,5 @@
-import { Gaussian2D } from 'ml-peak-shape-generator';
 import LM from 'ml-levenberg-marquardt';
+import { Gaussian2D } from 'ml-peak-shape-generator';
 
 const direction8X = [-1, -1, -1, 0, 0, 1, 1, 1];
 const direction8Y = [-1, 0, 1, -1, 1, -1, 0, 1];
@@ -7,7 +7,7 @@ const direction16X = [-2, -2, -2, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 2, 2, 2];
 const direction16Y = [-2, -1, 0, 1, 2, -2, 2, -2, 2, -2, 2, -2, -1, 0, 1, 2];
 
 export function determineRealTop(peaks, options) {
-  let { nCols, absoluteData, minX, maxX, minY, maxY } = options;
+  let { nCols, absoluteData, originalData, minX, maxX, minY, maxY } = options;
   for (let i = 0; i < peaks.length; i++) {
     let xIndex = Math.round(peaks[i].x);
     let yIndex = Math.round(peaks[i].y);
@@ -31,7 +31,7 @@ export function determineRealTop(peaks, options) {
     peaks[i].x = currentIndex % nCols;
     peaks[i].y = (currentIndex - peaks[i].x) / nCols;
 
-    fitGaussian(absoluteData, {
+    peaks[i] = fitGaussian(originalData, {
       nCols,
       index: currentIndex,
       minY,
@@ -86,22 +86,7 @@ function fitGaussian(data, options) {
 
   let newCol = 1;
   let newRow = 1;
-  // let newMinX = minX + (col - 1) * intervalX;
-  // let newMinY = minY + (row - 1) * intervalY;
 
-  // let firstX = minX + (col - 1) * intervalX;
-  // let firstY = minY + (row - 1) * intervalY;
-  // let lastX = minX + (col + 1) * intervalX;
-  // let lastY = minY + (row + 1) * intervalY;
-
-  let x = new Array(3);
-  let y = new Array(3);
-  for (let i = -1, ii = 0; i < 2; i++, ii++) {
-    x[ii] = minX + (col + i) * intervalX;
-    y[ii] = minY + (row + i) * intervalY;
-  }
-
-  
   let max = Number.MIN_SAFE_INTEGER;
   let z = new Array(direction8X.length + 1);
   let xAxis = new Array(direction8X.length + 1);
@@ -115,45 +100,50 @@ function fitGaussian(data, options) {
 
   for (let i = 0; i < z.length; i++) z[i] /= max;
 
-  let maxValues = [x[newCol + 1], y[newRow + 1], 1, 1, 1];
-  let minValues = [x[newCol - 1], y[newRow - 1], 0, 0.001, 0.001];
-  let initialValues = [x[newCol], y[newRow], z[newCol + newRow * 3], 0.2, 0.2];
+  let maxValues = [newCol + 1, newRow + 1, 1.5, 1, 1];
+  let minValues = [newCol - 1, newRow - 1, -1.5, 0.001, 0.001];
+  let initialValues = [newCol, newRow, z[newCol + newRow * 3], 0.2, 0.2];
   let gradientDifference = [1e-4, 1e-4, 1e-3, 1e-3, 1e-3];
-  
-  let func = paramGaussian2D(x, y, 3);
-  
+  let func = paramGaussian2D(intervalX, intervalY, 3);
+
   let pFit = LM({ x: xAxis, y: z }, func, {
     damping: 1.5,
-    maxIterations: 10,
+    maxIterations: 100,
     errorTolerance: 1e-8,
     initialValues,
     gradientDifference,
     maxValues,
     minValues,
-  });
+  }).parameterValues;
 
-  
+  return {
+    x: pFit[0] + col - 1,
+    y: pFit[1] + row - 1,
+    z: pFit[2] * max,
+  };
 }
 
-function paramGaussian2D(x, y, nCols) {
+function paramGaussian2D(intervalX, intervalY, nCols) {
   return function (p) {
     return function (t) {
       let nL = p.length / 5;
       let result = 0;
       let xIndex = t % nCols;
       let yIndex = (t - xIndex) / nCols;
+      // let yValue = minY + yIndex * intervalY;
+      // let xValue = minX + xIndex * intervalX;
       for (let i = 0; i < nL; i++) {
         // console.log(p[i], p[i + nL], p[i+2*nL], p[i+3*nL], p[i+4*nL])
         result +=
           p[i + 2 * nL] *
           Gaussian2D.fct(
-            x[xIndex] - p[i],
-            y[yIndex] - p[i + nL],
+            (xIndex - p[i]) * intervalX,
+            (yIndex - p[i + nL]) * intervalY,
             p[i + 3 * nL],
             p[i + 4 * nL],
           );
       }
-      console.log(t, xIndex, yIndex, result);
+      // console.log(t, xIndex, yIndex, result);
       return result;
     };
   };
