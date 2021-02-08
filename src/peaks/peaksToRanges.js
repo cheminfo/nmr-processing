@@ -19,12 +19,12 @@ const defaultOptions = {
 /**
  * This function clustering peaks and calculate the integral value for each range from the peak list returned from extractPeaks function.
  * @param {Object} data - spectra data
- * @param {Object} peakList - nmr signals
- * @param {Object} options - options object with some parameter for GSD, detectSignal functions.
- * @param {Number} [options.nH = 100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
+ * @param {Array} peakList - nmr signals
+ * @param {Object} [options={}] - options object with some parameter for GSD, detectSignal functions.
+ * @param {Number} [options.integrationSum = 100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
  * @param {String} [options.integralType = 'sum'] - option to chose between approx area with peaks or the sum of the points of given range ('sum', 'peaks')
  * @param {Number} [options.frequencyCluster = 16] - distance limit to clustering peaks.
- * @param {Number} [options.clean] - If exits it remove all the signals with integral < clean value
+ * @param {Number} [options.clean=0.4] - If exits it remove all the signals with integration < clean value
  * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
  * @param {Boolean} [options.keepPeaks = false] - If true each signal will contain an array of peaks.
  * @param {String} [options.nucleus = '1H'] - Nucleus
@@ -34,7 +34,7 @@ const defaultOptions = {
 
 export function peaksToRanges(data, peakList, options = {}) {
   options = Object.assign({}, defaultOptions, options);
-  let { nH, joinOverlapRanges, clean, compile } = options;
+  let { integrationSum, joinOverlapRanges, clean = 0.4, compile } = options;
   let signals = detectSignals(data, peakList, options);
   if (clean) {
     for (let i = 0; i < signals.length; i++) {
@@ -92,8 +92,8 @@ export function peaksToRanges(data, peakList, options = {}) {
     for (let i = 0; i < signals.length; i++) {
       sumObserved += Math.abs(Math.round(signals[i].integralData.value));
     }
-    if (sumObserved !== nH) {
-      sumIntegral = nH / sumObserved;
+    if (sumObserved !== integrationSum) {
+      sumIntegral = integrationSum / sumObserved;
       for (let i = 0; i < signals.length; i++) {
         signals[i].integralData.value *= sumIntegral;
       }
