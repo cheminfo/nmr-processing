@@ -34,7 +34,12 @@ const defaultOptions = {
 
 export function peaksToRanges(data, peakList, options = {}) {
   options = Object.assign({}, defaultOptions, options);
-  let { integrationSum, joinOverlapRanges, clean = 0.4, compile } = options;
+  let {
+    integrationSum = 100,
+    joinOverlapRanges,
+    clean = 0.4,
+    compile,
+  } = options;
   let signals = detectSignals(data, peakList, options);
   if (clean) {
     for (let i = 0; i < signals.length; i++) {
