@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.7.0...v0.8.0) (2021-02-09)
+
+
+### Features
+
+* real top detection and fix options name in peak detection ([#32](https://www.github.com/cheminfo/nmr-processing/issues/32)) ([e0dd125](https://www.github.com/cheminfo/nmr-processing/commit/e0dd125d4146d9143b4394204ebeeed16b0ffb80))
+* update parameters names for xyAutoRangesPicking ([ed388e6](https://www.github.com/cheminfo/nmr-processing/commit/ed388e686a1dffebe852d3f12726a15560fb3fc2))
+
 ## [0.7.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.6.0...v0.7.0) (2021-01-26)
 
 
