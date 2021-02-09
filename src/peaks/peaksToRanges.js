@@ -27,7 +27,6 @@ export function peaksToRanges(data, peakList, options = {}) {
     clean = 0.4,
     compile = true,
     integralType = 'sum',
-    joinOverlapRanges = true,
     frequencyCluster = 16,
     keepPeaks = false,
   } = options;
