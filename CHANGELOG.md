@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.8.0...v0.9.0) (2021-02-09)
+
+
+### Features
+
+* change nH to integrationSum ([#33](https://www.github.com/cheminfo/nmr-processing/issues/33)) ([801960a](https://www.github.com/cheminfo/nmr-processing/commit/801960a8fa765d3b3bbc9ec555496a9b505827e7))
+
 ## [0.8.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.7.0...v0.8.0) (2021-02-09)
 
 
