@@ -4,18 +4,6 @@ import { xyGetArea } from '../xy/xyGetArea';
 import jAnalyzer from './util/jAnalyzer';
 import { joinRanges } from './util/joinRanges';
 
-const defaultOptions = {
-  nH: 100,
-  clean: 0.5,
-  thresholdFactor: 1,
-  compile: true,
-  integralType: 'sum',
-  optimize: true,
-  joinOverlapRanges: true,
-  frequencyCluster: 16,
-  keepPeaks: false,
-};
-
 /**
  * This function clustering peaks and calculate the integral value for each range from the peak list returned from extractPeaks function.
  * @param {Object} data - spectra data
@@ -33,14 +21,26 @@ const defaultOptions = {
  */
 
 export function peaksToRanges(data, peakList, options = {}) {
-  options = Object.assign({}, defaultOptions, options);
   let {
     integrationSum = 100,
-    joinOverlapRanges,
+    joinOverlapRanges = true,
     clean = 0.4,
-    compile,
+    compile = true,
+    integralType = 'sum',
+    joinOverlapRanges = true,
+    frequencyCluster = 16,
+    keepPeaks = false,
   } = options;
-  let signals = detectSignals(data, peakList, options);
+
+  let signalOptions = {
+    integrationSum,
+    integralType,
+    frequencyCluster,
+    frequency,
+    nucleus,
+  };
+
+  let signals = detectSignals(data, peakList, signalOptions);
   if (clean) {
     for (let i = 0; i < signals.length; i++) {
       if (Math.abs(signals[i].integralData.value) < clean) {
@@ -82,8 +82,8 @@ export function peaksToRanges(data, peakList, options = {}) {
           for (let j = peaksO.length - 1; j >= 0; j--) {
             peaks1.push(peaksO[j]);
           }
-          options.nH = Math.abs(nHi);
-          let ranges = detectSignals(data, peaks1, options);
+          signalOptions.integrationSum = Math.abs(nHi);
+          let ranges = detectSignals(data, peaks1, signalOptions);
 
           for (let j = 0; j < ranges.length; j++) {
             signals.push(ranges[j]);
@@ -131,7 +131,7 @@ export function peaksToRanges(data, peakList, options = {}) {
         },
       ],
     };
-    if (options.keepPeaks) {
+    if (keepPeaks) {
       ranges[i].signal[0].peak = signal.peaks;
     }
     if (signal.nmrJs) {
@@ -150,18 +150,20 @@ export function peaksToRanges(data, peakList, options = {}) {
 /**
  * Extract the signals from the peakList and the given spectrum.
  * @param {object} data - spectra data
- * @param {object} peakList - nmr signals
- * @param {object} options
- * @param {...number} options.nH - Number of hydrogens or some number to normalize the integral data, If it's zero return the absolute integral value
- * @param {String} options.integralType - option to chose between approx area with peaks or the sum of the points of given range
- * @param {...number} options.frequencyCluster - distance limit to clustering the peaks.
+ * @param {array} peakList - nmr signals
+ * @param {object} [options = {}] 
+ * @param {number} [options.integrationSum='100'] - Number of hydrogens or some number to normalize the integration data, If it's zero return the absolute integral value
+ * @param {string} [options.integralType='sum'] - option to chose between approx area with peaks or the sum of the points of given range
+ * @param {number} [options.frequencyCluster=16] - distance limit to clustering the peaks.
  * range = frequencyCluster / observeFrequency -> Peaks withing this range are considered to belongs to the same signal1D
- * @return {Array} nmr signals
+ * @param {string} [options.nucleus='1H'] - - Nucleus
+ * @param {String} [options.frequency = 400] - Observed frequency
+ * @return {array} nmr signals
  * @private
  */
 function detectSignals(data, peakList, options = {}) {
   let {
-    nH = 100,
+    integrationSum = 100,
     integralType = 'sum',
     frequencyCluster = 16,
     frequency = 400,
@@ -245,8 +247,8 @@ function detectSignals(data, peakList, options = {}) {
     spectrumIntegral += integral.value;
   }
 
-  if (nH > 0) {
-    let integralFactor = nH / spectrumIntegral;
+  if (integrationSum > 0) {
+    let integralFactor = integrationSum / spectrumIntegral;
     for (let i = 0; i < signals.length; i++) {
       let integral = signals[i].integralData;
       integral.value *= integralFactor;
