@@ -9,14 +9,14 @@ import { joinRanges } from './util/joinRanges';
  * @param {Object} data - spectra data
  * @param {Array} peakList - nmr signals
  * @param {Object} [options={}] - options object with some parameter for GSD, detectSignal functions.
- * @param {Number} [options.integrationSum = 100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
- * @param {String} [options.integralType = 'sum'] - option to chose between approx area with peaks or the sum of the points of given range ('sum', 'peaks')
- * @param {Number} [options.frequencyCluster = 16] - distance limit to clustering peaks.
+ * @param {Number} [options.integrationSum=100] - Number of hydrogens or some number to normalize the integral data. If it's zero return the absolute integral value
+ * @param {String} [options.integralType='sum'] - option to chose between approx area with peaks or the sum of the points of given range ('sum', 'peaks')
+ * @param {Number} [options.frequencyCluster=16] - distance limit to clustering peaks.
  * @param {Number} [options.clean=0.4] - If exits it remove all the signals with integration < clean value
- * @param {Boolean} [options.compile = true] - If true, the Janalyzer function is run over signals to compile the patterns.
- * @param {Boolean} [options.keepPeaks = false] - If true each signal will contain an array of peaks.
- * @param {String} [options.nucleus = '1H'] - Nucleus
- * @param {String} [options.frequency = 400] - Observed frequency
+ * @param {Boolean} [options.compile=true] - If true, the Janalyzer function is run over signals to compile the patterns.
+ * @param {Boolean} [options.keepPeaks=false] - If true each signal will contain an array of peaks.
+ * @param {String} [options.nucleus='1H'] - Nucleus
+ * @param {String} [options.frequency=400] - Observed frequency
  * @returns {Array}
  */
 
@@ -27,8 +27,10 @@ export function peaksToRanges(data, peakList, options = {}) {
     clean = 0.4,
     compile = true,
     integralType = 'sum',
+    frequency = 400,
     frequencyCluster = 16,
     keepPeaks = false,
+    nucleus = '1H',
   } = options;
 
   let signalOptions = {
@@ -38,6 +40,11 @@ export function peaksToRanges(data, peakList, options = {}) {
     frequency,
     nucleus,
   };
+
+  if (data.x[0] > data.x[1]) {
+    data.x = data.x.reverse();
+    data.y = data.y.reverse();
+  }
 
   let signals = detectSignals(data, peakList, signalOptions);
   if (clean) {
@@ -150,7 +157,7 @@ export function peaksToRanges(data, peakList, options = {}) {
  * Extract the signals from the peakList and the given spectrum.
  * @param {object} data - spectra data
  * @param {array} peakList - nmr signals
- * @param {object} [options = {}] 
+ * @param {object} [options = {}]
  * @param {number} [options.integrationSum='100'] - Number of hydrogens or some number to normalize the integration data, If it's zero return the absolute integral value
  * @param {string} [options.integralType='sum'] - option to chose between approx area with peaks or the sum of the points of given range
  * @param {number} [options.frequencyCluster=16] - distance limit to clustering the peaks.
