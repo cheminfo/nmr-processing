@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.9.0...v0.10.0) (2021-02-18)
+
+
+### Features
+
+* add from-to of signals from from-to of peaks ([15950c5](https://www.github.com/cheminfo/nmr-processing/commit/15950c54479f9944b118637bf27f606e2d8db1fd))
+
 ## [0.9.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.8.0...v0.9.0) (2021-02-09)
 
 
