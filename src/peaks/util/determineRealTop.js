@@ -28,10 +28,7 @@ export function determineRealTop(peaks, options) {
           shell: 2,
         }).index;
 
-    peaks[i].x = currentIndex % nCols;
-    peaks[i].y = (currentIndex - peaks[i].x) / nCols;
-
-    peaks[i] = fitGaussian(originalData, {
+    let realTopCoordinates = fitGaussian(originalData, {
       nCols,
       index: currentIndex,
       minY,
@@ -39,6 +36,8 @@ export function determineRealTop(peaks, options) {
       minX,
       maxX,
     });
+
+    peaks[i] = Object.assign(peaks[i], realTopCoordinates);
   }
   return peaks;
 }
@@ -130,10 +129,7 @@ function paramGaussian2D(intervalX, intervalY, nCols) {
       let result = 0;
       let xIndex = t % nCols;
       let yIndex = (t - xIndex) / nCols;
-      // let yValue = minY + yIndex * intervalY;
-      // let xValue = minX + xIndex * intervalX;
       for (let i = 0; i < nL; i++) {
-        // console.log(p[i], p[i + nL], p[i+2*nL], p[i+3*nL], p[i+4*nL])
         result +=
           p[i + 2 * nL] *
           Gaussian2D.fct(
@@ -143,12 +139,7 @@ function paramGaussian2D(intervalX, intervalY, nCols) {
             p[i + 4 * nL],
           );
       }
-      // console.log(t, xIndex, yIndex, result);
       return result;
     };
   };
 }
-
-/**
- * tenemos los datos en 1D (flatten)
- */

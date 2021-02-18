@@ -24,21 +24,17 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     sizeToPad = 14,
     realTopDetection = true,
     thresholdFactor = 0.5,
-    isHomoNuclear,
     nucleus = ['1H', '1H'],
     observeFrequencies,
     enhanceSymmetry = false,
     clean = true,
     maxPercentCutOff = 0.03,
-    toleranceX = 24,
-    toleranceY = 24,
+    tolerances = [24, 24],
     convolutionByFFT = true,
     kernel: kernelOptions,
   } = options;
 
   thresholdFactor = thresholdFactor === 0 ? 1 : Math.abs(thresholdFactor);
-
-  let nStdDev = getLoGnStdDevNMR(isHomoNuclear);
 
   let nbPoints = spectraData.z[0].length;
   let nbSubSpectra = spectraData.z.length;
@@ -73,7 +69,20 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
         cols: nbPoints,
       });
 
-  let createSignalOptions = {
+  let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
+    originalData,
+    filteredData: convolutedSpectrum,
+    rows: nbSubSpectra,
+    cols: nbPoints,
+    nStdDev: thresholdFactor,
+  });
+
+  if (clean) {
+    // Remove peaks with less than x% of the intensity of the highest peak
+    peaksMC1 = PeakOptimizer.clean(peaksMC1, maxPercentCutOff);
+  }
+
+  let signals = createSignals2D(peaksMC1, {
     nRows: nbSubSpectra,
     nCols: nbPoints,
     minX: spectraData.minX,
@@ -82,55 +91,14 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
     maxY: spectraData.maxY,
     absoluteData,
     originalData,
-    toleranceX,
-    toleranceY,
+    tolerances,
     nucleus,
     observeFrequencies,
     realTopDetection,
-  };
+  });
 
-  let signals = [];
-  if (isHomoNuclear) {
-    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
-      originalData,
-      filteredData: convolutedSpectrum,
-      rows: nbSubSpectra,
-      cols: nbPoints,
-      nStdDev: nStdDev * thresholdFactor,
-    });
-
-    let peaksMax1 = matrixPeakFinders.findPeaks2DMax(absoluteData, {
-      originalData,
-      filteredData: convolutedSpectrum,
-      rows: nbSubSpectra,
-      cols: nbPoints,
-      nStdDev: (nStdDev + 0.5) * thresholdFactor,
-    });
-
-    for (let i = 0; i < peaksMC1.length; i++) {
-      peaksMax1.push(peaksMC1[i]);
-    }
-
-    signals = createSignals2D(peaksMax1, createSignalOptions);
-
-    if (enhanceSymmetry) {
-      signals = PeakOptimizer.enhanceSymmetry(signals);
-    }
-  } else {
-    let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
-      originalData,
-      filteredData: convolutedSpectrum,
-      rows: nbSubSpectra,
-      cols: nbPoints,
-      nStdDev: nStdDev * thresholdFactor,
-    });
-
-    if (clean) {
-      // Remove peaks with less than x% of the intensity of the highest peak
-      peaksMC1 = PeakOptimizer.clean(peaksMC1, maxPercentCutOff);
-    }
-
-    signals = createSignals2D(peaksMC1, createSignalOptions);
+  if (enhanceSymmetry) {
+    signals = PeakOptimizer.enhanceSymmetry(signals);
   }
 
   return signals;
@@ -157,8 +125,7 @@ const createSignals2D = (peaks, options) => {
     absoluteData,
     originalData,
     observeFrequencies,
-    toleranceX,
-    toleranceY,
+    tolerances,
     nucleus,
     realTopDetection,
     minY,
@@ -168,6 +135,7 @@ const createSignals2D = (peaks, options) => {
   } = options;
 
   let [nucleusX, nucleusY] = nucleus;
+  let [toleranceX, toleranceY] = tolerances;
   let [observeFrequencyX, observeFrequencyY] = observeFrequencies;
 
   let dy = (maxY - minY) / (nRows - 1);
@@ -195,16 +163,14 @@ const createSignals2D = (peaks, options) => {
       peaks.splice(i, 1);
     }
   }
-
   // The connectivity matrix is an square and symmetric matrix, so we'll only store the upper diagonal in an
   // array like form
   let connectivity = [];
   for (let i = 0; i < peaks.length; i++) {
     for (let j = i; j < peaks.length; j++) {
       if (
-        Math.pow((peaks[i].x - peaks[j].x) * observeFrequencyX, 2) <
-          toleranceX &&
-        Math.pow((peaks[i].y - peaks[j].y) * observeFrequencyY, 2) < toleranceY
+        Math.abs(peaks[i].x - peaks[j].x) * observeFrequencyX < toleranceX &&
+        Math.abs(peaks[i].y - peaks[j].y) * observeFrequencyY < toleranceY
       ) {
         // 24*24Hz We cannot distinguish peaks with less than 20 Hz of separation
         connectivity.push(1);
@@ -240,23 +206,24 @@ const createSignals2D = (peaks, options) => {
           signal.shiftX += peaks[jPeak].x * peaks[jPeak].z;
           signal.shiftY += peaks[jPeak].y * peaks[jPeak].z;
           sumZ += peaks[jPeak].z;
-          if (peaks[jPeak].x < minMax1[0]) {
-            minMax1[0] = peaks[jPeak].x;
+          if (peaks[jPeak].minX < minMax1[0]) {
+            minMax1[0] = peaks[jPeak].minX;
           }
-          if (peaks[jPeak].x > minMax1[1]) {
-            minMax1[1] = peaks[jPeak].x;
+          if (peaks[jPeak].maxX > minMax1[1]) {
+            minMax1[1] = peaks[jPeak].maxX;
           }
-          if (peaks[jPeak].y < minMax2[0]) {
-            minMax2[0] = peaks[jPeak].y;
+          if (peaks[jPeak].minY < minMax2[0]) {
+            minMax2[0] = peaks[jPeak].minY;
           }
-          if (peaks[jPeak].y > minMax2[1]) {
-            minMax2[1] = peaks[jPeak].y;
+          if (peaks[jPeak].maxY > minMax2[1]) {
+            minMax2[1] = peaks[jPeak].maxY;
           }
         }
       }
+
       signal.fromTo = [
-        { from: minMax1[0], to: minMax1[1] },
-        { from: minMax2[0], to: minMax2[1] },
+        { from: minX + dx * minMax1[0], to: minX + dx * minMax1[1] },
+        { from: minY + dy * minMax2[0], to: minY + dy * minMax2[1] },
       ];
       signal.shiftX /= sumZ;
       signal.shiftY /= sumZ;
