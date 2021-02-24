@@ -12,3 +12,4 @@ export * from './xyz/xyzAutoPeaksPicking';
 export * from './constants/gyromagneticRatio';
 export * from './constants/impurities';
 export * from './constants/couplingPatterns';
+export * from './xyz/xyzJResAnalizer';

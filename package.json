@@ -56,6 +56,7 @@
     "rollup": "^2.35.1"
   },
   "dependencies": {
+    "assign-deep": "^1.0.1",
     "ml-gsd": "^6.6.0",
     "ml-levenberg-marquardt": "^3.1.0",
     "ml-matrix": "^6.6.0",
