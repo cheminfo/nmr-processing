@@ -9,7 +9,7 @@ export function signalsToRanges(signals, options = {}) {
         (total, j) => (total += j.coupling / frequency),
         0,
       ) /
-      2 +
+        2 +
       tolerance;
     signal.from = signal.original.delta - halfWidth;
     signal.to = signal.original.delta + halfWidth;

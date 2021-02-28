@@ -105,9 +105,9 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 }
 
 // How noisy is the spectrum depending on the kind of experiment.
-const getLoGnStdDevNMR = (isHomoNuclear) => {
-  return isHomoNuclear ? 1.5 : 3;
-};
+//const getLoGnStdDevNMR = (isHomoNuclear) => {
+//  return isHomoNuclear ? 1.5 : 3;
+//};
 
 /**
  * This function converts a set of 2D-peaks in 2D-signals. Each signal could be composed

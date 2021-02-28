@@ -1,4 +1,4 @@
-import { fromSmiles, fromMolfile } from '../predictionProton';
+import { fromMolfile } from '../predictionProton';
 
 const molfile = `Benzene, ethyl-, ID: C100414
   NIST    16081116462D 1   1.00000     0.00000
