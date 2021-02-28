@@ -1,4 +1,4 @@
-import { fromSmiles, fromMolfile } from '../spinus';
+import { fromSmiles, fromMolfile } from '../predictionProton';
 
 const molfile = `Benzene, ethyl-, ID: C100414
   NIST    16081116462D 1   1.00000     0.00000
@@ -23,11 +23,15 @@ Copyright by the U.S. Sec. Commerce on behalf of U.S.A. All rights reserved.
 M  END
 `;
 
-describe('spinus', () => {
+describe('predictionProton', () => {
   it('1H chemical shift prediction', async function () {
     const prediction = await fromMolfile(molfile);
-    console.log(prediction);
-    // console.log(prediction);
-    // expect(prediction).toHaveLength(10);
+    expect(Object.keys(prediction)).toStrictEqual([
+      'molfile',
+      'diaIDs',
+      'joinedSignals',
+      'signals',
+      'ranges',
+    ]);
   });
 });

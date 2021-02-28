@@ -9,6 +9,7 @@ export * from './xy/xyAutoPeaksPicking';
 export * from './xy/xyAutoRangesPicking';
 export * from './signals/signalsToRanges';
 export * from './ranges/rangesToACS';
+export * from './prediction/predictionProton';
 export * from './xyz/xyzAutoPeaksPicking';
 export * from './constants/gyromagneticRatio';
 export * from './constants/impurities';

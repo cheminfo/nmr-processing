@@ -8,6 +8,7 @@ import {
 } from 'openchemlib-utils';
 
 import { signalJoinCouplings } from '../signal/signalJoinCouplings';
+import { signalsToRanges } from '../signals/signalsToRanges.js';
 
 initOCL(OCL);
 
@@ -22,7 +23,7 @@ export function fromMolfile(molfile, options) {
 }
 
 /**
- * Makes a prediction using spinus
+ * Makes a prediction using proton
  * @param {Molecule} molecule - could be a string of molfile, smile or Molecule instance.
  * @param {object} options
  * @return {Promise<Array>}
@@ -42,7 +43,7 @@ async function fromMolecule(molecule) {
   });
   const result = await response.text();
 
-  const signals = spinusParser(result);
+  const signals = protonParser(result);
   const joinedSignals = signals.map((signal) =>
     signalJoinCouplings(signal, { tolerance: 0.2 }),
   );
@@ -51,10 +52,11 @@ async function fromMolecule(molecule) {
     diaIDs: getDiastereotopicAtomIDs(molecule),
     joinedSignals,
     signals,
+    ranges: signalsToRanges(signals),
   };
 }
 
-function spinusParser(result) {
+function protonParser(result) {
   let lines = result.split('\n').filter((line) => line);
   let signals = [];
   for (let line of lines) {
