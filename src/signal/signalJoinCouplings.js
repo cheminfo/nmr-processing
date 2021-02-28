@@ -4,7 +4,7 @@ import { couplingPatterns } from '../constants/couplingPatterns';
  * Join couplings smaller than a define tolerance.
  * The resulting coupling should be an average of the existing one.
  * @param {*} signal
- * @param {*} options
+ * @param {object} [options={}]
  */
 export function signalJoinCouplings(signal, options = {}) {
   const { tolerance = 0.05 } = options;
