@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.10.0...v0.11.0) (2021-02-28)
+
+
+### Features
+
+* add predictionProton ([17f596d](https://www.github.com/cheminfo/nmr-processing/commit/17f596dd94346cf1f1e31b0fa06c0281b0fd8e27))
+* add signalsToRanges ([906dad9](https://www.github.com/cheminfo/nmr-processing/commit/906dad926fb3364f4f0d6836539998a8633e2722))
+* add spinus prediction ([1bce49f](https://www.github.com/cheminfo/nmr-processing/commit/1bce49f1c0783ab45ce90657d2a749b93b1ae07b))
+
 ## [0.10.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.9.0...v0.10.0) (2021-02-18)
 
 
