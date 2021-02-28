@@ -62,7 +62,7 @@ function spinusParser(result) {
     let couplings = fields.slice(4);
     let signal = {
       assignment: fields[0] - 1,
-      nbAtom: 1,
+      nbAtoms: 1,
       delta: Number(fields[2]),
       j: [],
     };
