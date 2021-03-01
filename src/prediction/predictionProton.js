@@ -10,7 +10,7 @@ import {
 import { signalJoinCouplings } from '../signal/signalJoinCouplings';
 import { signalsToRanges } from '../signals/signalsToRanges.js';
 
-initOCL(OCL);
+initOCL(OCL, { keepExisting: true });
 
 export function fromSmiles(smiles, options) {
   const molecule = OCL.Molecule.fromSmiles(smiles);

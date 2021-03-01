@@ -67,6 +67,6 @@
     "ml-spectra-processing": "^5.5.3",
     "node-fetch": "^2.6.1",
     "openchemlib": "^7.3.0",
-    "openchemlib-utils": "^0.6.1"
+    "openchemlib-utils": "^0.7.0"
   }
 }
