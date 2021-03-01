@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.11.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.11.0...v0.11.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* allow other openchemlib-utils initialization ([f69a825](https://www.github.com/cheminfo/nmr-processing/commit/f69a8250d629d948a4b24f70d7d221dc6e68465f))
+
 ## [0.11.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.10.0...v0.11.0) (2021-02-28)
 
 
