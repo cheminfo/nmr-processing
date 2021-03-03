@@ -1,6 +1,6 @@
+import hlClust from 'ml-hclust';
 import Matrix from 'ml-matrix';
 import simpleClustering from 'ml-simple-clustering';
-import hlClust from 'ml-hclust';
 
 export default class SpinSystem {
   constructor(chemicalShifts, couplingConstants, multiplicity) {
@@ -19,26 +19,22 @@ export default class SpinSystem {
     let ids = {};
     let jc = Matrix.zeros(nspins, nspins);
     for (let i = 0; i < nspins; i++) {
-      var tokens = lines[i].split('\t');
+      let tokens = lines[i].split('\t');
       cs[i] = Number(tokens[2]);
       ids[tokens[0] - 1] = i;
-      integrals[i] = Number(tokens[5]);
     }
     for (let i = 0; i < nspins; i++) {
-      tokens = lines[i].split('\t');
+      let tokens = lines[i].split('\t');
       let nCoup = (tokens.length - 4) / 3;
-      for (j = 0; j < nCoup; j++) {
+      for (let j = 0; j < nCoup; j++) {
         let withID = tokens[4 + 3 * j] - 1;
         let idx = ids[withID];
-        jc.set(i, idx, Number(tokens[6 + 3 * j]));
+        let coupling = Number(tokens[6 + 3 * j]);
+        jc.set(i, idx, coupling);
+        jc.set(idx, i, coupling);
       }
     }
 
-    for (var j = 0; j < nspins; j++) {
-      for (let i = j; i < nspins; i++) {
-        jc.set(j, i, jc.get(i, j));
-      }
-    }
     return new SpinSystem(cs, jc, new Float64Array(nspins).fill(2));
   }
 
@@ -58,11 +54,6 @@ export default class SpinSystem {
     for (let i = 0; i < nSpins; i++) {
       let j = predictions[i].j;
       for (let k = 0; k < j.length; k++) {
-        // console.log(
-        //   ids[predictions[i].assignment],
-        //   ids[j[k].assignment],
-        //   j[k].assignment,
-        // );
         jc.set(
           ids[predictions[i].assignment],
           ids[j[k].assignment],
@@ -80,7 +71,7 @@ export default class SpinSystem {
 
   static ungroupAtoms(prediction) {
     let result = [];
-    prediction.forEach((pred) => {
+    for (let pred of prediction) {
       let atomIDs = pred.atomIDs;
       if (atomIDs instanceof Array) {
         for (let i = 0; i < atomIDs.length; i++) {
@@ -105,7 +96,7 @@ export default class SpinSystem {
           result.push(tempPred);
         }
       }
-    });
+    }
 
     return result;
   }
@@ -134,9 +125,8 @@ export default class SpinSystem {
   _calculateBetas(J, frequency) {
     let betas = Matrix.zeros(J.rows, J.rows);
     // Before clustering, we must add hidden J, we could use molecular information if available
-    let i, j;
-    for (i = 0; i < J.rows; i++) {
-      for (j = i; j < J.columns; j++) {
+    for (let i = 0; i < J.rows; i++) {
+      for (let j = i; j < J.columns; j++) {
         let element = J.get(i, j);
         if (this.chemicalShifts[i] - this.chemicalShifts[j] !== 0) {
           let value =
@@ -251,8 +241,8 @@ export default class SpinSystem {
 
   _mergeClusters(list) {
     let nElements = 0;
-    let clusterA, clusterB, i, j, index, common, count;
-    for (i = list.length - 1; i >= 0; i--) {
+    let clusterA, clusterB, index, common, count;
+    for (let i = list.length - 1; i >= 0; i--) {
       clusterA = list[i];
       nElements = clusterA.length;
       index = 0;
@@ -261,7 +251,7 @@ export default class SpinSystem {
       while (index < nElements && clusterA[index++] !== -1);
 
       if (index < nElements) {
-        for (j = list.length - 1; j >= i + 1; j--) {
+        for (let j = list.length - 1; j >= i + 1; j--) {
           clusterB = list[j];
           // Do they have common elements?
           index = 0;
@@ -290,7 +280,6 @@ export default class SpinSystem {
               }
               index++;
             }
-            // list.remove(clusterB);
             list.splice(j, 1);
             j++;
           }

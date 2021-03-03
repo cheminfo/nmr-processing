@@ -1,6 +1,6 @@
+import binarySearch from 'binary-search';
 import { Matrix, EVD } from 'ml-matrix';
 import { SparseMatrix } from 'ml-sparse-matrix';
-import binarySearch from 'binary-search';
 import { asc as sortAsc } from 'num-sort';
 
 import getPauli from './pauli';
@@ -22,7 +22,6 @@ const smallValue = 1e-2;
  * @return {object}
  */
 export default function simulate1D(spinSystem, options) {
-  let i, j;
   let {
     lineWidth = 1,
     nbPoints = 1024,
@@ -30,7 +29,7 @@ export default function simulate1D(spinSystem, options) {
     output = 'y',
     frequency: frequencyMHz = 400,
     noiseFactor = 1,
-    lortogauRatio = 0.5
+    lortogauRatio = 0.5,
   } = options;
 
   nbPoints = Number(nbPoints);
@@ -39,13 +38,15 @@ export default function simulate1D(spinSystem, options) {
   const to = (options.to || 10) * frequencyMHz;
 
   const chemicalShifts = spinSystem.chemicalShifts.slice();
-  for (i = 0; i < chemicalShifts.length; i++) {
+  for (let i = 0; i < chemicalShifts.length; i++) {
     chemicalShifts[i] = chemicalShifts[i] * frequencyMHz;
   }
-  
+
   // Prepare pseudo voigt
-  let lineWidthPointsG = lortogauRatio * (nbPoints * lineWidth) / Math.abs(to - from) / 2.355;
-  let lineWidthPointsL = (1 - lortogauRatio) * (nbPoints * lineWidth) / Math.abs(to - from) / 2;
+  let lineWidthPointsG =
+    (lortogauRatio * (nbPoints * lineWidth)) / Math.abs(to - from) / 2.355;
+  let lineWidthPointsL =
+    ((1 - lortogauRatio) * (nbPoints * lineWidth)) / Math.abs(to - from) / 2;
   let lnPoints = lineWidthPointsL * 40;
 
   const gaussianLength = lnPoints | 0;
@@ -54,7 +55,7 @@ export default function simulate1D(spinSystem, options) {
   const c = lineWidthPointsG * lineWidthPointsG * 2;
   const l2 = lineWidthPointsL * lineWidthPointsL;
   const g2pi = lineWidthPointsG * Math.sqrt(2 * Math.PI);
-  for (i = 0; i < gaussianLength; i++) {
+  for (let i = 0; i < gaussianLength; i++) {
     let x2 = (i - b) * (i - b);
     gaussian[i] =
       10e9 *
@@ -62,20 +63,20 @@ export default function simulate1D(spinSystem, options) {
   }
 
   let result = options.withNoise
-    ? [...new Array(nbPoints)].map(() => Math.random() * noiseFactor)
-    : new Array(nbPoints).fill(0);
+    ? new Float64Array(nbPoints).map(() => Math.random() * noiseFactor)
+    : new Float64Array(nbPoints);
 
   const multiplicity = spinSystem.multiplicity;
   for (let h = 0; h < spinSystem.clusters.length; h++) {
     const cluster = spinSystem.clusters[h];
 
     let clusterFake = new Array(cluster.length);
-    for (i = 0; i < cluster.length; i++) {
+    for (let i = 0; i < cluster.length; i++) {
       clusterFake[i] = cluster[i] < 0 ? -cluster[i] - 1 : cluster[i];
     }
 
     let weight = 1;
-    var sumI = 0;
+    let sumI = 0;
     const frequencies = [];
     const intensities = [];
     if (cluster.length > maxClusterSize) {
@@ -85,13 +86,13 @@ export default function simulate1D(spinSystem, options) {
       let index = 0;
       while (cluster[index++] < 0);
       index = cluster[index - 1];
-      var currentSize, jc;
+      let currentSize, jc;
       frequencies.push(-chemicalShifts[index]);
-      for (i = 0; i < cluster.length; i++) {
+      for (let i = 0; i < cluster.length; i++) {
         if (cluster[i] < 0) {
           jc = spinSystem.couplingConstants.get(index, clusterFake[i]) / 2;
           currentSize = frequencies.length;
-          for (j = 0; j < currentSize; j++) {
+          for (let j = 0; j < currentSize; j++) {
             frequencies.push(frequencies[j] + jc);
             frequencies[j] -= jc;
           }
@@ -102,7 +103,7 @@ export default function simulate1D(spinSystem, options) {
       sumI = frequencies.length;
       weight = 1;
 
-      for (i = 0; i < sumI; i++) {
+      for (let i = 0; i < sumI; i++) {
         intensities.push(1);
       }
     } else {
@@ -124,13 +125,13 @@ export default function simulate1D(spinSystem, options) {
         const L = getPauli(multiplicity[clusterFake[n]]);
 
         let temp = 1;
-        for (j = 0; j < n; j++) {
+        for (let j = 0; j < n; j++) {
           temp *= multiplicity[clusterFake[j]];
         }
         const A = SparseMatrix.eye(temp);
 
         temp = 1;
-        for (j = n + 1; j < multLen; j++) {
+        for (let j = n + 1; j < multLen; j++) {
           temp *= multiplicity[clusterFake[j]];
         }
         const B = SparseMatrix.eye(temp);
@@ -205,9 +206,8 @@ export default function simulate1D(spinSystem, options) {
       let valFreq = frequencies[0];
       let inte = intensities[0];
       let count = 1;
-      for (i = 1; i < numFreq; i++) {
+      for (let i = 1; i < numFreq; i++) {
         if (Math.abs(frequencies[i] - valFreq / count) < diff) {
-            
           inte += intensities[i];
           valFreq += frequencies[i];
           count++;
@@ -238,7 +238,10 @@ export default function simulate1D(spinSystem, options) {
     }
   }
   if (output === 'xy') {
-    return { x: _getX(options.from, options.to, nbPoints), y: result };
+    return {
+      x: _getX(from / frequencyMHz, to / frequencyMHz, nbPoints),
+      y: result,
+    };
   }
   if (output === 'y') {
     return result;
@@ -361,8 +364,7 @@ function getHamiltonian(
   return clusterHam;
 }
 
-function _getX(from = 0, to = 10, nbPoints) {
-    console.log(from, to, nbPoints);
+function _getX(from, to, nbPoints) {
   const x = new Array(nbPoints);
   const dx = (to - from) / (nbPoints - 1);
   for (let i = 0; i < nbPoints; i++) {

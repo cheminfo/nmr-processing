@@ -11,7 +11,7 @@ export function spectrumfromSignals(signals, options = {}) {
     },
     options,
   );
- 
+
   const spinSystem = SpinSystem.fromPrediction(signals);
   spinSystem.ensureClusterSize(options);
   let spectrum = simulate1D(spinSystem, options);
