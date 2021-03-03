@@ -26,6 +26,7 @@ M  END
 describe('predictionProton', () => {
   it('1H chemical shift prediction', async function () {
     const prediction = await fromMolfile(molfile);
+    console.log(JSON.stringify(prediction.signals))
     expect(Object.keys(prediction)).toStrictEqual([
       'molfile',
       'diaIDs',

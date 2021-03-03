@@ -71,7 +71,7 @@ function protonParser(result) {
     for (let i = 0; i < couplings.length; i += 3) {
       signal.j.push({
         coupling: Number(couplings[i + 2]),
-        assignment: Number(couplings[i]),
+        assignment: Number(couplings[i] - 1),
       });
     }
     signals.push(signal);
