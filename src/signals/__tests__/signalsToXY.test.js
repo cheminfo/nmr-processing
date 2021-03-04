@@ -1,4 +1,4 @@
-import { spectrumfromSignals } from '../spectrumfromSignals';
+import { signalsToXY } from '../signalsToXY';
 
 const signals = [
   {
@@ -106,7 +106,7 @@ const signals = [
 ];
 describe('spectrum from prediction', () => {
   it('1H chemical shift prediction', async function () {
-    const spectrum = spectrumfromSignals(signals, { nbPoints: 16 * 1024 });
-    expect(spectrum.x).toHaveLength(16 * 1024);
+    const spectrum = signalsToXY(signals, { nbPoints: 1024 });
+    expect(spectrum.x).toHaveLength(1024);
   });
 });

@@ -1,7 +1,6 @@
 import binarySearch from 'binary-search';
 import { Matrix, EVD } from 'ml-matrix';
 import { SparseMatrix } from 'ml-sparse-matrix';
-import { asc as sortAsc } from 'num-sort';
 
 import getPauli from './pauli';
 
@@ -30,9 +29,8 @@ export default function simulate1D(spinSystem, options) {
     frequency: frequencyMHz = 400,
     noiseFactor = 1,
     lortogauRatio = 0.5,
+    withNoise = false,
   } = options;
-
-  nbPoints = Number(nbPoints);
 
   const from = options.from * frequencyMHz || 0;
   const to = (options.to || 10) * frequencyMHz;
@@ -62,7 +60,7 @@ export default function simulate1D(spinSystem, options) {
       (Math.exp(-x2 / c) / g2pi + lineWidthPointsL / ((x2 + l2) * Math.PI));
   }
 
-  let result = options.withNoise
+  let result = withNoise
     ? new Float64Array(nbPoints).map(() => Math.random() * noiseFactor)
     : new Float64Array(nbPoints);
 
@@ -99,7 +97,7 @@ export default function simulate1D(spinSystem, options) {
         }
       }
 
-      frequencies.sort(sortAsc);
+      frequencies = Float64Array.from(frequencies).sort();
       sumI = frequencies.length;
       weight = 1;
 
@@ -189,7 +187,7 @@ export default function simulate1D(spinSystem, options) {
 
         sumI += val;
         let valFreq = diagB[i] - diagB[j];
-        let insertIn = binarySearch(frequencies, valFreq, sortAsc);
+        let insertIn = binarySearch(frequencies, valFreq, (a, b) => a - b);
         if (insertIn < 0) {
           frequencies.splice(-1 - insertIn, 0, valFreq);
           intensities.splice(-1 - insertIn, 0, val);
