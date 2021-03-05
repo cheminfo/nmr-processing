@@ -3,22 +3,23 @@ import { Matrix, EVD } from 'ml-matrix';
 import { SparseMatrix } from 'ml-sparse-matrix';
 import { SpectrumGenerator } from 'spectrum-generator';
 
-import getPauli from './pauli';
+import getPauliMatrix from './getPauliMatrix';
 
 const smallValue = 1e-2;
 
 /**
  * This function simulates a one dimensional nmr spectrum. This function returns an array containing the relative intensities of the spectrum in the specified simulation window (from-to).
  * @param {object} spinSystem - The SpinSystem object to be simulated
- * @param {object} options
- * @param {number} options.frequency - The frequency in Mhz of the fake spectrometer that records the spectrum. 400 by default
- * @param {number} options.from - The low limit of the ordinate variable. 0 by default
- * @param {number} options.to - The upper limit of the ordinate variable. 10 by default|
- * @param {number} options.lineWidth - The linewidth of the output spectrum, expresed in Hz. 1Hz by default
- * @param {number} options.nbPoints - Number of points of the output spectrum. 1024 by default
- * @param {number} options.maxClusterSize - Maximum number of atoms on each cluster that can be considered to be simulated together. It affects the the quality and speed of the simulation. 10 by default
- * @param {number} options.output - ['y' or 'xy'] it specify the output format. if 'y' is specified, the output of the simulation will be a single vector containing the y data of the spectrum. if 'xy' is specified, the output of the simulation will be an object containing {x,[], y:[]}, the x, y of the spectrum. 'y' by default
- * @param {number} options.lortogauRatio - How much of the shape is Lorentzian relative to Gaussian - default : 0.5
+ * @param {object} [options={}] - options.
+ * @param {number} [options.frequency=400] - The frequency in Mhz of the fake spectrometer that records the spectrum.
+ * @param {number} [options.lineWidth=1] - The linewidth of the output spectrum, expresed in Hz.
+ * @param {object} options.shape - options for spectrum-generator.
+ * @param {string} [options.shape.kind='gaussian'] - kind of shape to generate the spectrum.
+ * @param {object} options.shape.options - spectrum and shape options. See spectrum-generator for more information about shape options.
+ * @param {number} [options.from=0] - The low limit of the ordinate variable.
+ * @param {number} [options.to=10] - The upper limit of the ordinate variable.
+ * @param {number} [options.nbPoints=16*1024] - Number of points of the output spectrum.
+ * @param {number} [options.maxClusterSize=8] - Maximum number of atoms on each cluster that can be considered to be simulated together. It affects the the quality and speed of the simulation.
  * @return {object}
  */
 export default function simulate1D(spinSystem, options) {
@@ -101,7 +102,7 @@ export default function simulate1D(spinSystem, options) {
       const multLen = cluster.length;
       weight = 0;
       for (let n = 0; n < multLen; n++) {
-        const L = getPauli(multiplicity[clusterFake[n]]);
+        const L = getPauliMatrix(multiplicity[clusterFake[n]]);
 
         let temp = 1;
         for (let j = 0; j < n; j++) {
@@ -244,7 +245,7 @@ function getHamiltonian(
   for (let pos = 0; pos < cluster.length; pos++) {
     let n = cluster[pos];
 
-    const L = getPauli(multiplicity[n]);
+    const L = getPauliMatrix(multiplicity[n]);
 
     let A1, B1;
     let temp = 1;
@@ -265,7 +266,7 @@ function getHamiltonian(
     for (let pos2 = 0; pos2 < cluster.length; pos2++) {
       const k = cluster[pos2];
       if (conMatrix.get(n, k) === 1) {
-        const S = getPauli(multiplicity[k]);
+        const S = getPauliMatrix(multiplicity[k]);
 
         let A2, B2;
         let temp = 1;

@@ -31,7 +31,7 @@ function diag(A, d, n, m) {
 
 const pauli2 = createPauli(2);
 
-export default function getPauli(mult) {
+export default function getPauliMatrix(mult) {
   if (mult === 2) return pauli2;
   else return createPauli(mult);
 }
