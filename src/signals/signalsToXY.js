@@ -1,5 +1,5 @@
-import { signalsToSpinSystem } from '../simulation/signalsToSpinSystem';
-import simulate1D from '../simulation/simulate1D';
+import { signalsToSpinSystem } from './simulation/signalsToSpinSystem';
+import simulate1D from './simulation/simulate1D';
 
 export function signalsToXY(signals, options = {}) {
   let {
