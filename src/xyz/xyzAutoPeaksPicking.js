@@ -61,13 +61,13 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 
   let convolutedSpectrum = convolutionByFFT
     ? convolution.fft(absoluteData, kernel, {
-      rows: nbSubSpectra,
-      cols: nbPoints,
-    })
+        rows: nbSubSpectra,
+        cols: nbPoints,
+      })
     : convolution.direct(absoluteData, kernel, {
-      rows: nbSubSpectra,
-      cols: nbPoints,
-    });
+        rows: nbSubSpectra,
+        cols: nbPoints,
+      });
 
   let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
     originalData,
