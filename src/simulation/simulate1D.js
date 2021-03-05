@@ -1,6 +1,7 @@
 import binarySearch from 'binary-search';
 import { Matrix, EVD } from 'ml-matrix';
 import { SparseMatrix } from 'ml-sparse-matrix';
+import { SpectrumGenerator } from 'spectrum-generator';
 
 import getPauli from './pauli';
 
@@ -23,46 +24,27 @@ const smallValue = 1e-2;
 export default function simulate1D(spinSystem, options) {
   let {
     lineWidth = 1,
-    nbPoints = 1024,
     maxClusterSize = 10,
-    output = 'y',
     frequency: frequencyMHz = 400,
-    noiseFactor = 1,
-    lortogauRatio = 0.5,
-    withNoise = false,
+    shape = {
+      kind: 'gaussian',
+      options: {
+        from: 0,
+        to: 10,
+        nbPoints: 1024,
+      },
+    },
   } = options;
 
-  const from = options.from * frequencyMHz || 0;
-  const to = (options.to || 10) * frequencyMHz;
+  let { options: shapeOptions } = shape;
+  let peakWidth = lineWidth / frequencyMHz;
+  shapeOptions.peakWidthFct = () => peakWidth;
+  let spectrumGenerator = new SpectrumGenerator(shapeOptions);
 
   const chemicalShifts = spinSystem.chemicalShifts.slice();
   for (let i = 0; i < chemicalShifts.length; i++) {
     chemicalShifts[i] = chemicalShifts[i] * frequencyMHz;
   }
-
-  // Prepare pseudo voigt
-  let lineWidthPointsG =
-    (lortogauRatio * (nbPoints * lineWidth)) / Math.abs(to - from) / 2.355;
-  let lineWidthPointsL =
-    ((1 - lortogauRatio) * (nbPoints * lineWidth)) / Math.abs(to - from) / 2;
-  let lnPoints = lineWidthPointsL * 40;
-
-  const gaussianLength = lnPoints | 0;
-  const gaussian = new Array(gaussianLength);
-  const b = lnPoints / 2;
-  const c = lineWidthPointsG * lineWidthPointsG * 2;
-  const l2 = lineWidthPointsL * lineWidthPointsL;
-  const g2pi = lineWidthPointsG * Math.sqrt(2 * Math.PI);
-  for (let i = 0; i < gaussianLength; i++) {
-    let x2 = (i - b) * (i - b);
-    gaussian[i] =
-      10e9 *
-      (Math.exp(-x2 / c) / g2pi + lineWidthPointsL / ((x2 + l2) * Math.PI));
-  }
-
-  let result = withNoise
-    ? new Float64Array(nbPoints).map(() => Math.random() * noiseFactor)
-    : new Float64Array(nbPoints);
 
   const multiplicity = spinSystem.multiplicity;
   for (let h = 0; h < spinSystem.clusters.length; h++) {
@@ -75,8 +57,8 @@ export default function simulate1D(spinSystem, options) {
 
     let weight = 1;
     let sumI = 0;
-    const frequencies = [];
-    const intensities = [];
+    let frequencies = [];
+    let intensities = [];
     if (cluster.length > maxClusterSize) {
       // This is a single spin, but the cluster exceeds the maxClusterSize criteria
       // we use the simple multiplicity algorithm
@@ -84,12 +66,11 @@ export default function simulate1D(spinSystem, options) {
       let index = 0;
       while (cluster[index++] < 0);
       index = cluster[index - 1];
-      let currentSize, jc;
       frequencies.push(-chemicalShifts[index]);
       for (let i = 0; i < cluster.length; i++) {
         if (cluster[i] < 0) {
-          jc = spinSystem.couplingConstants.get(index, clusterFake[i]) / 2;
-          currentSize = frequencies.length;
+          let jc = spinSystem.couplingConstants.get(index, clusterFake[i]) / 2;
+          let currentSize = frequencies.length;
           for (let j = 0; j < currentSize; j++) {
             frequencies.push(frequencies[j] + jc);
             frequencies[j] -= jc;
@@ -198,8 +179,9 @@ export default function simulate1D(spinSystem, options) {
     }
 
     const numFreq = frequencies.length;
+
     if (numFreq > 0) {
-      weight = weight / sumI;
+      weight /= sumI;
       const diff = lineWidth / 64;
       let valFreq = frequencies[0];
       let inte = intensities[0];
@@ -210,65 +192,23 @@ export default function simulate1D(spinSystem, options) {
           valFreq += frequencies[i];
           count++;
         } else {
-          addPeak(
-            result,
-            valFreq / count,
-            inte * weight,
-            from,
-            to,
-            nbPoints,
-            gaussian,
-          );
+          spectrumGenerator.addPeak({
+            x: -valFreq / count / frequencyMHz,
+            y: inte * weight,
+          });
           valFreq = frequencies[i];
           inte = intensities[i];
           count = 1;
         }
       }
-      addPeak(
-        result,
-        valFreq / count,
-        inte * weight,
-        from,
-        to,
-        nbPoints,
-        gaussian,
-      );
+
+      spectrumGenerator.addPeak({
+        x: -valFreq / count / frequencyMHz,
+        y: inte * weight,
+      });
     }
   }
-  if (output === 'xy') {
-    return {
-      x: _getX(from / frequencyMHz, to / frequencyMHz, nbPoints),
-      y: result,
-    };
-  }
-  if (output === 'y') {
-    return result;
-  }
-  throw new RangeError('wrong output option');
-}
-/**
- * Add a new peak to the current array
- * @param {Array} result - Array of numbers
- * @param {number} freq - center of the peak
- * @param {*} height - peak height
- * @param {*} from - start point of the peak
- * @param {*} to - end point of the peak
- * @param {*} nbPoints - number of points to add
- * @param {*} gaussian - Shape to fill with
- * @return {undefined}
- */
-function addPeak(result, freq, height, from, to, nbPoints, gaussian) {
-  const center = ((nbPoints * (-freq - from)) / (to - from)) | 0;
-  const lnPoints = gaussian.length;
-  let index = 0;
-  let indexLorentz = 0;
-  for (let i = center - lnPoints / 2; i < center + lnPoints / 2; i++) {
-    index = i | 0;
-    if (i >= 0 && i < nbPoints) {
-      result[index] += gaussian[indexLorentz] * height;
-    }
-    indexLorentz++;
-  }
+  return spectrumGenerator.data;
 }
 
 function triuTimesAbs(A, val) {
@@ -360,13 +300,4 @@ function getHamiltonian(
     }
   }
   return clusterHam;
-}
-
-function _getX(from, to, nbPoints) {
-  const x = new Array(nbPoints);
-  const dx = (to - from) / (nbPoints - 1);
-  for (let i = 0; i < nbPoints; i++) {
-    x[i] = from + i * dx;
-  }
-  return x;
 }

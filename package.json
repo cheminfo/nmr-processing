@@ -70,8 +70,8 @@
     "ml-sparse-matrix": "^2.1.0",
     "ml-spectra-processing": "^5.5.3",
     "node-fetch": "^2.6.1",
-    "num-sort": "^1.0.0",
     "openchemlib": "^7.3.0",
-    "openchemlib-utils": "^0.7.0"
+    "openchemlib-utils": "^0.7.0",
+    "spectrum-generator": "^4.7.0"
   }
 }

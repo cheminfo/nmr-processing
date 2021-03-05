@@ -106,7 +106,12 @@ const signals = [
 ];
 describe('spectrum from prediction', () => {
   it('1H chemical shift prediction', async function () {
-    const spectrum = signalsToXY(signals, { nbPoints: 1024 });
-    expect(spectrum.x).toHaveLength(1024);
+    const spectrum = signalsToXY(signals, {
+      shape: {
+        kind: 'gaussian',
+        options: { from: 0, to: 10, nbPoints: 16 * 1024 },
+      },
+    });
+    expect(spectrum.x).toHaveLength(16 * 1024);
   });
 });
