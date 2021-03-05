@@ -61,13 +61,13 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 
   let convolutedSpectrum = convolutionByFFT
     ? convolution.fft(absoluteData, kernel, {
-        rows: nbSubSpectra,
-        cols: nbPoints,
-      })
+      rows: nbSubSpectra,
+      cols: nbPoints,
+    })
     : convolution.direct(absoluteData, kernel, {
-        rows: nbSubSpectra,
-        cols: nbPoints,
-      });
+      rows: nbSubSpectra,
+      cols: nbPoints,
+    });
 
   let peaksMC1 = matrixPeakFinders.findPeaks2DRegion(absoluteData, {
     originalData,
@@ -103,11 +103,6 @@ export function xyzAutoPeaksPicking(spectraData, options = {}) {
 
   return signals;
 }
-
-// How noisy is the spectrum depending on the kind of experiment.
-//const getLoGnStdDevNMR = (isHomoNuclear) => {
-//  return isHomoNuclear ? 1.5 : 3;
-//};
 
 /**
  * This function converts a set of 2D-peaks in 2D-signals. Each signal could be composed
@@ -157,6 +152,10 @@ const createSignals2D = (peaks, options) => {
     let { x, y } = peaks[i];
     peaks[i].x = minX + dx * x;
     peaks[i].y = minY + dy * y;
+    peaks[i].minX = minX + dx * peaks[i].minX;
+    peaks[i].minY = minY + dy * peaks[i].minY;
+    peaks[i].maxX = minX + dx * peaks[i].maxX;
+    peaks[i].maxY = minY + dy * peaks[i].maxY;
 
     // Still having problems to correctly detect peaks on those areas. So I'm removing everything there.
     if (peaks[i].y < -1 || peaks[i].y >= 210) {
@@ -196,13 +195,10 @@ const createSignals2D = (peaks, options) => {
       let minMax1 = [Number.MAX_VALUE, 0];
       let minMax2 = [Number.MAX_VALUE, 0];
       let sumZ = 0;
-      for (let jPeak = clusters[iCluster].length - 1; jPeak >= 0; jPeak--) {
+      // for (let jPeak = clusters[iCluster].length - 1; jPeak >= 0; jPeak--) {
+      for (let jPeak = 0; jPeak < clusters[iCluster].length; jPeak++) {
         if (clusters[iCluster][jPeak] === 1) {
-          peaks2D.push({
-            x: peaks[jPeak].x,
-            y: peaks[jPeak].y,
-            z: peaks[jPeak].z,
-          });
+          peaks2D.push(peaks[jPeak]);
           signal.shiftX += peaks[jPeak].x * peaks[jPeak].z;
           signal.shiftY += peaks[jPeak].y * peaks[jPeak].z;
           sumZ += peaks[jPeak].z;
@@ -222,8 +218,8 @@ const createSignals2D = (peaks, options) => {
       }
 
       signal.fromTo = [
-        { from: minX + dx * minMax1[0], to: minX + dx * minMax1[1] },
-        { from: minY + dy * minMax2[0], to: minY + dy * minMax2[1] },
+        { from: minMax1[0], to: minMax1[1] },
+        { from: minMax2[0], to: minMax2[1] },
       ];
       signal.shiftX /= sumZ;
       signal.shiftY /= sumZ;

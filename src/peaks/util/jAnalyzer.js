@@ -6,6 +6,7 @@ const patterns = ['s', 'd', 't', 'q', 'quint', 'h', 'sept', 'o', 'n'];
 let symRatio = 1.5;
 let maxErrorIter1 = 2.5; // Hz
 let maxErrorIter2 = 1; // Hz
+let jAxisKeys = { jAxis: 'x', intensity: 'intensity' };
 
 export default {
   /**
@@ -14,12 +15,17 @@ export default {
    * @param {object} signal
    * @private
    */
-  compilePattern: function (signal) {
+  compilePattern: function (signal, options = {}) {
+    let { jAxisKey = jAxisKeys } = options;
     signal.multiplicity = 'm';
     // 1.1 symmetrize
     // It will add a set of peaks(signal.peaksComp) to the signal that will be used during
     // the compilation process. The unit of those peaks will be in Hz
-    signal.symRank = symmetrizeChoiseBest(signal, maxErrorIter1, 1);
+    signal.symRank = symmetrizeChoiseBest(signal, {
+      maxError: maxErrorIter1,
+      iteration: 1,
+      jAxisKey,
+    });
     signal.asymmetric = true;
     // Is the signal symmetric?
     if (signal.symRank >= 0.95 && signal.peaksComp.length < 32) {
@@ -90,7 +96,6 @@ export default {
               nFlagged++;
               // Flag the other components of the multiplet
               for (let u = 2; u <= j; u++) {
-                // TODO improve those loops
                 let jSum = 0;
                 for (let i = 0; i < u; i++) {
                   jSum += Jc[i];
@@ -143,19 +148,13 @@ function updateSignal(signal, Jc) {
   signal.startX = peaks[0].x / signal.observe - peaks[0].width;
   signal.stopX =
     peaks[nbPeaks - 1].x / signal.observe + peaks[nbPeaks - 1].width;
-
   signal.integralData.from = peaks[0].x / signal.observe - peaks[0].width * 3;
   signal.integralData.to =
     peaks[nbPeaks - 1].x / signal.observe + peaks[nbPeaks - 1].width * 3;
-
   // Compile the pattern and format the constant couplings
   signal.maskPattern = signal.mask2;
   signal.multiplicity = abstractPattern(signal, Jc);
   signal.pattern = signal.multiplicity; // Our library depends on this parameter, but it is old
-  // console.log(signal);
-  /* if (DEBUG)        {
-        console.log('Final j-couplings: ' + JSON.stringify(Jc));
-    }*/
 }
 
 /**
@@ -329,14 +328,15 @@ function getRanges(peaks) {
  * @return {*}
  * @private
  */
-function symmetrizeChoiseBest(signal, maxError, iteration) {
-  let symRank1 = symmetrize(signal, maxError, iteration);
+function symmetrizeChoiseBest(signal, options = {}) {
+  let { maxError, iteration, jAxisKey = jAxisKeys } = options;
+  let symRank1 = symmetrize(signal, maxError, iteration, jAxisKey);
   let tmpPeaks = signal.peaksComp;
   let tmpMask = signal.mask;
   let cs = signal.delta1;
   signal.delta1 =
     (signal.peaks[0].x + signal.peaks[signal.peaks.length - 1].x) / 2;
-  let symRank2 = symmetrize(signal, maxError, iteration);
+  let symRank2 = symmetrize(signal, maxError, iteration, jAxisKey);
   if (signal.peaksComp.length > tmpPeaks.length) {
     return symRank2;
   } else {
@@ -356,15 +356,16 @@ function symmetrizeChoiseBest(signal, maxError, iteration) {
  * @return {Number}
  * @private
  */
-function symmetrize(signal, maxError, iteration) {
+function symmetrize(signal, maxError, iteration, key) {
+  let { jAxis, intensity } = key;
   // Before to symmetrize we need to keep only the peaks that possibly conforms the multiplete
   let max, min, avg, ratio, avgWidth;
   let peaks = new Array(signal.peaks.length);
   // Make a deep copy of the peaks and convert PPM ot HZ
   for (let i = 0; i < peaks.length; i++) {
     peaks[i] = {
-      x: signal.peaks[i].x * signal.observe,
-      intensity: signal.peaks[i].intensity,
+      x: signal.peaks[i][jAxis] * signal.observe,
+      intensity: signal.peaks[i][intensity],
       width: signal.peaks[i].width,
     };
   }
@@ -395,7 +396,8 @@ function symmetrize(signal, maxError, iteration) {
   // ratio smaller than 3
   for (let i = 0; i < nbPeaks; i++) {
     mask[i] = true;
-    heightSum += signal.peaks[i].intensity;
+    // heightSum += signal.peaks[i].intensity;
+    heightSum += peaks[i].intensity;
   }
 
   while (left <= right) {
@@ -496,7 +498,7 @@ function symmetrize(signal, maxError, iteration) {
   symFactor -= ((heightSum - newSumHeights) / heightSum) * 0.12; // Removed peaks penalty
   // Sometimes we need a second opinion after the first symmetrization.
   if (symFactor > 0.8 && symFactor < 0.97 && iteration < 2) {
-    return symmetrize(signal, maxErrorIter2, 2);
+    return symmetrize(signal, maxErrorIter2, 2, key);
   } else {
     // Center the given pattern at cs and symmetrize x
     if (peaks.length > 1) {
