@@ -8,12 +8,12 @@ const defaultOptions = {
   referenceMaxShiftError: 0.08,
   tolerances: [10, 100],
   nucleus: ['1H', '1H'],
-  observeFrequencies: [600, 600],
+  observeFrequencies: [400, 400],
   jAnalyzer: {
     jAxisKey: { jAxis: 'y', intensity: 'z' },
   },
 };
-export function xyzJResAnalizer(signals, options = {}) {
+export function xyzJResAnalyzer(signals, options = {}) {
   let jresAnalyzerOptions = assignDeep({}, defaultOptions, options);
   let { reference, referenceMaxShiftError } = jresAnalyzerOptions;
   let temporalSignals = compilePattern(signals, jresAnalyzerOptions);
