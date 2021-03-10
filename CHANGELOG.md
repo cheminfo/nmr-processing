@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.11.1...v0.12.0) (2021-03-05)
+
+
+### Features
+
+* add simulation of 1D nmr spectrum from signals ([247d523](https://www.github.com/cheminfo/nmr-processing/commit/247d523f80d2877713fa6d978027643b4fa78a3f))
+* use spectrum-generator in simulate1D ([9489d78](https://www.github.com/cheminfo/nmr-processing/commit/9489d78e1962c6cf834e14e24f46c876be6802e8))
+* use static function for spinSystem creation ([1db79c5](https://www.github.com/cheminfo/nmr-processing/commit/1db79c5c2e5901b366d48c88263116cbbb1d0972))
+
+
+### Bug Fixes
+
+* eslint ([69ac997](https://www.github.com/cheminfo/nmr-processing/commit/69ac9972cae991f27fe15648952593f92bcd91b9))
+* rename xyzJResAnalizer to xyzJResAnalyzer ([fbc80ee](https://www.github.com/cheminfo/nmr-processing/commit/fbc80ee9485f028f1c12f4a75571fa4eb6e6d031))
+
 ### [0.11.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.11.0...v0.11.1) (2021-03-01)
 
 
