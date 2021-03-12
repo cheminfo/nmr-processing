@@ -8,6 +8,7 @@ export * from './peaks/peaksFilterImpurities';
 export * from './xy/xyAutoPeaksPicking';
 export * from './xy/xyAutoRangesPicking';
 export * from './signals/signalsToRanges';
+export * from './signals/signalsToXY';
 export * from './ranges/rangesToACS';
 export * from './prediction/predictionProton';
 export * from './xyz/xyzAutoPeaksPicking';
