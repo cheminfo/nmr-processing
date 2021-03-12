@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.12.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.12.0...v0.12.1) (2021-03-12)
+
+
+### Bug Fixes
+
+* expose signalsToXY ([927646b](https://www.github.com/cheminfo/nmr-processing/commit/927646b555304d5c48a2263b5f59caa2c231d8dd))
+
 ## [0.12.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.11.1...v0.12.0) (2021-03-05)
 
 
