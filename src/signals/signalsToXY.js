@@ -4,8 +4,8 @@ import { signalsToSpinSystem } from './simulation/signalsToSpinSystem';
 import simulate1D from './simulation/simulate1D';
 
 /**
- * Generate a spectrum from an array of singals 
- * @param {array} signals 
+ * Generate a spectrum from an array of singals
+ * @param {array} signals
  * @param {object} [options={}]
  * @param {number} [options.frequency=400] Frequency (in MHz) of the simulated spectrum
  * @param {number} [options.maxValue=1e8] Default height of the simulated spectrum

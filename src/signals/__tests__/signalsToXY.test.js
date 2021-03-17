@@ -104,6 +104,17 @@ const signals = [
     ],
   },
 ];
+
+const signalsLarge = [];
+for (let i = 0; i < 10; i++) {
+  signalsLarge.push({
+    assignment: i,
+    nbAtoms: 1,
+    delta: i,
+    j: [{ coupling: i, assignment: (i + 1) % 10 }],
+  });
+}
+
 describe('spectrum from prediction', () => {
   it('1H chemical shift prediction', async function () {
     const spectrum = signalsToXY(signals, {
@@ -113,6 +124,22 @@ describe('spectrum from prediction', () => {
       },
     });
     expect(spectrum.x).toHaveLength(16 * 1024);
-    expect(Math.max(...spectrum.y)).toBe(1e8)
+    expect(Math.max(...spectrum.y)).toBe(1e8);
+  });
+
+  it('small cluster', async function () {
+    const spectrum = signalsToXY(signals, {
+      maxClusterSize: 5,
+    });
+    expect(spectrum.x).toHaveLength(16 * 1024);
+    expect(Math.max(...spectrum.y)).toBe(1e8);
+  });
+
+  it('large array', async function () {
+    const spectrum = signalsToXY(signalsLarge, {
+      maxClusterSize: 5,
+    });
+    expect(spectrum.x).toHaveLength(16 * 1024);
+    expect(Math.max(...spectrum.y)).toBe(1e8);
   });
 });
