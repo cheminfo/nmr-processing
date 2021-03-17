@@ -113,5 +113,6 @@ describe('spectrum from prediction', () => {
       },
     });
     expect(spectrum.x).toHaveLength(16 * 1024);
+    expect(Math.max(...spectrum.y)).toBe(1e8)
   });
 });
