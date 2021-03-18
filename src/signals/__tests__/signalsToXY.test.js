@@ -1,3 +1,5 @@
+import { writeFileSync } from 'fs';
+
 import { signalsToXY } from '../signalsToXY';
 
 const signals = [
@@ -123,6 +125,10 @@ describe('spectrum from prediction', () => {
         options: { from: 0, to: 10, nbPoints: 16 * 1024 },
       },
     });
+    writeFileSync(
+      'hola.txt',
+      JSON.stringify({ x: Array.from(spectrum.x), y: Array.from(spectrum.y) }),
+    );
     expect(spectrum.x).toHaveLength(16 * 1024);
     expect(Math.max(...spectrum.y)).toBe(1e8);
   });
