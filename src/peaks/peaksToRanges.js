@@ -1,5 +1,5 @@
 // import { Ranges } from 'spectra-data-ranges';
-import { xyGetArea } from '../xy/xyGetArea';
+import { xyIntegration } from 'ml-spectra-processing';
 
 import jAnalyzer from './util/jAnalyzer';
 import { joinRanges } from './util/joinRanges';
@@ -243,7 +243,7 @@ function detectSignals(data, peakList, options = {}) {
     signals[i].delta1 = chemicalShift / integralPeaks;
 
     if (integralType === 'sum') {
-      integral.value = xyGetArea(data, {
+      integral.value = xyIntegration(data, {
         from: integral.from,
         to: integral.to,
       });
