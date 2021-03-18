@@ -114,32 +114,33 @@ function mergeClusters(list, maxClusterSize) {
 
     // Is it a candidate to be merged?
     while (index < nElements && clusterA[index++] !== -1);
+    if (index >= nElements) continue;
 
-    if (index < nElements) {
-      for (let j = list.length - 1; j >= i + 1; j--) {
-        let clusterB = list[j];
-        // Do they have common elements?
-        let count = 0;
-        let common = 0;
+    for (let j = list.length - 1; j >= i + 1; j--) {
+      let clusterB = list[j];
+      // Do they have common elements?
+      let count = 0;
+      let common = 0;
+
+      for (let index = 0; index < nElements; index++) {
+        if (clusterA[index] * clusterB[index] === -1) common++;
+        if (clusterA[index] !== 0 || clusterB[index] !== 0) count++;
+      }
+
+      if (common > 0 && count <= maxClusterSize) {
+        // Then we can merge those 2 clusters
         for (let index = 0; index < nElements; index++) {
-          if (clusterA[index] * clusterB[index] === -1) common++;
-          if (clusterA[index] !== 0 || clusterB[index] !== 0) count++;
-        }
-
-        if (common > 0 && count <= maxClusterSize) {
-          // Then we can merge those 2 clusters
-          for (let index = 0; index < nElements; index++) {
-            if (clusterB[index] === 1) {
-              clusterA[index] = 1;
-            } else if (clusterB[index] === -1 && clusterA[index] !== 1) {
-              clusterA[index] = -1;
-            }
+          if (clusterB[index] === 1) {
+            clusterA[index] = 1;
+          } else if (clusterB[index] === -1 && clusterA[index] !== 1) {
+            clusterA[index] = -1;
           }
-          list.splice(j++, 1);
         }
+        list.splice(j--, 1);
       }
     }
   }
+
   return list;
 }
 
