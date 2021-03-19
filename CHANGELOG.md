@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.12.1...v0.13.0) (2021-03-19)
+
+
+### Features
+
+* fix ensureClusterSize ([#47](https://www.github.com/cheminfo/nmr-processing/issues/47)) ([570f9f8](https://www.github.com/cheminfo/nmr-processing/commit/570f9f82fcb17a42cae767f638b19cadbb894fff))
+* remove xyGetArea close[#10](https://www.github.com/cheminfo/nmr-processing/issues/10) ([13bf194](https://www.github.com/cheminfo/nmr-processing/commit/13bf19475fa0d1bcefeb84a750d97f4ee8cd1d00))
+* rescale to 1e8 signalsToXY and add maxValue option ([da2364c](https://www.github.com/cheminfo/nmr-processing/commit/da2364ca434f8f860533d8c20309605dc5487cae))
+
+
+### Bug Fixes
+
+* remove writeFile in test ([61b54e3](https://www.github.com/cheminfo/nmr-processing/commit/61b54e3a0f2ed670cb048bf32453a9084ccdd02f))
+
 ### [0.12.1](https://www.github.com/cheminfo/nmr-processing/compare/v0.12.0...v0.12.1) (2021-03-12)
 
 
