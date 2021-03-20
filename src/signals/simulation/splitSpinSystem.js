@@ -109,20 +109,25 @@ function mergeClusters(list, maxClusterSize) {
     let index = 0;
 
     // Is it a candidate to be merged?
-    while (index < nElements && clusterA[index++] !== -1);
+    while (index < nElements && clusterA[index++] !== -1)
+    
     if (index >= nElements) continue;
 
+    const nCoupledA = getNCoupled(clusterA);
     for (let j = list.length - 1; j >= i + 1; j--) {
       let clusterB = list[j];
+
+      if (nCoupledA !== getNCoupled(clusterB)) continue;
+      
       // Do they have common elements?
       let count = 0;
       let common = 0;
       for (let index = 0; index < nElements; index++) {
-        if (clusterA[index] * clusterB[index] === -1) common++;
+        if (clusterA[index] * clusterB[index] === 1) common++;
         if (clusterA[index] !== 0 || clusterB[index] !== 0) count++;
       }
 
-      if (common > 0 && count <= maxClusterSize) {
+      if (common === nCoupledA && count <= maxClusterSize) {
         // Then we can merge those 2 clusters
         for (let index = 0; index < nElements; index++) {
           if (clusterB[index] === 1) {
@@ -137,6 +142,15 @@ function mergeClusters(list, maxClusterSize) {
   }
   return list;
 }
+
+function getNCoupled(cluster) {
+  let nCoupled = 0;
+  for (let i = 0; i < cluster.length; i++) {
+    if (cluster[i] < 0) nCoupled++;
+  }
+  return nCoupled;
+}
+
 function getMembers(cluster, nSpins) {
   let members = new Int16Array(nSpins);
   for (let e of cluster) {
