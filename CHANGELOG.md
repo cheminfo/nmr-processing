@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.0...v1.0.1) (2021-03-24)
+
+
+### Bug Fixes
+
+* update ml-matrix-peaks-finder to v1.0.0 ([da734cc](https://www.github.com/cheminfo/nmr-processing/commit/da734cc91928750ca2038ff285f8d2db65130284))
+
 ## [1.0.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.14.0...v1.0.0) (2021-03-24)
 
 
