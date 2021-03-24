@@ -1,4 +1,6 @@
-import { fromMolfile } from '../predictionProton';
+import OCL from 'openchemlib/minimal';
+
+import { predictionProton } from '../predictionProton';
 
 const molfile = `Benzene, ethyl-, ID: C100414
   NIST    16081116462D 1   1.00000     0.00000
@@ -25,7 +27,9 @@ M  END
 
 describe('predictionProton', () => {
   it('1H chemical shift prediction', async function () {
-    const prediction = await fromMolfile(molfile);
+    const prediction = await predictionProton(
+      OCL.Molecule.fromMolfile(molfile),
+    );
     expect(Object.keys(prediction)).toStrictEqual([
       'molfile',
       'diaIDs',

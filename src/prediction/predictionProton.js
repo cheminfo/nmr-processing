@@ -1,8 +1,6 @@
 import FormData from 'form-data';
 import fetch from 'node-fetch';
-import OCL from 'openchemlib';
 import {
-  initOCL,
   addDiastereotopicMissingChirality,
   getDiastereotopicAtomIDs,
 } from 'openchemlib-utils';
@@ -10,26 +8,13 @@ import {
 import { signalJoinCouplings } from '../signal/signalJoinCouplings';
 import { signalsToRanges } from '../signals/signalsToRanges.js';
 
-initOCL(OCL, { keepExisting: true });
-
-export function fromSmiles(smiles, options) {
-  const molecule = OCL.Molecule.fromSmiles(smiles);
-  return fromMolecule(molecule, options);
-}
-
-export function fromMolfile(molfile, options) {
-  const molecule = OCL.Molecule.fromMolfile(molfile);
-  return fromMolecule(molecule, options);
-}
-
 /**
- * Makes a prediction using proton
- * @param {Molecule} molecule - could be a string of molfile, smile or Molecule instance.
+ * Makes a prediction using proton.
+ * @param {Molecule} molecule - OCL Molecule instance.
  * @param {object} options
  * @return {Promise<Array>}
  */
-
-async function fromMolecule(molecule) {
+export async function predictionProton(molecule) {
   molecule = molecule.getCompactCopy();
   molecule.addImplicitHydrogens();
   addDiastereotopicMissingChirality(molecule);

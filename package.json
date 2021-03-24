@@ -49,6 +49,7 @@
     "jest-matcher-deep-close-to": "^2.0.1",
     "ml-array-median": "^1.1.4",
     "nmr-xy-testdata": "^0.2.1",
+    "openchemlib": "^7.4.0",
     "prettier": "^2.2.1",
     "rollup": "^2.42.3"
   },
@@ -69,8 +70,7 @@
     "ml-sparse-matrix": "^2.1.0",
     "ml-spectra-processing": "^5.8.0",
     "node-fetch": "^2.6.1",
-    "openchemlib": "^7.3.0",
-    "openchemlib-utils": "^0.7.0",
+    "openchemlib-utils": "^0.7.1",
     "spectrum-generator": "^4.7.0"
   }
 }
