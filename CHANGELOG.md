@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.14.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.13.0...v0.14.0) (2021-03-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* The proton prediction function was renamed to predictionProton and requires an `OCL.Molecule` instance. `fromMolfile` and `fromSmiles` were removed.
+
+### Code Refactoring
+
+* remove OCL dependency ([bdcbbe0](https://www.github.com/cheminfo/nmr-processing/commit/bdcbbe0440ffbfc2f67f90d078002066017fa3d5))
+
 ## [0.13.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.12.1...v0.13.0) (2021-03-19)
 
 
