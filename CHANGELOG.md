@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.14.0...v1.0.0) (2021-03-24)
+
+
+### Bug Fixes
+
+* update dependencies ([5e2809a](https://www.github.com/cheminfo/nmr-processing/commit/5e2809a057947ad4b52e66c74ed5e7bbf5e2b7bd))
+
 ## [0.14.0](https://www.github.com/cheminfo/nmr-processing/compare/v0.13.0...v0.14.0) (2021-03-24)
 
 
