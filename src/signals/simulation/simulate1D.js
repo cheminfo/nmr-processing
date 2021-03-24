@@ -161,7 +161,6 @@ export default function simulate1D(spinSystem, options) {
         return v;
       });
       triuTimesAbs(rhoip2, smallValue);
-      // eslint-disable-next-line no-loop-func
       rhoip2.forEachNonZero((i, j, v) => {
         let val = rhoip.get(i, j);
         val = Math.min(Math.abs(val), Math.abs(v));

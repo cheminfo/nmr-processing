@@ -194,11 +194,11 @@ function switchFormat(range, signal, parenthesis, options) {
 }
 
 function formatMF(mf) {
-  return mf.replace(/([0-9]+)/g, '<sub>$1</sub>');
+  return mf.replace(/(?<num>[0-9]+)/g, '<sub>$<num></sub>');
 }
 
 function formatNucleus(nucleus) {
-  return nucleus.replace(/([0-9]+)/g, '<sup>$1</sup>');
+  return nucleus.replace(/(?<num>[0-9]+)/g, '<sup>$<num></sup>');
 }
 
 function appendSeparator(strings) {
@@ -209,8 +209,8 @@ function appendSeparator(strings) {
 }
 
 function formatAssignment(assignment) {
-  assignment = assignment.replace(/([0-9]+)/g, '<sub>$1</sub>');
-  assignment = assignment.replace(/"([^"]*)"/g, '<i>$1</i>');
+  assignment = assignment.replace(/(?<num>[0-9]+)/g, '<sub>$<num></sub>');
+  assignment = assignment.replace(/"(?<i>[^"]*)"/g, '<i>$<i></i>');
   return assignment;
 }
 

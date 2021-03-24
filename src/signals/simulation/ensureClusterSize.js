@@ -1,5 +1,5 @@
 import isAnyArray from 'is-any-array';
-import hlClust from 'ml-hclust';
+import { agnes } from 'ml-hclust';
 import Matrix from 'ml-matrix';
 
 export function ensureClusterSize(spinSystem, options = {}) {
@@ -7,7 +7,7 @@ export function ensureClusterSize(spinSystem, options = {}) {
   let { frequency = 400, maxClusterSize = 8 } = options;
 
   let betas = calculateBetas(chemicalShifts, couplingConstants, frequency);
-  let initClusters = hlClust.agnes(betas, { isDistanceMatrix: true });
+  let initClusters = agnes(betas, { isDistanceMatrix: true });
   let clusterList = [];
   let nSpins = chemicalShifts.length;
   splitCluster(initClusters, clusterList, {
