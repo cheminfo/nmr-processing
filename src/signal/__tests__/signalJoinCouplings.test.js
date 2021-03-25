@@ -1,6 +1,7 @@
 import { signalJoinCouplings } from '../signalJoinCouplings';
 
 import signal from './signal.json';
+import signal2 from './signal2.json';
 import signalJoinD from './signalJoinD.json';
 import signalJoinT from './signalJoinT.json';
 
@@ -15,6 +16,20 @@ describe('signalJoinCouplings', () => {
         multiplicity: 't',
       },
     ]);
+  });
+
+  it('check dddd', () => {
+    const result = signalJoinCouplings(signal2);
+    expect(result).toStrictEqual({
+      assignment: 8,
+      nbAtoms: 1,
+      delta: 7.26,
+      j: [
+        { coupling: 7.718, multiplicity: 't', assignment: [10, 9] },
+        { coupling: 1.596, multiplicity: 'd', assignment: [14] },
+        { coupling: 0.507, multiplicity: 'd', assignment: [13] },
+      ],
+    });
   });
 
   it('check dddd with tolerance 1.1', () => {

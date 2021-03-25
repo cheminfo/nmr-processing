@@ -15,7 +15,7 @@ export function signalJoinCouplings(signal, options = {}) {
     let cont = couplings[0].assignment ? couplings[0].assignment.length : 1;
     let newNmrJs = [];
     let diaIDs = [];
-    let atoms = [];
+    let assignment = [];
     couplings.sort(function (a, b) {
       return b.coupling - a.coupling;
     });
@@ -23,7 +23,7 @@ export function signalJoinCouplings(signal, options = {}) {
       diaIDs = [couplings[0].diaID];
     }
     if (couplings[0].assignment) {
-      atoms = [couplings[0].assignment];
+      assignment = [...couplings[0].assignment];
     }
     for (let i = 0; i < couplings.length - 1; i++) {
       if (
@@ -34,7 +34,7 @@ export function signalJoinCouplings(signal, options = {}) {
           : 1;
         if (couplings[i + 1].diaID) diaIDs.push(couplings[i + 1].diaID);
         if (couplings[i + 1].assignment) {
-          atoms.push(couplings[i + 1].assignment);
+          assignment.push(...couplings[i + 1].assignment);
         }
       } else {
         let jTemp = {
@@ -44,8 +44,8 @@ export function signalJoinCouplings(signal, options = {}) {
         if (diaIDs.length > 0) {
           jTemp.diaID = diaIDs;
         }
-        if (atoms.length > 0) {
-          jTemp.assignment = atoms;
+        if (assignment.length > 0) {
+          jTemp.assignment = assignment;
         }
 
         newNmrJs.push(jTemp);
@@ -54,7 +54,7 @@ export function signalJoinCouplings(signal, options = {}) {
           diaIDs = [couplings[i + 1].diaID];
         }
         if (couplings[i + 1].assignment) {
-          atoms = [couplings[i + 1].assignment];
+          assignment = [...couplings[i + 1].assignment];
         }
         cont = couplings[i + 1].assignment
           ? couplings[i + 1].assignment.length
@@ -68,8 +68,8 @@ export function signalJoinCouplings(signal, options = {}) {
     if (diaIDs.length > 0) {
       jTemp.diaID = diaIDs;
     }
-    if (atoms.length > 0) {
-      jTemp.assignment = atoms;
+    if (assignment.length > 0) {
+      jTemp.assignment = assignment;
     }
     newNmrJs.push(jTemp);
 
