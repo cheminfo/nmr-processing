@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.1...v1.0.2) (2021-03-25)
+
+
+### Bug Fixes
+
+* signalJoinCouplings assignment join ([2fce7cb](https://www.github.com/cheminfo/nmr-processing/commit/2fce7cb749d86dceccbddd355a66fcc2ac9b4a05))
+
 ### [1.0.1](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.0...v1.0.1) (2021-03-24)
 
 
