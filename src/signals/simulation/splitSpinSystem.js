@@ -1,4 +1,3 @@
-import isAnyArray from 'is-any-array';
 import { agnes } from 'ml-hclust';
 import Matrix from 'ml-matrix';
 
@@ -32,12 +31,12 @@ export function splitSpinSystem(spinSystem, options = {}) {
 
 function splitCluster(cluster, clusterList, options = {}) {
   let { maxClusterSize, force, nSpins, connectivity } = options;
-  if (!force && cluster.index.length <= maxClusterSize) {
-    clusterList.push(getMembers(cluster, nSpins));
+  if (!force && cluster.size <= maxClusterSize) {
+    clusterList.push(getMembers(cluster.indices(), nSpins));
   } else {
     for (let child of cluster.children) {
-      if (!isNaN(child.index) || child.index.length <= maxClusterSize) {
-        let members = getMembers(child, nSpins);
+      if (child.size <= maxClusterSize) {
+        let members = getMembers(child.indices(), nSpins);
         // Add the neighbors that shares at least 1 coupling with the given cluster
         let count = 0;
         for (let i = 0; i < nSpins; i++) {
@@ -51,11 +50,10 @@ function splitCluster(cluster, clusterList, options = {}) {
             count++;
           }
         }
-
         if (count <= maxClusterSize) {
           clusterList.push(members);
         } else {
-          if (isNaN(child.index)) {
+          if (child.index < 0) {
             splitCluster(child, clusterList, {
               maxClusterSize,
               force: true,
@@ -79,7 +77,6 @@ function splitCluster(cluster, clusterList, options = {}) {
     }
   }
 }
-
 function calculateBetas(chemicalShifts, couplingConstants, frequency) {
   let nRows = couplingConstants.rows;
   let nColumns = couplingConstants.columns;
@@ -142,12 +139,8 @@ function mergeClusters(list, maxClusterSize) {
 }
 function getMembers(cluster, nSpins) {
   let members = new Int16Array(nSpins);
-  if (isAnyArray(cluster.index)) {
-    for (let c of cluster.index) {
-      members[Number(c.index)] = 1;
-    }
-  } else if (!isNaN(cluster.index)) {
-    members[Number(cluster.index)] = 1;
+  for (let e of cluster) {
+    members[e] = 1;
   }
   return members;
 }
