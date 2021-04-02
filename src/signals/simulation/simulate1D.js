@@ -39,6 +39,7 @@ export default function simulate1D(spinSystem, options) {
 
   let { options: shapeOptions } = shape;
   let peakWidth = lineWidth / frequencyMHz;
+
   shapeOptions.peakWidthFct = () => peakWidth;
   let spectrumGenerator = new SpectrumGenerator(shapeOptions);
 

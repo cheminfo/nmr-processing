@@ -2,6 +2,7 @@ import rescale from 'ml-array-rescale';
 
 import { signalsToSpinSystem } from './simulation/signalsToSpinSystem';
 import simulate1D from './simulation/simulate1D';
+import { splitSpinSystem } from './simulation/splitSpinSystem';
 
 /**
  * Generate a spectrum from an array of singals
@@ -28,7 +29,12 @@ export function signalsToXY(signals, options = {}) {
     maxClusterSize = 8,
   } = options;
 
-  let spinSystem = signalsToSpinSystem(signals, { frequency, maxClusterSize });
+  let spinSystem = signalsToSpinSystem(signals);
+
+  spinSystem.clusters = splitSpinSystem(spinSystem, {
+    frequency,
+    maxClusterSize,
+  });
 
   let spectrum = simulate1D(spinSystem, {
     frequency,

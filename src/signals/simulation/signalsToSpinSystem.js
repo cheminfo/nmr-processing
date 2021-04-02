@@ -1,10 +1,7 @@
 import Matrix from 'ml-matrix';
 import simpleClustering from 'ml-simple-clustering';
 
-import { ensureClusterSize } from './ensureClusterSize';
-
-export function signalsToSpinSystem(signals, options = {}) {
-  let { frequency = 400, maxClusterSize = 8 } = options;
+export function signalsToSpinSystem(signals) {
   const nSpins = signals.length;
   const chemicalShifts = new Array(nSpins);
   const multiplicity = new Array(nSpins);
@@ -43,18 +40,11 @@ export function signalsToSpinSystem(signals, options = {}) {
     out: 'indexes',
   });
 
-  let spinSystem = {
+  return {
     clusters,
     couplingConstants,
     chemicalShifts,
     multiplicity,
     connectivity,
   };
-
-  spinSystem.clusters = ensureClusterSize(spinSystem, {
-    frequency,
-    maxClusterSize,
-  });
-
-  return spinSystem;
 }

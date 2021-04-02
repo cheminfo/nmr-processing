@@ -1,5 +1,11 @@
 import { couplingPatterns } from '../constants/couplingPatterns';
 
+const getNbAssignments = (assignment) =>
+  Array.isArray(assignment) ? assignment.length : 1;
+
+const getArrayOfMembers = (assignment, key) =>
+  Array.isArray(assignment[key]) ? assignment[key] : [assignment[key]];
+
 /**
  * Join couplings smaller than a define tolerance.
  * The resulting coupling should be an average of the existing one.
@@ -12,7 +18,7 @@ export function signalJoinCouplings(signal, options = {}) {
   let couplings = signal.j;
   if (couplings && couplings.length > 0) {
     signal = JSON.parse(JSON.stringify(signal));
-    let cont = couplings[0].assignment ? couplings[0].assignment.length : 1;
+    let cont = getNbAssignments(couplings[0].assignment);
     let newNmrJs = [];
     let diaIDs = [];
     let assignment = [];
@@ -20,21 +26,21 @@ export function signalJoinCouplings(signal, options = {}) {
       return b.coupling - a.coupling;
     });
     if (couplings[0].diaID) {
-      diaIDs = [couplings[0].diaID];
+      diaIDs = getArrayOfMembers(couplings[0], 'diaID');
     }
     if (couplings[0].assignment) {
-      assignment = [...couplings[0].assignment];
+      assignment = getArrayOfMembers(couplings[0], 'assignment');
     }
     for (let i = 0; i < couplings.length - 1; i++) {
       if (
         Math.abs(couplings[i].coupling - couplings[i + 1].coupling) < tolerance
       ) {
-        cont += couplings[i + 1].assignment
-          ? couplings[i + 1].assignment.length
-          : 1;
-        if (couplings[i + 1].diaID) diaIDs.push(couplings[i + 1].diaID);
+        cont += getNbAssignments(couplings[i + 1].assignment);
+        if (couplings[i + 1].diaID) {
+          diaIDs.push(...getArrayOfMembers(couplings[i + 1], 'diaID'));
+        }
         if (couplings[i + 1].assignment) {
-          assignment.push(...couplings[i + 1].assignment);
+          assignment.push(...getArrayOfMembers(couplings[i + 1], 'assignment'));
         }
       } else {
         let jTemp = {
@@ -51,16 +57,15 @@ export function signalJoinCouplings(signal, options = {}) {
         newNmrJs.push(jTemp);
 
         if (couplings[i + 1].diaID) {
-          diaIDs = [couplings[i + 1].diaID];
+          diaIDs = getArrayOfMembers(couplings[i + 1], 'diaID');
         }
         if (couplings[i + 1].assignment) {
-          assignment = [...couplings[i + 1].assignment];
+          assignment = getArrayOfMembers(couplings[i + 1], 'assignment');
         }
-        cont = couplings[i + 1].assignment
-          ? couplings[i + 1].assignment.length
-          : 1;
+        cont = getNbAssignments(couplings[i + 1].assignment);
       }
     }
+
     let jTemp = {
       coupling: Math.abs(couplings[couplings.length - 1].coupling),
       multiplicity: couplingPatterns[cont],
@@ -75,5 +80,6 @@ export function signalJoinCouplings(signal, options = {}) {
 
     signal.j = newNmrJs;
   }
+
   return signal;
 }
