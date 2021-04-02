@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.1...v1.1.0) (2021-04-02)
+
+
+### Features
+
+* splitSystem as independent function ([#53](https://www.github.com/cheminfo/nmr-processing/issues/53)) ([1054423](https://www.github.com/cheminfo/nmr-processing/commit/10544234125147b57e4171458ae5882c0d60c021))
+
+
+### Bug Fixes
+
+* signalJoinCouplings assignment join ([2fce7cb](https://www.github.com/cheminfo/nmr-processing/commit/2fce7cb749d86dceccbddd355a66fcc2ac9b4a05))
+
 ### [1.0.1](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.0...v1.0.1) (2021-03-24)
 
 
