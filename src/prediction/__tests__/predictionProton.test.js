@@ -30,7 +30,7 @@ describe('predictionProton', () => {
     const prediction = await predictionProton(
       OCL.Molecule.fromMolfile(molfile),
     );
-    console.log(prediction);
+
     expect(Object.keys(prediction)).toStrictEqual([
       'molfile',
       'diaIDs',

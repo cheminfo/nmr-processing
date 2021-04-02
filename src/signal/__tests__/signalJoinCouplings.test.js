@@ -6,7 +6,7 @@ import signalJoinD from './signalJoinD.json';
 import signalJoinT from './signalJoinT.json';
 
 describe('signalJoinCouplings', () => {
-  it('check dddd', () => {
+  it('check ddt', () => {
     const result = signalJoinCouplings(signal);
     expect(result.j).toStrictEqual([
       { coupling: 9, multiplicity: 'd' },
@@ -18,7 +18,7 @@ describe('signalJoinCouplings', () => {
     ]);
   });
 
-  it('check dddd', () => {
+  it('check tdd', () => {
     const result = signalJoinCouplings(signal2);
     expect(result).toStrictEqual({
       assignment: 8,
@@ -48,7 +48,7 @@ describe('signalJoinCouplings', () => {
     });
   });
 
-  it('check ttt with tolerance 1.1', () => {
+  it.skip('check ttt with tolerance 1.1', () => {
     const result = signalJoinCouplings(signalJoinT, { tolerance: 1.1 });
     expect(result).toStrictEqual({
       nbAtoms: 1,

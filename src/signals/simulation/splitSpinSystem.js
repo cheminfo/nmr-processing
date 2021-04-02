@@ -2,12 +2,11 @@ import isAnyArray from 'is-any-array';
 import { agnes } from 'ml-hclust';
 import Matrix from 'ml-matrix';
 
-export function ensureClusterSize(spinSystem, options = {}) {
+export function splitSpinSystem(spinSystem, options = {}) {
   let { chemicalShifts, couplingConstants, connectivity } = spinSystem;
   let { frequency = 400, maxClusterSize = 8 } = options;
-
   let betas = calculateBetas(chemicalShifts, couplingConstants, frequency);
-  let initClusters = agnes(betas, { isDistanceMatrix: true });
+  let initClusters = agnes(betas, { method: 'single', isDistanceMatrix: true });
   let clusterList = [];
   let nSpins = chemicalShifts.length;
   splitCluster(initClusters, clusterList, {
@@ -17,7 +16,6 @@ export function ensureClusterSize(spinSystem, options = {}) {
     connectivity,
   });
   let mergedClusters = mergeClusters(clusterList, maxClusterSize);
-
   let nClusters = mergedClusters.length;
   let clusters = new Array(nClusters);
   for (let j = 0; j < nClusters; j++) {
@@ -28,6 +26,7 @@ export function ensureClusterSize(spinSystem, options = {}) {
       clusters[j].push(element < 0 ? -(i + 1) : i);
     }
   }
+
   return clusters;
 }
 
@@ -121,7 +120,6 @@ function mergeClusters(list, maxClusterSize) {
       // Do they have common elements?
       let count = 0;
       let common = 0;
-
       for (let index = 0; index < nElements; index++) {
         if (clusterA[index] * clusterB[index] === -1) common++;
         if (clusterA[index] !== 0 || clusterB[index] !== 0) count++;
@@ -136,14 +134,12 @@ function mergeClusters(list, maxClusterSize) {
             clusterA[index] = -1;
           }
         }
-        list.splice(j--, 1);
+        list.splice(j, 1);
       }
     }
   }
-
   return list;
 }
-
 function getMembers(cluster, nSpins) {
   let members = new Int16Array(nSpins);
   if (isAnyArray(cluster.index)) {
