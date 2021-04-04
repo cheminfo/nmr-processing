@@ -1,6 +1,6 @@
 import { signalMultiplicityPattern } from '../signalMultiplicityPattern';
 
-import signal from './signal.json';
+import signal from './dddd.json';
 
 describe('signalMultiplicityPattern', () => {
   it('check dddd', () => {

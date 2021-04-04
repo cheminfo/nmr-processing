@@ -1,0 +1,11 @@
+{
+  "assignment": 8,
+  "nbAtoms": 1,
+  "delta": 7.26,
+  "j": [
+    { "coupling": 7, "assignment": [10], "multiplicity": "d" },
+    { "coupling": 7.001, "assignment": [9], "multiplicity": "d" },
+    { "coupling": 8, "assignment": [14], "multiplicity": "d" },
+    { "coupling": 9, "assignment": [13], "multiplicity": "d" }
+  ]
+}
