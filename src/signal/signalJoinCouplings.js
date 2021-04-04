@@ -1,93 +1,72 @@
-import { couplingPatterns } from '../constants/couplingPatterns';
+import sum from 'ml-array-sum';
 
-const getNbAssignments = (assignment) =>
-  Array.isArray(assignment) ? assignment.length : 1;
+import { joinPatterns } from '../utilities/joinPatterns';
 
-const getArrayOfMembers = (assignment, key) =>
-  Array.isArray(assignment[key]) ? assignment[key] : [assignment[key]];
+import { signalNormalize } from './signalNormalize';
 
 /**
  * Join couplings smaller than a define tolerance.
  * The resulting coupling should be an average of the existing one.
+ * This function will also ensure that assignment and diaID are arrays.
+ * If distance is specified and is not always the same this property will be removed.
  * @param {object} signal
  * @param {object} [options={}]
  * @param {number} [options.tolerance=0.05] tolerance to merge the couplings
+ * @returns signal
  */
 export function signalJoinCouplings(signal, options = {}) {
   const { tolerance = 0.05 } = options;
-  signal = JSON.parse(JSON.stringify(signal));
-  let couplings = signal.j;
-  for (let coupling of couplings) {
-    if (coupling.assignment && !Array.isArray(coupling.assignment)) {
-      coupling.assignment = [coupling.assignment];
-    }
-    if (coupling.diaID && !Array.isArray(coupling.diaID)) {
-      coupling.diaID = [coupling.diaID];
+  signal = signalNormalize(signal);
+
+  if (!signal.j || signal.j.length < 2) return signal;
+
+  // we group the couplings that are less than the expected tolerance
+  let currentGroup = [signal.j[0]];
+  let groups = [currentGroup];
+  for (let i = 1; i < signal.j.length; i++) {
+    let currentJ = signal.j[i];
+    if (
+      currentGroup[currentGroup.length - 1].coupling - currentJ.coupling <
+      tolerance
+    ) {
+      currentGroup.push(currentJ);
+    } else {
+      currentGroup = [currentJ];
+      groups.push(currentGroup);
     }
   }
-  if (couplings && couplings.length > 0) {
-    let cont = couplings[0].assignment ? couplings[0].assignment.length : 1;
-    let newNmrJs = [];
-    let diaIDs = [];
-    let assignment = [];
-    couplings.sort(function (a, b) {
-      return b.coupling - a.coupling;
-    });
-    if (couplings[0].diaID) {
-      diaIDs = getArrayOfMembers(couplings[0], 'diaID');
-    }
-    if (couplings[0].assignment) {
-      assignment = getArrayOfMembers(couplings[0], 'assignment');
-    }
-    for (let i = 0; i < couplings.length - 1; i++) {
-      if (
-        Math.abs(couplings[i].coupling - couplings[i + 1].coupling) < tolerance
-      ) {
-        cont += getNbAssignments(couplings[i + 1].assignment);
-        if (couplings[i + 1].diaID) {
-          diaIDs.push(...getArrayOfMembers(couplings[i + 1], 'diaID'));
-        }
-        if (couplings[i + 1].assignment) {
-          assignment.push(...getArrayOfMembers(couplings[i + 1], 'assignment'));
-        }
-      } else {
-        let jTemp = {
-          coupling: Math.abs(couplings[i].coupling),
-          multiplicity: couplingPatterns[cont],
-        };
-        if (diaIDs.length > 0) {
-          jTemp.diaID = diaIDs;
-        }
-        if (assignment.length > 0) {
-          jTemp.assignment = assignment;
-        }
 
-        newNmrJs.push(jTemp);
+  signal.j = [];
+  for (let group of groups) {
+    let coupling = sum(group.map((group) => group.coupling)) / group.length;
+    let assignment = distinctValues(
+      group
+        .filter((group) => group.assignment && group.assignment.length > 0)
+        .map((group) => group.assignment)
+        .flat(),
+    );
+    let diaID = distinctValues(
+      group
+        .filter((group) => group.diaID && group.diaID.length > 0)
+        .map((group) => group.diaID)
+        .flat(),
+    );
+    let distances = distinctValues(group.map((group) => group.distance));
+    let multiplicity = joinPatterns(group.map((group) => group.multiplicity));
 
-        if (couplings[i + 1].diaID) {
-          diaIDs = getArrayOfMembers(couplings[i + 1], 'diaID');
-        }
-        if (couplings[i + 1].assignment) {
-          assignment = getArrayOfMembers(couplings[i + 1], 'assignment');
-        }
-        cont = getNbAssignments(couplings[i + 1].assignment);
-      }
-    }
-
-    let jTemp = {
-      coupling: Math.abs(couplings[couplings.length - 1].coupling),
-      multiplicity: couplingPatterns[cont],
+    let newJ = {
+      coupling,
+      multiplicity,
     };
-    if (diaIDs.length > 0) {
-      jTemp.diaID = diaIDs;
-    }
-    if (assignment.length > 0) {
-      jTemp.assignment = assignment;
-    }
-    newNmrJs.push(jTemp);
-
-    signal.j = newNmrJs;
+    if (diaID.length > 0) newJ.diaID = diaID;
+    if (distances.length === 1 && distances[0]) newJ.distance = distances[0];
+    if (assignment.length > 0) newJ.assignment = assignment;
+    signal.j.push(newJ);
   }
 
   return signal;
+}
+
+function distinctValues(array) {
+  return [...new Set(array)];
 }

@@ -1,9 +1,13 @@
+import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
+
 import { signalJoinCouplings } from '../signalJoinCouplings';
 
-import ddddAssignment from './dddd-assignment.json';
-import dddd from './dddd.json';
-import signalJoinD from './signalJoinD.json';
-import signalJoinT from './signalJoinT.json';
+import dddd from './data/dddd.json';
+import ddddAssignment from './data/ddddAssignment.json';
+import ddddDiaID from './data/ddddDiaID.json';
+import tttt from './data/tttt.json';
+
+expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 
 describe('signalJoinCouplings', () => {
   it('dddd to ddt', () => {
@@ -12,7 +16,7 @@ describe('signalJoinCouplings', () => {
       { coupling: 9, multiplicity: 'd' },
       { coupling: 8, multiplicity: 'd' },
       {
-        coupling: 7,
+        coupling: 7.00005,
         multiplicity: 't',
       },
     ]);
@@ -20,27 +24,27 @@ describe('signalJoinCouplings', () => {
 
   it('dddd to ddt with assignment', () => {
     const result = signalJoinCouplings(ddddAssignment);
-    expect(result).toStrictEqual({
-      assignment: 8,
+    expect(result).toBeDeepCloseTo({
+      assignment: [8],
       nbAtoms: 1,
       delta: 7.26,
       j: [
-        { coupling: 7.718, multiplicity: 't', assignment: [10, 9] },
-        { coupling: 1.596, multiplicity: 'd', assignment: [14] },
-        { coupling: 0.507, multiplicity: 'd', assignment: [13] },
+        { coupling: 9, multiplicity: 'd', assignment: [13] },
+        { coupling: 8, multiplicity: 'd', assignment: [14] },
+        { coupling: 7.0005, multiplicity: 't', assignment: [9, 10] },
       ],
     });
   });
 
   it('check dddd with tolerance 1.1', () => {
-    const result = signalJoinCouplings(signalJoinD, { tolerance: 1.1 });
+    const result = signalJoinCouplings(ddddDiaID, { tolerance: 1.1 });
     expect(result).toStrictEqual({
       nbAtoms: 1,
       delta: 3,
       j: [
         { coupling: 9, multiplicity: 'd', diaID: ['D'] },
         {
-          coupling: 1,
+          coupling: 2,
           multiplicity: 'q',
           diaID: ['C', 'B', 'A'],
         },
@@ -49,20 +53,21 @@ describe('signalJoinCouplings', () => {
   });
 
   it('check ttt with tolerance 1.1', () => {
-    const result = signalJoinCouplings(signalJoinT, { tolerance: 1.1 });
-    console.log(result.j);
+    const result = signalJoinCouplings(tttt, { tolerance: 1.1 });
     expect(result).toStrictEqual({
       nbAtoms: 1,
       delta: 3,
+      assignment: [2],
+      diaID: ['C'],
       j: [
         {
-          coupling: 8,
+          coupling: 8.5,
           multiplicity: 'quint',
           diaID: ['D', 'C'],
         },
         {
-          coupling: 1,
-          multiplicity: 'sept',
+          coupling: 1.5,
+          multiplicity: 'quint',
           diaID: ['B', 'A'],
           assignment: ['def', 'abc'],
         },

@@ -5,11 +5,13 @@
     {
       "coupling": 1,
       "multiplicity": "d",
+      "distance": 3,
       "diaID": "A"
     },
     {
       "coupling": 2,
       "multiplicity": "d",
+      "distance": 3,
       "diaID": "B"
     },
     {
