@@ -68,24 +68,28 @@ describe('predictionProton', () => {
           assignment: [13],
           diaID: ['did@`@fTfYUn`HH@GzP`HeT'],
           multiplicity: 'd',
+          distance: 5,
         },
         {
           coupling: 1.596,
           assignment: [14],
           diaID: ['did@`@f\\bbRaih@J@A~dHBIU@'],
           multiplicity: 'd',
+          distance: 4,
         },
         {
           coupling: 7.718,
           assignment: [9],
           diaID: ['did@`@fTfUvf`@h@GzP`HeT'],
           multiplicity: 'd',
+          distance: 3,
         },
         {
           coupling: 7.758,
           assignment: [10],
           diaID: ['did@`@fTfYUn`HH@GzP`HeT'],
           multiplicity: 'd',
+          distance: 3,
         },
       ],
     });

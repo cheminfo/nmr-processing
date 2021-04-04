@@ -2,6 +2,7 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import {
   addDiastereotopicMissingChirality,
+  getConnectivityMatrix,
   getDiastereotopicAtomIDs,
 } from 'openchemlib-utils';
 
@@ -40,8 +41,7 @@ export async function predictionProton(molecule, options = {}) {
   }
 
   const diaIDs = getDiastereotopicAtomIDs(molecule);
-
-  const signals = protonParser(result, diaIDs);
+  const signals = protonParser(result, molecule, diaIDs);
   const joinedSignals = signals.map((signal) =>
     signalJoinCouplings(signal, { tolerance: 0.1 }),
   );
@@ -54,7 +54,8 @@ export async function predictionProton(molecule, options = {}) {
   };
 }
 
-function protonParser(result, diaIDs) {
+function protonParser(result, molecule, diaIDs) {
+  let distanceMatrix = getConnectivityMatrix(molecule, { pathLength: true });
   let lines = result.split('\n').filter((line) => line);
   let signals = [];
   for (let line of lines) {
@@ -75,6 +76,7 @@ function protonParser(result, diaIDs) {
         assignment: [linked],
         diaID: [diaIDs[linked]],
         multiplicity: 'd',
+        distance: distanceMatrix[atom][linked],
       });
     }
     signals.push(signal);
