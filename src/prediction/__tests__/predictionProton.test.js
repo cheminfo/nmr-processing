@@ -56,15 +56,37 @@ describe('predictionProton', () => {
       'signals',
       'ranges',
     ]);
-    expect(prediction.signals[0]).toStrictEqual({
+    let firstSignal = prediction.signals[0];
+    expect(firstSignal).toStrictEqual({
       assignment: [8],
+      diaID: ['did@`@f\\bbRaih@J@A~dHBIU@'],
       nbAtoms: 1,
       delta: 7.26,
       j: [
-        { coupling: 0.507, assignment: [13], multiplicity: 'd' },
-        { coupling: 1.596, assignment: [14], multiplicity: 'd' },
-        { coupling: 7.718, assignment: [9], multiplicity: 'd' },
-        { coupling: 7.758, assignment: [10], multiplicity: 'd' },
+        {
+          coupling: 0.507,
+          assignment: [13],
+          diaID: ['did@`@fTfYUn`HH@GzP`HeT'],
+          multiplicity: 'd',
+        },
+        {
+          coupling: 1.596,
+          assignment: [14],
+          diaID: ['did@`@f\\bbRaih@J@A~dHBIU@'],
+          multiplicity: 'd',
+        },
+        {
+          coupling: 7.718,
+          assignment: [9],
+          diaID: ['did@`@fTfUvf`@h@GzP`HeT'],
+          multiplicity: 'd',
+        },
+        {
+          coupling: 7.758,
+          assignment: [10],
+          diaID: ['did@`@fTfYUn`HH@GzP`HeT'],
+          multiplicity: 'd',
+        },
       ],
     });
   });

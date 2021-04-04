@@ -39,35 +39,41 @@ export async function predictionProton(molecule, options = {}) {
     }
   }
 
-  const signals = protonParser(result);
+  const diaIDs = getDiastereotopicAtomIDs(molecule);
+
+  const signals = protonParser(result, diaIDs);
   const joinedSignals = signals.map((signal) =>
-    signalJoinCouplings(signal, { tolerance: 0.2 }),
+    signalJoinCouplings(signal, { tolerance: 0.1 }),
   );
   return {
     molfile,
-    diaIDs: getDiastereotopicAtomIDs(molecule),
+    diaIDs,
     joinedSignals,
     signals,
     ranges: signalsToRanges(joinedSignals),
   };
 }
 
-function protonParser(result) {
+function protonParser(result, diaIDs) {
   let lines = result.split('\n').filter((line) => line);
   let signals = [];
   for (let line of lines) {
     let fields = line.split('\t');
     let couplings = fields.slice(4);
+    let atom = fields[0] - 1;
     let signal = {
-      assignment: [fields[0] - 1],
+      assignment: [atom],
+      diaID: [diaIDs[atom]],
       nbAtoms: 1,
       delta: Number(fields[2]),
       j: [],
     };
     for (let i = 0; i < couplings.length; i += 3) {
+      let linked = Number(couplings[i] - 1);
       signal.j.push({
         coupling: Number(couplings[i + 2]),
-        assignment: [Number(couplings[i] - 1)],
+        assignment: [linked],
+        diaID: [diaIDs[linked]],
         multiplicity: 'd',
       });
     }
