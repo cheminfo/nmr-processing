@@ -59,7 +59,7 @@ function protonParser(result) {
     let fields = line.split('\t');
     let couplings = fields.slice(4);
     let signal = {
-      assignment: fields[0] - 1,
+      assignment: [fields[0] - 1],
       nbAtoms: 1,
       delta: Number(fields[2]),
       j: [],

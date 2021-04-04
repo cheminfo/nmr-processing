@@ -56,6 +56,16 @@ describe('predictionProton', () => {
       'signals',
       'ranges',
     ]);
-    console.log(prediction.signals[0]);
+    expect(prediction.signals[0]).toStrictEqual({
+      assignment: [8],
+      nbAtoms: 1,
+      delta: 7.26,
+      j: [
+        { coupling: 0.507, assignment: [13], multiplicity: 'd' },
+        { coupling: 1.596, assignment: [14], multiplicity: 'd' },
+        { coupling: 7.718, assignment: [9], multiplicity: 'd' },
+        { coupling: 7.758, assignment: [10], multiplicity: 'd' },
+      ],
+    });
   });
 });
