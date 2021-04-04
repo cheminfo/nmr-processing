@@ -1,3 +1,7 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+
+import md5 from 'md5';
 import OCL from 'openchemlib/minimal';
 
 import { predictionProton } from '../predictionProton';
@@ -25,12 +29,26 @@ Copyright by the U.S. Sec. Commerce on behalf of U.S.A. All rights reserved.
 M  END
 `;
 
+const cache = (molfile, value) => {
+  const hash = md5(molfile);
+  const cacheDir = join(__dirname, 'cache');
+  const cacheFilename = join(cacheDir, hash);
+  if (!existsSync(cacheDir)) mkdirSync(cacheDir);
+  if (value === undefined) {
+    if (existsSync(cacheFilename)) {
+      return readFileSync(cacheFilename, 'utf8');
+    } else {
+      return;
+    }
+  } else {
+    writeFileSync(cacheFilename, value, 'utf8');
+  }
+};
+
 describe('predictionProton', () => {
   it('1H chemical shift prediction', async function () {
-    const prediction = await predictionProton(
-      OCL.Molecule.fromMolfile(molfile),
-    );
-
+    const molecule = OCL.Molecule.fromMolfile(molfile);
+    const prediction = await predictionProton(molecule, { cache });
     expect(Object.keys(prediction)).toStrictEqual([
       'molfile',
       'diaIDs',
@@ -38,5 +56,6 @@ describe('predictionProton', () => {
       'signals',
       'ranges',
     ]);
+    console.log(prediction.signals[0]);
   });
 });

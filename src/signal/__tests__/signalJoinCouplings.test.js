@@ -1,13 +1,13 @@
 import { signalJoinCouplings } from '../signalJoinCouplings';
 
-import signal from './signal.json';
-import signal2 from './signal2.json';
+import ddddAssignment from './dddd-assignment.json';
+import dddd from './dddd.json';
 import signalJoinD from './signalJoinD.json';
 import signalJoinT from './signalJoinT.json';
 
 describe('signalJoinCouplings', () => {
-  it('check ddt', () => {
-    const result = signalJoinCouplings(signal);
+  it('dddd to ddt', () => {
+    const result = signalJoinCouplings(dddd);
     expect(result.j).toStrictEqual([
       { coupling: 9, multiplicity: 'd' },
       { coupling: 8, multiplicity: 'd' },
@@ -18,8 +18,8 @@ describe('signalJoinCouplings', () => {
     ]);
   });
 
-  it('check tdd', () => {
-    const result = signalJoinCouplings(signal2);
+  it('dddd to ddt with assignment', () => {
+    const result = signalJoinCouplings(ddddAssignment);
     expect(result).toStrictEqual({
       assignment: 8,
       nbAtoms: 1,
@@ -48,8 +48,9 @@ describe('signalJoinCouplings', () => {
     });
   });
 
-  it.skip('check ttt with tolerance 1.1', () => {
+  it('check ttt with tolerance 1.1', () => {
     const result = signalJoinCouplings(signalJoinT, { tolerance: 1.1 });
+    console.log(result.j);
     expect(result).toStrictEqual({
       nbAtoms: 1,
       delta: 3,

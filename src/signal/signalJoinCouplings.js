@@ -15,10 +15,18 @@ const getArrayOfMembers = (assignment, key) =>
  */
 export function signalJoinCouplings(signal, options = {}) {
   const { tolerance = 0.05 } = options;
+  signal = JSON.parse(JSON.stringify(signal));
   let couplings = signal.j;
+  for (let coupling of couplings) {
+    if (coupling.assignment && !Array.isArray(coupling.assignment)) {
+      coupling.assignment = [coupling.assignment];
+    }
+    if (coupling.diaID && !Array.isArray(coupling.diaID)) {
+      coupling.diaID = [coupling.diaID];
+    }
+  }
   if (couplings && couplings.length > 0) {
-    signal = JSON.parse(JSON.stringify(signal));
-    let cont = getNbAssignments(couplings[0].assignment);
+    let cont = couplings[0].assignment ? couplings[0].assignment.length : 1;
     let newNmrJs = [];
     let diaIDs = [];
     let assignment = [];
