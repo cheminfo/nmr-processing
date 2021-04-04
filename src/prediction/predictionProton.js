@@ -78,6 +78,7 @@ function protonParser(result, molecule, diaIDs) {
         multiplicity: 'd',
         distance: distanceMatrix[atom][linked],
       });
+      signal.j.sort((a, b) => b.coupling - a.coupling);
     }
     signals.push(signal);
   }
