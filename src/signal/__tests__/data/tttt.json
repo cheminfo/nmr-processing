@@ -1,6 +1,8 @@
 {
   "nbAtoms": 1,
   "delta": 3,
+  "assignment": [2],
+  "diaID": "C",
   "j": [
     {
       "coupling": 1,
