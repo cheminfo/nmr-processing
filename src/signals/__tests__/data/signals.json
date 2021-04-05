@@ -1,0 +1,61 @@
+[
+  {
+    "nbAtoms": 1,
+    "delta": 3,
+    "assignment": "a",
+    "diaID": "D",
+    "j": [
+      {
+        "coupling": 5,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "A"
+      },
+      {
+        "coupling": 3,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "B"
+      }
+    ]
+  },
+  {
+    "nbAtoms": 1,
+    "delta": 3.5,
+    "assignment": "b",
+    "diaID": "D",
+    "j": [
+      {
+        "coupling": 1,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "A"
+      },
+      {
+        "coupling": 1,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "B"
+      }
+    ]
+  },
+  {
+    "nbAtoms": 1,
+    "delta": 3.5,
+    "diaID": "X",
+    "j": [
+      {
+        "coupling": 1,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "C"
+      },
+      {
+        "coupling": 2,
+        "multiplicity": "d",
+        "distance": 3,
+        "diaID": "B"
+      }
+    ]
+  }
+]
