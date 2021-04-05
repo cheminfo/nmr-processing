@@ -108,5 +108,10 @@ describe('predictionProton', () => {
         },
       ],
     });
+    expect(prediction.ranges).toHaveLength(3);
+    let lastRange = prediction.ranges[2];
+    expect(lastRange.integral).toBe(5);
+    expect(lastRange.signal).toHaveLength(3);
+    expect(lastRange.signal[0].j).toHaveLength(4);
   });
 });
