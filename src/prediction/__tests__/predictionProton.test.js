@@ -93,5 +93,20 @@ describe('predictionProton', () => {
         },
       ],
     });
+    let firstJoinedSignal = prediction.joinedSignals[0];
+    expect(firstJoinedSignal).toStrictEqual({
+      nbAtoms: 3,
+      delta: 0.992,
+      diaID: ['did@`@fTeYWaj@@@GzP`HeT'],
+      assignment: [15, 16, 17],
+      j: [
+        {
+          coupling: 7.392,
+          multiplicity: 't',
+          diaID: ['did@`@fTf[Waj@@bJ@_iB@bUP'],
+          distance: 3,
+        },
+      ],
+    });
   });
 });
