@@ -11,8 +11,8 @@ test('signalsJoin', () => {
       diaID: ['D'],
       assignment: ['a', 'b'],
       j: [
-        { diaID: ['A'], distance: 3, coupling: 3 },
-        { diaID: ['B'], distance: 3, coupling: 2 },
+        { diaID: ['A'], distance: 3, multiplicity: 'd', coupling: 3 },
+        { diaID: ['B'], distance: 3, multiplicity: 'd', coupling: 2 },
       ],
     },
     {
@@ -21,8 +21,7 @@ test('signalsJoin', () => {
       diaID: ['X'],
       assignment: [],
       j: [
-        { diaID: ['B'], distance: 3, coupling: 2 },
-        { diaID: ['C'], distance: 3, coupling: 1 },
+        { diaID: ['B', 'C'], multiplicity: 't', distance: 3, coupling: 1.0005 },
       ],
     },
   ]);

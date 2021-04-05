@@ -51,7 +51,7 @@
         "diaID": "C"
       },
       {
-        "coupling": 2,
+        "coupling": 1.001,
         "multiplicity": "d",
         "distance": 3,
         "diaID": "B"

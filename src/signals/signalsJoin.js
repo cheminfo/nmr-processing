@@ -1,12 +1,14 @@
 import mean from 'ml-array-mean';
 import sum from 'ml-array-sum';
 
+import { signalJoinCouplings } from '../signal/signalJoinCouplings';
 import { signalNormalize } from '../signal/signalNormalize';
 /**
  * Join signals if all the same diaID
  * diaID must be present at the level of the signal and the coupling so practically it only applies on simulated data
  */
-export function signalsJoin(signals) {
+export function signalsJoin(signals, options = {}) {
+  const { tolerance = 0.1 } = options;
   // diaIDs is mandatory everywhere
   for (let signal of signals) {
     if (!signal.diaID || !signal.diaID.length === 1) return signals;
@@ -49,6 +51,7 @@ export function signalsJoin(signals) {
       j.push({
         diaID: group[0].j[i].diaID,
         distance: group[0].j[i].distance,
+        multiplicity: group[0].j[i].multiplicity,
         coupling: mean(group.map((item) => item.j[i].coupling)),
       });
     }
@@ -65,7 +68,9 @@ export function signalsJoin(signals) {
     });
   }
   newSignals = newSignals
-    .map((signal) => signalNormalize(signal))
+    .map((signal) =>
+      signalNormalize(signalJoinCouplings(signal, { tolerance })),
+    )
     .sort((a, b) => a.delta - b.delta);
   return newSignals;
 }

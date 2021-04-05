@@ -6,7 +6,7 @@ import {
   getDiastereotopicAtomIDs,
 } from 'openchemlib-utils';
 
-import { signalJoinCouplings } from '../signal/signalJoinCouplings';
+import { signalsJoin } from '../signals/signalsJoin';
 import { signalsToRanges } from '../signals/signalsToRanges.js';
 
 /**
@@ -42,9 +42,7 @@ export async function predictionProton(molecule, options = {}) {
 
   const diaIDs = getDiastereotopicAtomIDs(molecule);
   const signals = protonParser(result, molecule, diaIDs);
-  const joinedSignals = signals.map((signal) =>
-    signalJoinCouplings(signal, { tolerance: 0.1 }),
-  );
+  const joinedSignals = signalsJoin(signals);
   return {
     molfile,
     diaIDs,
