@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.1.0...v1.2.0) (2021-04-05)
+
+
+### Features
+
+* adapt splitSpinSystem to ml-hclust 3.0.0 ([#55](https://www.github.com/cheminfo/nmr-processing/issues/55)) ([52bb416](https://www.github.com/cheminfo/nmr-processing/commit/52bb41632bf0535c537b966a792da728f7c26036))
+* add cache in prediction ([7efd153](https://www.github.com/cheminfo/nmr-processing/commit/7efd153caa77ea13050ce3553c058e312cb72551))
+* add couplind length in prediciton ([afbfb84](https://www.github.com/cheminfo/nmr-processing/commit/afbfb84ccf70608c1a609c408c591bc2b4561077))
+* add couplingValues ([3c3dfb2](https://www.github.com/cheminfo/nmr-processing/commit/3c3dfb2e12c54efb8a6c4baf52d8e29159562933))
+* add diaID in prediction result ([92cb27e](https://www.github.com/cheminfo/nmr-processing/commit/92cb27e392628355c895acc211ec15b6469d4c9d))
+* add signalsJoin ([022ec07](https://www.github.com/cheminfo/nmr-processing/commit/022ec07d26234a6818cc43324f2fe0a2d4f89045))
+* add splitPatterns and joinPatterns ([cdacae3](https://www.github.com/cheminfo/nmr-processing/commit/cdacae36ffa7cc12098c6d315028ebefb33c4f13))
+* improve joinSignals in predictionProton ([fa361a7](https://www.github.com/cheminfo/nmr-processing/commit/fa361a7214105ba1bd7e09c2c13bed571792c76a))
+* prediction assignment is always an array and add testcase ([110960e](https://www.github.com/cheminfo/nmr-processing/commit/110960ec783022e2f0e1f98997683eb44f506c72))
+* sort couplings from larger to smaller ([b6940a4](https://www.github.com/cheminfo/nmr-processing/commit/b6940a4b6d812068405caf24559439155f36eea5))
+
+
+### Bug Fixes
+
+* correctly join signal couplings ([dfedd56](https://www.github.com/cheminfo/nmr-processing/commit/dfedd5636d520a55369d93e1b925462e4264a8b2))
+
 ## [1.1.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.0.1...v1.1.0) (2021-04-02)
 
 
