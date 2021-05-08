@@ -1,5 +1,5 @@
 import { gsd, joinBroadPeaks, optimizePeaks } from 'ml-gsd';
-import { xAbsoluteMedian, xyExtract } from 'ml-spectra-processing';
+import { xyExtract, xNoiseSanPlot } from 'ml-spectra-processing';
 /**
  * Implementation of the peak picking method described by Cobas in:
  * A new approach to improving automated analysis of proton NMR spectra
@@ -27,7 +27,9 @@ export function xyAutoPeaksPicking(data, options = {}) {
   const {
     from,
     to,
-    minMaxRatio = 0.01,
+    noiseLevel,
+    factorStd = 5,
+    minMaxRatio = 0.05,
     broadRatio = 0.00025,
     smoothY = true,
     optimize = false,
@@ -37,13 +39,18 @@ export function xyAutoPeaksPicking(data, options = {}) {
     optimization = { kind: 'lm' },
     broadWidth = 0.25,
     lookNegative = false,
-    noiseLevel = xAbsoluteMedian(data.y) * (options.thresholdFactor || 3),
     sgOptions = { windowSize: 9, polynomial: 3 },
   } = options;
 
   if (from !== undefined && to !== undefined) {
     data = xyExtract(data, [{ from, to }]);
   }
+
+  const cutOff = noiseLevel
+    ? typeof noiseLevel === 'number'
+      ? { positive: noiseLevel, negative: -noiseLevel }
+      : noiseLevel
+    : xNoiseSanPlot(data.y, { factorStd });
 
   let getPeakOptions = {
     shape,
@@ -53,16 +60,20 @@ export function xyAutoPeaksPicking(data, options = {}) {
     sgOptions,
     minMaxRatio,
     broadRatio,
-    noiseLevel,
+    noiseLevel: cutOff.positive,
     smoothY,
     optimization,
     realTopDetection,
   };
 
-  let result = getPeakList(data, getPeakOptions);
-  return lookNegative
-    ? result.concat(getNegativePeaks(data, getPeakOptions))
-    : result;
+  let peaks = getPeakList(data, getPeakOptions);
+
+  if (lookNegative) {
+    getPeakOptions.noiseLevel = cutOff.negative;
+    peaks.push(...getNegativePeaks(data, getPeakOptions));
+  }
+
+  return peaks;
 }
 
 function getPeakList(data, options) {
