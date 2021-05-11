@@ -1,5 +1,5 @@
+import fetch from 'cross-fetch';
 import FormData from 'form-data';
-import fetch from 'node-fetch';
 import {
   addDiastereotopicMissingChirality,
   getConnectivityMatrix,
