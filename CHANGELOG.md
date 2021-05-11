@@ -14,6 +14,20 @@
 * update dependencies ([18bb254](https://www.github.com/cheminfo/nmr-processing/commit/18bb254515efaac5bcb462824dd52e9880ecc798))
 * use cross-fetch instead of node-fetch for browser compatibility ([ba92bac](https://www.github.com/cheminfo/nmr-processing/commit/ba92bac64de76a5f897a38f3f140d0f5d5830ce0))
 
+## [1.3.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.2.0...v1.3.0) (2021-05-11)
+
+
+### Features
+
+* splitPatterns allows spaces ([6a41404](https://www.github.com/cheminfo/nmr-processing/commit/6a4140455ce571c9f609f622a82a91b5970f59c1))
+
+
+### Bug Fixes
+
+* join overlaped ranges ([04e164b](https://www.github.com/cheminfo/nmr-processing/commit/04e164b3e8dd4998ced8e1a5e125bd2663d9c803))
+* update dependencies ([18bb254](https://www.github.com/cheminfo/nmr-processing/commit/18bb254515efaac5bcb462824dd52e9880ecc798))
+* use cross-fetch instead of node-fetch for browser compatibility ([ba92bac](https://www.github.com/cheminfo/nmr-processing/commit/ba92bac64de76a5f897a38f3f140d0f5d5830ce0))
+
 ## [1.2.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.1.0...v1.2.0) (2021-04-05)
 
 
