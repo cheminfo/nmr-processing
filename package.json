@@ -13,6 +13,8 @@
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
     "prepublishOnly": "rollup -c",
+    "prettier": "prettier --check src",
+    "prettier-write": "prettier --write src",
     "test": "npm run test-coverage && npm run eslint",
     "test-coverage": "jest --coverage",
     "test-only": "jest"
@@ -75,5 +77,8 @@
     "ml-spectra-processing": "^6.5.0",
     "openchemlib-utils": "^1.1.0",
     "spectrum-generator": "^4.7.1"
+  },
+  "volta": {
+    "node": "16.0.0"
   }
 }
