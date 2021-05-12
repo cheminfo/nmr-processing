@@ -22,6 +22,7 @@ describe('xyAutoPeaksPicking', function () {
       compile: false,
       clean: false,
       optimize: false,
+      minMaxRatio: 0.01,
       integralType: 'sum',
       nH: 3,
       frequencyCluster: 16,
@@ -34,32 +35,19 @@ describe('xyAutoPeaksPicking', function () {
 
     let peaks = xyAutoPeaksPicking(noisyBigPeakSmallPeak, options);
 
-    expect(peaks).toMatchCloseTo(
-      [
-        {
-          index: 20,
-          x: 2,
-          y: 6.268335288755093,
-          width: 0.40000000000000013,
-          soft: false,
-          left: { x: 1.8, index: 18 },
-          right: { x: 2.2, index: 22 },
-          base: 2.1074424043453726,
-        },
-        {
-          index: 80,
-          x: 7.999974896866125,
-          y: 316.503925630377,
-          width: 0.40000000000000036,
-          soft: false,
-          left: { x: 7.800000000000001, index: 78 },
-          right: { x: 8.200000000000001, index: 82 },
-          base: 2.1074424043453726,
-        },
-      ],
-      4,
-    );
+    const expectedResult = [
+      { x: 2, y: 6.2683, width: 0.4 },
+      { x: 8, y: 316.503, width: 0.4 },
+    ];
+
+    expectedResult.forEach((expected, i) => {
+      let peak = peaks[i];
+      for (let key in expected) {
+        expect(peak[key]).toBeCloseTo(expected[key], 2);
+      }
+    });
   });
+
   it('negative spectrum', () => {
     let y = tripletQuadruplet.y;
     for (let i = 0; i < y.length; i++) {
