@@ -68,9 +68,15 @@ export function signalsJoin(signals, options = {}) {
     });
   }
   newSignals = newSignals
-    .map((signal) =>
-      signalNormalize(signalJoinCouplings(signal, { tolerance })),
-    )
+    .map((signal) => {
+      signal = signalNormalize(signalJoinCouplings(signal, { tolerance }));
+      if (signal.j) {
+        signal.multiplicity = signal.j.reduce((multiplicity, jCoupling) => {
+          return `${multiplicity}${jCoupling.multiplicity}`;
+        }, '');
+      }
+      return signal;
+    })
     .sort((a, b) => a.delta - b.delta);
   return newSignals;
 }
