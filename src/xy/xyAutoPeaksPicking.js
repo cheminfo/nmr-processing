@@ -1,5 +1,9 @@
 import { gsd, joinBroadPeaks, optimizePeaks } from 'ml-gsd';
-import { xAbsoluteMedian, xyExtract } from 'ml-spectra-processing';
+import {
+  xyExtract,
+  xNoiseSanPlot,
+  xAbsoluteMedian,
+} from 'ml-spectra-processing';
 /**
  * Implementation of the peak picking method described by Cobas in:
  * A new approach to improving automated analysis of proton NMR spectra
@@ -27,8 +31,11 @@ export function xyAutoPeaksPicking(data, options = {}) {
   const {
     from,
     to,
-    minMaxRatio = 0.01,
+    noiseLevel,
+    thresholdFactor = 3,
+    minMaxRatio = 0.05,
     broadRatio = 0.00025,
+    useSanPlot = false,
     smoothY = true,
     optimize = false,
     factorWidth = 4,
@@ -37,13 +44,14 @@ export function xyAutoPeaksPicking(data, options = {}) {
     optimization = { kind: 'lm' },
     broadWidth = 0.25,
     lookNegative = false,
-    noiseLevel = xAbsoluteMedian(data.y) * (options.thresholdFactor || 3),
     sgOptions = { windowSize: 9, polynomial: 3 },
   } = options;
 
   if (from !== undefined && to !== undefined) {
     data = xyExtract(data, [{ from, to }]);
   }
+
+  const cutOff = getCutOff(data.y, { noiseLevel, useSanPlot, thresholdFactor });
 
   let getPeakOptions = {
     shape,
@@ -53,16 +61,20 @@ export function xyAutoPeaksPicking(data, options = {}) {
     sgOptions,
     minMaxRatio,
     broadRatio,
-    noiseLevel,
+    noiseLevel: cutOff.positive,
     smoothY,
     optimization,
     realTopDetection,
   };
 
-  let result = getPeakList(data, getPeakOptions);
-  return lookNegative
-    ? result.concat(getNegativePeaks(data, getPeakOptions))
-    : result;
+  let peaks = getPeakList(data, getPeakOptions);
+
+  if (lookNegative) {
+    getPeakOptions.noiseLevel = cutOff.negative;
+    peaks.push(...getNegativePeaks(data, getPeakOptions));
+  }
+
+  return peaks;
 }
 
 function getPeakList(data, options) {
@@ -121,4 +133,21 @@ function getNegativePeaks(data, options) {
     peakList[i].y *= -1;
   }
   return peakList;
+}
+
+function getCutOff(data, options = {}) {
+  const { noiseLevel, useSanPlot, thresholdFactor } = options;
+
+  const formatResult = (noiseLevel) =>
+    typeof noiseLevel === 'number'
+      ? { positive: noiseLevel, negative: -noiseLevel }
+      : noiseLevel;
+
+  if (noiseLevel) {
+    return formatResult(noiseLevel);
+  } else {
+    return useSanPlot
+      ? xNoiseSanPlot(data, { factorStd: thresholdFactor })
+      : formatResult(xAbsoluteMedian(data) * thresholdFactor);
+  }
 }
