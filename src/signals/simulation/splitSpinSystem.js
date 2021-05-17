@@ -109,16 +109,16 @@ function mergeClusters(list, maxClusterSize) {
     let index = 0;
 
     // Is it a candidate to be merged?
-    while (index < nElements && clusterA[index++] !== -1)
-    
-    if (index >= nElements) continue;
+    while (index < nElements && clusterA[index++] !== -1) {
+      if (index >= nElements) continue;
+    }
 
     const nCoupledA = getNCoupled(clusterA);
     for (let j = list.length - 1; j >= i + 1; j--) {
       let clusterB = list[j];
 
       if (nCoupledA !== getNCoupled(clusterB)) continue;
-      
+
       // Do they have common elements?
       let count = 0;
       let common = 0;
