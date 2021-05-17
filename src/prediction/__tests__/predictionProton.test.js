@@ -97,6 +97,7 @@ describe('predictionProton', () => {
     expect(firstJoinedSignal).toStrictEqual({
       nbAtoms: 3,
       delta: 0.992,
+      multiplicity: 't',
       diaID: ['did@`@fTeYWaj@@@GzP`HeT'],
       assignment: [15, 16, 17],
       j: [

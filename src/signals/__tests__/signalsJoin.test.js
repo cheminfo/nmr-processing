@@ -9,6 +9,7 @@ test('signalsJoin', () => {
       nbAtoms: 2,
       delta: 3.25,
       diaID: ['D'],
+      multiplicity: 'dd',
       assignment: ['a', 'b'],
       j: [
         { diaID: ['A'], distance: 3, multiplicity: 'd', coupling: 3 },
@@ -19,6 +20,7 @@ test('signalsJoin', () => {
       nbAtoms: 1,
       delta: 3.5,
       diaID: ['X'],
+      multiplicity: 't',
       assignment: [],
       j: [
         { diaID: ['B', 'C'], multiplicity: 't', distance: 3, coupling: 1.0005 },
