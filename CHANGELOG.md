@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.3.0...v1.4.0) (2021-05-18)
+
+
+### Features
+
+* add multiplicity when join signals from prediction ([#61](https://www.github.com/cheminfo/nmr-processing/issues/61)) ([e938688](https://www.github.com/cheminfo/nmr-processing/commit/e938688fe6fceaea725b129b602602a7eab37695))
+* add san plot as an option to determine the noise level of 1D spectrum. ([#59](https://www.github.com/cheminfo/nmr-processing/issues/59)) ([0f20e1f](https://www.github.com/cheminfo/nmr-processing/commit/0f20e1f50824747c76f96c832bbb6c89888c7750))
+
 ## [1.3.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.2.0...v1.3.0) (2021-05-11)
 
 
