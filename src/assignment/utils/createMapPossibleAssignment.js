@@ -1,7 +1,11 @@
 export function createMapPossibleAssignment(props) {
-  const { errorCS, predictions, targets } = props;
+  const { restrictionByCS, predictions, targets } = props;
+  const { 
+    tolerance: toleranceCS,
+    chemicalShiftRestriction,
+  } = restrictionByCS;
   let expandMap = {};
-  let errorAbs = Math.abs(errorCS);
+  let errorAbs = Math.abs(toleranceCS);
   const atomTypes = Object.keys(predictions);
   for (const atomType of atomTypes) {
     let predictionByAtomType = predictions[atomType];
@@ -27,7 +31,7 @@ export function createMapPossibleAssignment(props) {
               : true;
 
           if (couldBeAssigned) {
-            if (errorCS === 0 || typeof prediction.delta === 'undefined') {
+            if (chemicalShiftRestriction || typeof prediction.delta === 'undefined') {
               // Chemical shift is not a restriction
               expandMap[predictionID].push(targetID);
             } else {
@@ -35,7 +39,7 @@ export function createMapPossibleAssignment(props) {
               if (prediction.error) {
                 error = Math.max(error, prediction.error);
               }
-              console.log(`error ${error}, errorAbs ${errorAbs} predict delta ${prediction.delta} diff ${prediction.delta - target.signal.delta} discriminant ${(error + 0.03) / 2 + errorAbs}`)
+              // console.log(`error ${error}, errorAbs ${errorAbs} predict delta ${prediction.delta} diff ${prediction.delta - target.signal.delta} discriminant ${(error + 0.03) / 2 + errorAbs}`)
               if (
                 //@TODO: check this formula
                 Math.abs(prediction.delta - target.signal.delta) <
