@@ -3,10 +3,11 @@ import { getIntegrationOfAttachedProton } from './getIntegrationOfAttachedProton
 export function formatCorrelations(correlations) {
   //add indirect links, if a carbon C1 is attached to a proton H1 that correlating
   //with carbon C2, so the carbon C1 and C2 are also correlating
+  correlations = JSON.parse(JSON.stringify(correlations))
   for (let i = 0; i < correlations.length; i++) {
-    if (!correlations[i].match) continue;
+    const { H: attachmentH = [] } = correlations[i].attachment;
     let indirectLinks = {};
-    for (let match of correlations[i].match) {
+    for (let match of attachmentH) {
       const links = correlations[match].link;
       for (let link of links) {
         indirectLinks[link.signal.id] = link;
@@ -26,5 +27,5 @@ export function formatCorrelations(correlations) {
     );
   }
 
-  return targets;
+  return { targets, correlations };
 }
