@@ -2,7 +2,7 @@ import { getIntegrationOfAttachedProton } from './getIntegrationOfAttachedProton
 
 export function partialScore(partial, props) {
   const {
-    predictionDiaIDs,
+    diaIDPeerPossibleAssignment,
     unassigned,
     atomType,
     restrictionByCS,
@@ -10,7 +10,7 @@ export function partialScore(partial, props) {
     targets,
     correlations,
   } = props;
-
+  
   const { tolerance: toleranceCS, useChemicalShiftScore } = restrictionByCS;
 
   let partialInverse = {};
@@ -22,7 +22,7 @@ export function partialScore(partial, props) {
     if (targetID && targetID !== '*') {
       activeDomainOnPrediction.push(i);
       if (!partialInverse[targetID]) partialInverse[targetID] = [];
-      partialInverse[targetID].push(predictionDiaIDs[i]);
+      partialInverse[targetID].push(diaIDPeerPossibleAssignment[i]);
     }
     if (targetID === '*') countStars++;
   }
@@ -55,7 +55,7 @@ export function partialScore(partial, props) {
     partial.forEach((targetID, index) => {
       if (targetID && targetID !== '*') {
         count++;
-        let source = predictions[atomType][predictionDiaIDs[index]];
+        let source = predictions[atomType][diaIDPeerPossibleAssignment[index]];
         let target = targets[atomType][targetID];
         let error = toleranceCS;
         if (source.error) {
@@ -66,10 +66,11 @@ export function partialScore(partial, props) {
           chemicalShiftScore += 1;
         } else {
           let diff = Math.abs(source.delta - target.signal.delta);
-          if (diff < 0.03) {
+          if (diff < error) {
             //@TODO: check for a better discriminant
             chemicalShiftScore += 1;
           } else {
+            diff = Math.abs(diff - error);
             chemicalShiftScore += (-0.25 / error) * diff + 1;
           }
         }
@@ -85,17 +86,15 @@ export function partialScore(partial, props) {
   if (activeDomainOnTarget.length > 1) {
     let andConstrains = {};
     for (let i = 0; i < activeDomainOnPrediction.length; i++) {
-      let predictionI = predictions[atomType][predictionDiaIDs[i]];
+      let predictionI = predictions[atomType][diaIDPeerPossibleAssignment[i]];
       for (let j = i + 1; j < activeDomainOnPrediction.length; j++) {
-        // console.log('j', predictionDiaIDs[j]);
-        // console.log(Object.keys(predictions[atomType]));
-        let predictionJ = predictions[atomType][predictionDiaIDs[j]];
+        let predictionJ = predictions[atomType][diaIDPeerPossibleAssignment[j]];
         let pathLength = predictionI.pathLength[predictionJ.diaIDIndex];
         let isPossible = pathLength < 5;
 
         let partialI = partial[activeDomainOnPrediction[i]];
         let partialJ = partial[activeDomainOnPrediction[j]];
-        // console.log(partialI, partialJ);
+  
         let keyOnTargerMap =
           partialI > partialJ
             ? `${partialJ} ${partialI}`
@@ -126,7 +125,7 @@ export function partialScore(partial, props) {
       sumAnd /
       ((activeDomainOnTarget.length * (activeDomainOnTarget.length - 1)) / 2);
   }
-  // console.log(`CSScore ${chemicalShiftScore}, score2D ${scoreOn2D}`);
+  console.log(`CSScore ${chemicalShiftScore}, score2D ${scoreOn2D}, penalty: ${penaltyByStarts}`);
   if (chemicalShiftScore === 0) return scoreOn2D - penaltyByStarts;
 
   if (scoreOn2D === 0) return chemicalShiftScore - penaltyByStarts;

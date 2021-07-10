@@ -1,51 +1,57 @@
 import { partialScore } from './partialScore';
 
+
+
 export function exploreTreeRec(props, predictionIndex, partial, store) {
   const {
     nSources,
-    errorCS,
+    restrictionByCS,
     timeout,
     timeStart,
+    maxSolutions,
     targets,
     predictions,
     correlations,
     lowerBound,
     unassigned,
     possibleAssignmentMap,
-    predictionDiaIDs,
+    diaIDPeerPossibleAssignment,
   } = props;
-
+  console.log(predictionIndex)
   if (predictionIndex >= nSources) return store;
 
   const currentDate = new Date();
-  if (currentData.getTime() - timeStart > timeout) {
+  if (currentDate.getTime() - timeStart > timeout) {
     console.warn('timeout expired');
     return store;
   }
-
-  const diaID = predictionDiaIDs[predictionIndex];
+  const diaID = diaIDPeerPossibleAssignment[predictionIndex];
+  const atomType = getAtomTypeFromPredictions(diaID, predictions);
   const possibleAssignments = possibleAssignmentMap[diaID];
+
+  let targetIndex = 0;
   for (let targetID of possibleAssignments) {
     partial[predictionIndex] = targetID;
     const score = partialScore(partial, {
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       unassigned,
-      errorCS,
+      restrictionByCS,
       atomType,
       predictions,
       correlations,
       targets,
     });
-
+    console.log(`score ${score} nSources ${nSources}, index ${predictionIndex}, targetIndex ${targetIndex++}`);
     if (score > 0) {
-      if (sourceAddress === nSources - 1 && score >= lowerBound) {
+      
+      if (predictionIndex === nSources - 1 && score >= lowerBound) {
         store.nSolutions++;
         let solution = {
           assignment: JSON.parse(JSON.stringify(partial)),
           score: score,
         };
 
-        if (store.solutions.length >= this.maxSolutions) {
+        if (store.solutions.length >= maxSolutions) {
           if (store.score > store.solutions.last().score) {
             store.solutions.pollLast();
             store.solutions.add(solution);
@@ -57,7 +63,7 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
         exploreTreeRec(
           {
             nSources,
-            errorCS,
+            restrictionByCS,
             timeout,
             timeStart,
             targets,
@@ -65,7 +71,7 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
             lowerBound,
             unassigned,
             possibleAssignmentMap,
-            predictionDiaIDs,
+            diaIDPeerPossibleAssignment,
           },
           predictionIndex + 1,
           JSON.parse(JSON.stringify(partial)),
@@ -74,8 +80,16 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
       }
     } else {
       if (targetID === '*') {
-        partial[sourceAddress] = null;
+        partial[predictionIndex] = null;
       }
     }
+  }
+
+  return store;
+}
+
+function getAtomTypeFromPredictions(diaID, predictions) {
+  for (let atomType in predictions) {
+    if (predictions[atomType][diaID]) return atomType;
   }
 }

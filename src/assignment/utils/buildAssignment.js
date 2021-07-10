@@ -1,17 +1,21 @@
 import treeSet from 'ml-tree-set';
 import { exploreTreeRec } from './exploreTreeRec';
 
+const comparator = (a, b) => {
+  return b.score - a.score;
+};
+
 export function buildAssignment(props) {
   const {
-    errorCS,
+    restrictionByCS,
     timeout,
     minScore,
-    comparator,
     nSources,
     unassigned,
     predictions,
+    maxSolutions,
     correlations,
-    predictionDiaIDs,
+    diaIDPeerPossibleAssignment,
     targets,
     possibleAssignmentMap,
   } = props;
@@ -28,21 +32,22 @@ export function buildAssignment(props) {
   }
 
   let store = {
-    solutions: [],
-    nSolutions = new treeSet(comparator),
+    solutions: new treeSet(comparator),
+    nSolutions: 0,
   }
   
   return exploreTreeRec({
     nSources,
-    errorCS,
+    restrictionByCS,
     timeout,
     timeStart,
     targets,
     predictions,
     correlations,
+    maxSolutions,
     lowerBound,
     unassigned,
     possibleAssignmentMap,
-    predictionDiaIDs,
+    diaIDPeerPossibleAssignment,
   }, 0, partial, store);
 }

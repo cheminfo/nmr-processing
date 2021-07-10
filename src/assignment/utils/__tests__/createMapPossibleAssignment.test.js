@@ -1,5 +1,5 @@
-import correlationData from '../data/correlations';
-import predictions from '../data/predictions';
+import correlationData from '../../data/correlations';
+import predictions from '../../data/predictions';
 import { createMapPossibleAssignment } from '../createMapPossibleAssignment';
 import { formatCorrelations } from '../formatCorrelations';
 

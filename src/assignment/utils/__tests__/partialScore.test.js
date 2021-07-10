@@ -5,7 +5,7 @@ import { partialScore } from '../partialScore';
 
 describe('partial score', () => {
   const { targets, correlations } = formatCorrelations(correlationData);
-  const predictionDiaIDs = ['carbon1', 'carbon2', 'carbon3', 'carbon4'];
+  const diaIDPeerPossibleAssignment = ['carbon1', 'carbon2', 'carbon3', 'carbon4'];
  
   it('scoring a partial assignation with chemicalShift scoring ', () => {
     let partial = new Array(4);
@@ -19,7 +19,7 @@ describe('partial score', () => {
         useChemicalShiftScore: true,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations
     });
      expect(result).toBeCloseTo(0.855, 2);
@@ -37,7 +37,7 @@ describe('partial score', () => {
         useChemicalShiftScore: false,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
      expect(result).toBeCloseTo(1, 2);
@@ -55,7 +55,7 @@ describe('partial score', () => {
         useChemicalShiftScore: true,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
      expect(result).toBeCloseTo(0, 2);
@@ -73,7 +73,7 @@ describe('partial score', () => {
         useChemicalShiftScore: false,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
      expect(result).toBeCloseTo(0, 2);
@@ -91,7 +91,7 @@ describe('partial score', () => {
         useChemicalShiftScore: true,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
      expect(result).toBeCloseTo(0.981, 2);
@@ -109,7 +109,7 @@ describe('partial score', () => {
         useChemicalShiftScore: true,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
      expect(result).toBeCloseTo(0.8562, 3);
@@ -125,7 +125,7 @@ describe('partial score', () => {
         useChemicalShiftScore: true,
       },
       unassigned: 0,
-      predictionDiaIDs,
+      diaIDPeerPossibleAssignment,
       correlations,
     });
     expect(result < result2).toBe(true);
