@@ -1,11 +1,24 @@
+import fetch from 'cross-fetch';
+import { addDiastereotopicMissingChirality } from 'openchemlib-utils';
+
+import { signalsToRanges } from '../signals/signalsToRanges';
+
 import { createInputJSON } from './utils/createInputJSON';
 import { queryByHose } from './utils/queryByHOSE';
-import { signalsToRanges } from '../signals/signalsToRanges';
-import { addDiastereotopicMissingChirality } from 'openchemlib-utils';
-import carbonDB from '../constants/carbonDB';
 
-export function predictCarbon(molecule, options = {}) {
+let carbonDB;
+
+async function loadDB() {
+  if (carbonDB) return;
+  const response = await fetch(
+    'https://www.lactame.com/lib/nmr-processing/data/20210711/carbon.js',
+  );
+  carbonDB = await response.json();
+}
+
+export async function predictCarbon(molecule, options = {}) {
   const { levels = [3, 2, 1, 0], database = carbonDB } = options;
+  await loadDB();
 
   molecule.addImplicitHydrogens();
   molecule.addMissingChirality();
