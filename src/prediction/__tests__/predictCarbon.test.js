@@ -1,4 +1,4 @@
-import { predictCarbon } from '../predictionCarbon';
+import { predictCarbon } from '../predictCarbon';
 import OCL from 'openchemlib/minimal';
 
 const molfile = `Benzene, ethyl-, ID: C100414
@@ -31,11 +31,11 @@ describe('carbon prediction', () => {
     expect(prediction.joinedSignals).toHaveLength(6);
     expect(prediction.signals).toHaveLength(8);
     expect(prediction.joinedSignals[0]).toStrictEqual({
-        delta: 128.4,
-        assignment: [ 0, 6 ],
-        diaID: [ 'daD@@LdRTIT@E@@q@TGzP`NET' ],
-        nbAtoms: 2,
-        j: []
-      })
+      delta: 128.4,
+      assignment: [0, 6],
+      diaID: ['daD@@LdRTIT@E@@q@TGzP`NET'],
+      nbAtoms: 2,
+      j: [],
+    });
   });
 });

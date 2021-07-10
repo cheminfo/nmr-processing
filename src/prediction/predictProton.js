@@ -16,7 +16,7 @@ import { signalsToRanges } from '../signals/signalsToRanges.js';
  * @param {function} [options.cache] A callback receiving a molfile and the result
  * @return {Promise<Array>}
  */
-export async function predictionProton(molecule, options = {}) {
+export async function predictProton(molecule, options = {}) {
   const { cache } = options;
   molecule = molecule.getCompactCopy();
   molecule.addImplicitHydrogens();
