@@ -6,19 +6,17 @@ import { signalsToRanges } from '../signals/signalsToRanges';
 import { createInputJSON } from './utils/createInputJSON';
 import { queryByHose } from './utils/queryByHOSE';
 
-let carbonDB;
-
-async function loadDB() {
-  if (carbonDB) return;
+async function loadDB(database) {
+  if (database) return database;
   const response = await fetch(
     'https://www.lactame.com/lib/nmr-processing/data/20210711/carbon.js',
   );
-  carbonDB = await response.json();
+  return await response.json();
 }
 
 export async function predictCarbon(molecule, options = {}) {
-  const { levels = [3, 2, 1, 0], database = carbonDB } = options;
-  await loadDB();
+  const { levels = [3, 2, 1, 0], database: carbonDB } = options;
+  const database = await loadDB(carbonDB);
 
   molecule.addImplicitHydrogens();
   molecule.addMissingChirality();
