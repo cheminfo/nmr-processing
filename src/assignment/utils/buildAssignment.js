@@ -1,4 +1,5 @@
 import treeSet from 'ml-tree-set';
+
 import { exploreTreeRec } from './exploreTreeRec';
 
 const comparator = (a, b) => {
@@ -35,8 +36,8 @@ export function buildAssignment(props) {
     solutions: new treeSet(comparator),
     nSolutions: 0,
   }
-  
-  return exploreTreeRec({
+
+  exploreTreeRec({
     nSources,
     restrictionByCS,
     timeout,
@@ -50,4 +51,6 @@ export function buildAssignment(props) {
     possibleAssignmentMap,
     diaIDPeerPossibleAssignment,
   }, 0, partial, store);
+
+  return store;
 }

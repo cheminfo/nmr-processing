@@ -17,8 +17,6 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
     possibleAssignmentMap,
     diaIDPeerPossibleAssignment,
   } = props;
-  console.log(predictionIndex)
-  if (predictionIndex >= nSources) return store;
 
   const currentDate = new Date();
   if (currentDate.getTime() - timeStart > timeout) {
@@ -41,9 +39,8 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
       correlations,
       targets,
     });
-    console.log(`score ${score} nSources ${nSources}, index ${predictionIndex}, targetIndex ${targetIndex++}`);
+    // console.log(`score ${score} nSources ${nSources}, index ${predictionIndex}, targetIndex ${targetIndex++}, lower ${lowerBound}`);
     if (score > 0) {
-      
       if (predictionIndex === nSources - 1 && score >= lowerBound) {
         store.nSolutions++;
         let solution = {
@@ -84,8 +81,6 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
       }
     }
   }
-
-  return store;
 }
 
 function getAtomTypeFromPredictions(diaID, predictions) {
