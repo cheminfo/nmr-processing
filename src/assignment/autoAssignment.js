@@ -1,15 +1,17 @@
-import { predictProton } from '../prediction/predictProton';
-import { predictCarbon } from '../prediction/predictCarbon';
 import {
   getConnectivityMatrix,
   addDiastereotopicMissingChirality,
   getGroupedDiastereotopicAtomIDs,
 } from 'openchemlib-utils';
-import { formatCorrelations } from './utils/formatCorrelations';
+
+import { predictCarbon } from '../prediction/predictCarbon';
+import { predictProton } from '../prediction/predictProton';
+
 import { buildAssignment } from './utils/buildAssignment';
 import { createMapPossibleAssignment } from './utils/createMapPossibleAssignment';
+import { formatCorrelations } from './utils/formatCorrelations';
 
-const predictor = { 'H': predictProton, 'C': predictCarbon };
+const predictor = { H: predictProton, C: predictCarbon };
 /**
  *
  * @param {number} [props.errorCS = -1] - determine the restriction with respect to chemical shift, if it is negative the chemical shift is not taken in account in scoring
@@ -26,7 +28,7 @@ export async function autoAssignment(molecule, props = {}) {
     unassigned = 0,
     timeout = 6000,
   } = props;
-  console.log(molecule.getMolecularFormula().formula)
+
   const {
     tolerance = 1,
     useChemicalShiftScore = false,
@@ -66,10 +68,12 @@ export async function autoAssignment(molecule, props = {}) {
     for (let prediction of joinedSignals) {
       const diaID = prediction.diaID[0];
       const index = diaIDs.findIndex((dia) => dia.oclID === diaID);
+      const allHydrogens = molecule.getAllHydrogens(index);
       predictions[atomType][diaID] = {
         ...prediction,
         diaIDIndex: index,
-        allHydrogens: molecule.getAllHydrogens(index),
+        allHydrogens,
+        protonsCount: prediction.nbAtoms * allHydrogens,
         pathLength: pathLengthMatrix[index],
       };
     }
@@ -77,8 +81,6 @@ export async function autoAssignment(molecule, props = {}) {
   }
   const { targets, correlationsWithIndirectLinks } =
     formatCorrelations(correlations);
-  console.log(targets)
-  return
   let possibleAssignmentMap = createMapPossibleAssignment({
     restrictionByCS: {
       tolerance,
@@ -88,7 +90,7 @@ export async function autoAssignment(molecule, props = {}) {
     predictions,
     targets,
   });
-  return
+
   const diaIDPeerPossibleAssignment = Object.keys(possibleAssignmentMap);
 
   const solutions = buildAssignment({
