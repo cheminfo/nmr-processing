@@ -46,7 +46,7 @@ export function createMapPossibleAssignment(props) {
               // console.log(
               //   `error ${error}, errorAbs ${target.signal.delta} predict delta ${prediction.delta} targetID ${targetID} predID ${predictionID}`,
               // );
-              let distAfterLimit = Math.abs(source.delta - target.signal.delta - errorAbs);
+              let distAfterLimit = Math.abs(prediction.delta - target.signal.delta - errorAbs);
               if (distAfterLimit < 4 * errorAbs) {
                 expandMap[predictionID].push(targetID);
               }
