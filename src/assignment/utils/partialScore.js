@@ -10,7 +10,7 @@ export function partialScore(partial, props) {
     targets,
     correlations,
   } = props;
-  
+
   const { tolerance: toleranceCS, useChemicalShiftScore } = restrictionByCS;
 
   let partialInverse = {};
@@ -29,17 +29,19 @@ export function partialScore(partial, props) {
 
   if (countStars > unassigned) return 0;
 
+  const sumKey = atomType === 'H' ? 'integration' : 'protonsCount';
   let penaltyByStarts = countStars / partial.length;
   for (let targetID in partialInverse) {
     let targetToSource = partialInverse[targetID];
     let total = targetToSource.reduce((sum, value) => {
-      return sum + predictions[atomType][value].allHydrogens;
+      return sum + predictions[atomType][value][sumKey];
     }, 0);
 
     const target = targets[atomType][targetID];
     const {
       integration = getIntegrationOfAttachedProton(target, correlations),
     } = target;
+
     if (total - integration >= 0.5) {
       return 0;
     }
@@ -94,7 +96,7 @@ export function partialScore(partial, props) {
 
         let partialI = partial[activeDomainOnPrediction[i]];
         let partialJ = partial[activeDomainOnPrediction[j]];
-  
+
         let keyOnTargerMap =
           partialI > partialJ
             ? `${partialJ} ${partialI}`
