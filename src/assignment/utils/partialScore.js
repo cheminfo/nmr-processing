@@ -29,12 +29,11 @@ export function partialScore(partial, props) {
 
   if (countStars > unassigned) return 0;
 
-  const sumKey = atomType === 'H' ? 'integration' : 'protonsCount';
   let penaltyByStarts = countStars / partial.length;
   for (let targetID in partialInverse) {
     let targetToSource = partialInverse[targetID];
     let total = targetToSource.reduce((sum, value) => {
-      return sum + predictions[atomType][value][sumKey];
+      return sum + predictions[atomType][value]['allHydrogens'];
     }, 0);
 
     const target = targets[atomType][targetID];
@@ -78,6 +77,7 @@ export function partialScore(partial, props) {
         }
       }
     });
+    
     if (count > 0) {
       chemicalShiftScore /= count;
     }
@@ -127,7 +127,7 @@ export function partialScore(partial, props) {
       sumAnd /
       ((activeDomainOnTarget.length * (activeDomainOnTarget.length - 1)) / 2);
   }
-  console.log(`CSScore ${chemicalShiftScore}, score2D ${scoreOn2D}, penalty: ${penaltyByStarts}`);
+  // console.log(`CSScore ${chemicalShiftScore}, score2D ${scoreOn2D}, penalty: ${penaltyByStarts}`);
   if (chemicalShiftScore === 0) return scoreOn2D - penaltyByStarts;
 
   if (scoreOn2D === 0) return chemicalShiftScore - penaltyByStarts;
