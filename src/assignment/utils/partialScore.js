@@ -1,4 +1,5 @@
 import { getIntegrationOfAttachedProton } from './getIntegrationOfAttachedProton';
+import groupTargetByIntegrationZone from './groupTargetByIntegrationZone';
 
 export function partialScore(partial, props) {
   const {
@@ -29,18 +30,37 @@ export function partialScore(partial, props) {
 
   if (countStars > unassigned) return 0;
 
-  let penaltyByStarts = countStars / partial.length;
-  for (let targetID in partialInverse) {
-    let targetToSource = partialInverse[targetID];
-    let total = targetToSource.reduce((sum, value) => {
-      return sum + predictions[atomType][value]['allHydrogens'];
-    }, 0);
+  const activeDomainOnTarget = Object.keys(partialInverse);
 
-    const target = targets[atomType][targetID];
+  if (activeDomainOnTarget.length === 0) return 0;
+
+  console.log(partialInverse, partial)
+  const targetByIntegral =
+    atomType === 'C'
+      ? groupTargetByIntegrationZone(
+          activeDomainOnTarget,
+          targets[atomType],
+          correlations,
+        )
+      : activeDomainOnTarget.map((targetID) => [targetID]);
+
+  for (const group of targetByIntegral) {
+    let total = 0;
+    for (let targetID of group.targetIDs) {
+      let targetToSource = partialInverse[targetID];
+
+      for (const value of targetToSource) {
+        total += predictions[atomType][value].allHydrogens;
+      }
+    }
+
     const {
-      integration = getIntegrationOfAttachedProton(target, correlations),
-    } = target;
-
+      integration = group.reduce(
+        (sum, index) => sum + Number(correlations[index].integration),
+        0,
+      ),
+    } = targets[atomType][group.targetIDs[0]];
+    // console.log(`group: ${group.targetIDs}, integration: ${integration}, total:${total}`)
     if (total - integration >= 0.5) {
       return 0;
     }
@@ -77,14 +97,13 @@ export function partialScore(partial, props) {
         }
       }
     });
-    
+
     if (count > 0) {
       chemicalShiftScore /= count;
     }
   }
 
   let scoreOn2D = 0;
-  let activeDomainOnTarget = Object.keys(partialInverse);
   if (activeDomainOnTarget.length > 1) {
     let andConstrains = {};
     for (let i = 0; i < activeDomainOnPrediction.length; i++) {
@@ -127,6 +146,7 @@ export function partialScore(partial, props) {
       sumAnd /
       ((activeDomainOnTarget.length * (activeDomainOnTarget.length - 1)) / 2);
   }
+  const penaltyByStarts = countStars / partial.length;
   // console.log(`CSScore ${chemicalShiftScore}, score2D ${scoreOn2D}, penalty: ${penaltyByStarts}`);
   if (chemicalShiftScore === 0) return scoreOn2D - penaltyByStarts;
 

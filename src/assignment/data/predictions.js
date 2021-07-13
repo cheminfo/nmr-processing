@@ -22,7 +22,7 @@ const predictions = {
       pathLegth: [2, 1, 0, 3, 3],
     },
     carbon4: {
-      delta: 120,
+      delta: 26,
       diaIDs: ['carbon4'],
       allHydrogens: 2,
       diaIDIndex: 3,
