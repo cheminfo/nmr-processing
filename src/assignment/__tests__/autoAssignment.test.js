@@ -1,6 +1,6 @@
-import { autoAssignment } from '../autoAssignment';
 import OCL from 'openchemlib';
 
+import { autoAssignment } from '../autoAssignment';
 import arbutinData from '../data/ethyl-benzene.json';
 
 describe('automatic assignment', () => {
@@ -9,13 +9,14 @@ describe('automatic assignment', () => {
     const correlationData = arbutinData.correlations.values;
     const molecule = OCL.Molecule.fromMolfile(molfile);
     let result = await autoAssignment(molecule, {
+      unassigned: 1,
       justAssign: ['C'],
       correlations: correlationData,
-      lowerBound: 0.01,
+      minScore: 0.1,
       restrictionByCS: {
         tolerance: 1,
         useChemicalShiftScore: true,
-        chemicalShiftRestriction: false,
+        chemicalShiftRestriction: true,
       },
     });
     console.log(result);

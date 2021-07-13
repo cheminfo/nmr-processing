@@ -476,7 +476,7 @@
         },
         "link": [
           {
-            "id": "JpYylGS7",
+            "id": "J4bHSzRo",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -515,56 +515,6 @@
             ],
             "experimentLabel": "",
             "pseudo": false
-          },
-          {
-            "id": "mnedVIIA",
-            "experimentType": "hmbc",
-            "experimentID": "SJl9Ub4u",
-            "atomType": [
-              "H",
-              "C"
-            ],
-            "signal": {
-              "id": "RiPaV9zG",
-              "peak": [
-                {
-                  "x": 2.452153062617252,
-                  "y": 16.18544978979054,
-                  "z": 163586907.1818375,
-                  "minX": 2.4479446033310146,
-                  "maxX": 2.464778440475963,
-                  "minY": 15.864805125411294,
-                  "maxY": 16.525541842403968
-                },
-                {
-                  "x": 2.4766259587167068,
-                  "y": 16.124177357679628,
-                  "z": 58511320.88814611,
-                  "minX": 2.4731953590484377,
-                  "maxX": 2.481612277620912,
-                  "minY": 15.864805125411294,
-                  "maxY": 16.30529627007308
-                }
-              ],
-              "x": {
-                "originDelta": 2.6117451147103443,
-                "delta": 2.4586003967053305,
-                "diaID": []
-              },
-              "y": {
-                "originDelta": 16.169307693709932,
-                "delta": 16.169307693709932,
-                "diaID": []
-              },
-              "kind": "signal",
-              "sign": 0
-            },
-            "axis": "y",
-            "match": [
-              6
-            ],
-            "experimentLabel": "",
-            "pseudo": false
           }
         ],
         "equivalence": 1,
@@ -596,7 +546,7 @@
         },
         "link": [
           {
-            "id": "gFDmxBZH",
+            "id": "enYoZfXm",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -631,7 +581,7 @@
             },
             "axis": "y",
             "match": [
-              7
+              6
             ],
             "experimentLabel": "",
             "pseudo": false
@@ -640,7 +590,7 @@
         "equivalence": 1,
         "attachment": {
           "H": [
-            7
+            6
           ]
         },
         "protonsCount": [
@@ -665,7 +615,7 @@
         },
         "link": [
           {
-            "id": "U1dAVxMY",
+            "id": "YvuGKh4e",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -700,7 +650,7 @@
             },
             "axis": "y",
             "match": [
-              8
+              7
             ],
             "experimentLabel": "",
             "pseudo": false
@@ -709,7 +659,7 @@
         "equivalence": 1,
         "attachment": {
           "H": [
-            8
+            7
           ]
         },
         "protonsCount": [
@@ -735,7 +685,7 @@
         },
         "link": [
           {
-            "id": "eL5uqE9r",
+            "id": "CZRqva8a",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -770,7 +720,7 @@
             },
             "axis": "y",
             "match": [
-              9
+              7
             ],
             "experimentLabel": "",
             "pseudo": false
@@ -779,7 +729,7 @@
         "equivalence": 1,
         "attachment": {
           "H": [
-            9
+            7
           ]
         },
         "protonsCount": [
@@ -805,7 +755,7 @@
         },
         "link": [
           {
-            "id": "1ycqyJoa",
+            "id": "hdnLzUUZ",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -840,7 +790,7 @@
             },
             "axis": "y",
             "match": [
-              10
+              8
             ],
             "experimentLabel": "",
             "pseudo": false
@@ -849,7 +799,7 @@
         "equivalence": 1,
         "attachment": {
           "H": [
-            10
+            8
           ]
         },
         "protonsCount": [
@@ -865,6 +815,7 @@
         "experimentType": "hsqc",
         "experimentID": "Dq4lA07n",
         "atomType": "H",
+        "integration": 2.979,
         "signal": {
           "id": "Prpn4huA",
           "delta": 1.187642411013979,
@@ -875,7 +826,7 @@
         },
         "link": [
           {
-            "id": "zDg96V40",
+            "id": "QhZ6IOkI",
             "experimentType": "1d",
             "experimentID": "onPMYRwi",
             "atomType": [
@@ -916,7 +867,7 @@
             "pseudo": false
           },
           {
-            "id": "z7uVhFcU",
+            "id": "MeGH1sUQ",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -969,81 +920,10 @@
         "edited": {}
       },
       {
-        "id": "HUdWeEOA",
-        "experimentType": "hmbc",
-        "experimentID": "SJl9Ub4u",
-        "atomType": "H",
-        "signal": {
-          "id": "RiPaV9zG",
-          "delta": 2.4586003967053305,
-          "sign": 0
-        },
-        "label": {
-          "origin": "H2"
-        },
-        "link": [
-          {
-            "id": "MFH14XQx",
-            "experimentType": "hmbc",
-            "experimentID": "SJl9Ub4u",
-            "atomType": [
-              "H",
-              "C"
-            ],
-            "signal": {
-              "id": "RiPaV9zG",
-              "peak": [
-                {
-                  "x": 2.452153062617252,
-                  "y": 16.18544978979054,
-                  "z": 163586907.1818375,
-                  "minX": 2.4479446033310146,
-                  "maxX": 2.464778440475963,
-                  "minY": 15.864805125411294,
-                  "maxY": 16.525541842403968
-                },
-                {
-                  "x": 2.4766259587167068,
-                  "y": 16.124177357679628,
-                  "z": 58511320.88814611,
-                  "minX": 2.4731953590484377,
-                  "maxX": 2.481612277620912,
-                  "minY": 15.864805125411294,
-                  "maxY": 16.30529627007308
-                }
-              ],
-              "x": {
-                "originDelta": 2.6117451147103443,
-                "delta": 2.4586003967053305,
-                "diaID": []
-              },
-              "y": {
-                "originDelta": 16.169307693709932,
-                "delta": 16.169307693709932,
-                "diaID": []
-              },
-              "kind": "signal",
-              "sign": 0
-            },
-            "axis": "x",
-            "match": [
-              0
-            ],
-            "experimentLabel": "",
-            "pseudo": false
-          }
-        ],
-        "equivalence": 1,
-        "attachment": {},
-        "protonsCount": [],
-        "hybridization": "",
-        "pseudo": false,
-        "edited": {}
-      },
-      {
         "id": "y6nDSaN0",
         "experimentType": "hsqc",
         "experimentID": "Dq4lA07n",
+        "integration": 2.072,
         "atomType": "H",
         "signal": {
           "id": "wr5sUESf",
@@ -1051,11 +931,11 @@
           "sign": -1
         },
         "label": {
-          "origin": "H3"
+          "origin": "H2"
         },
         "link": [
           {
-            "id": "qXuiRTd9",
+            "id": "eAD5Zgdj",
             "experimentType": "1d",
             "experimentID": "onPMYRwi",
             "atomType": [
@@ -1101,7 +981,7 @@
             "pseudo": false
           },
           {
-            "id": "CL6G744Z",
+            "id": "Kh3ojdt1",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -1157,6 +1037,7 @@
         "id": "OK1sH9OV",
         "experimentType": "hsqc",
         "experimentID": "Dq4lA07n",
+        "integration": 2.972,
         "atomType": "H",
         "signal": {
           "id": "MucR9YUm",
@@ -1164,11 +1045,52 @@
           "sign": 1
         },
         "label": {
-          "origin": "H4"
+          "origin": "H3"
         },
         "link": [
           {
-            "id": "sUJjCby4",
+            "id": "Z8f6P1tJ",
+            "experimentType": "hsqc",
+            "experimentID": "Dq4lA07n",
+            "atomType": [
+              "H",
+              "C"
+            ],
+            "signal": {
+              "id": "NLVyaLm8",
+              "peak": [
+                {
+                  "x": 7.204077717266438,
+                  "y": 128.44672359227673,
+                  "z": 304910286.95745355,
+                  "minX": 7.190886505503449,
+                  "maxX": 7.222180179693232,
+                  "minY": 127.27267403063848,
+                  "maxY": 129.3951899269615
+                }
+              ],
+              "x": {
+                "originDelta": 7.204077717266439,
+                "delta": 7.204077717266439,
+                "diaID": []
+              },
+              "y": {
+                "originDelta": 128.44672359227673,
+                "delta": 128.44672359227673,
+                "diaID": []
+              },
+              "kind": "signal",
+              "sign": 1
+            },
+            "axis": "x",
+            "match": [
+              3
+            ],
+            "experimentLabel": "",
+            "pseudo": false
+          },
+          {
+            "id": "Nu8R4cRb",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -1212,106 +1134,8 @@
         "equivalence": 1,
         "attachment": {
           "C": [
+            3,
             2
-          ]
-        },
-        "protonsCount": [],
-        "hybridization": "",
-        "pseudo": false,
-        "edited": {}
-      },
-      {
-        "id": "8ugmFDX1",
-        "experimentType": "hsqc",
-        "experimentID": "Dq4lA07n",
-        "atomType": "H",
-        "signal": {
-          "id": "NLVyaLm8",
-          "delta": 7.204077717266439,
-          "sign": 1
-        },
-        "label": {
-          "origin": "H5"
-        },
-        "link": [
-          {
-            "id": "lLg1Ax6V",
-            "experimentType": "1d",
-            "experimentID": "onPMYRwi",
-            "atomType": [
-              "H"
-            ],
-            "signal": {
-              "kind": "signal",
-              "id": "2qop7NpI",
-              "originDelta": 7.205519785246621,
-              "multiplicity": "ddd",
-              "delta": 7.205519785246621,
-              "j": [
-                {
-                  "multiplicity": "d",
-                  "coupling": 8.077997910274512
-                },
-                {
-                  "multiplicity": "d",
-                  "coupling": 2.274387761145251
-                },
-                {
-                  "multiplicity": "d",
-                  "coupling": 2.2273314626387974
-                }
-              ]
-            },
-            "match": [],
-            "experimentLabel": "",
-            "pseudo": false
-          },
-          {
-            "id": "jr2ekdO8",
-            "experimentType": "hsqc",
-            "experimentID": "Dq4lA07n",
-            "atomType": [
-              "H",
-              "C"
-            ],
-            "signal": {
-              "id": "NLVyaLm8",
-              "peak": [
-                {
-                  "x": 7.204077717266438,
-                  "y": 128.44672359227673,
-                  "z": 304910286.95745355,
-                  "minX": 7.190886505503449,
-                  "maxX": 7.222180179693232,
-                  "minY": 127.27267403063848,
-                  "maxY": 129.3951899269615
-                }
-              ],
-              "x": {
-                "originDelta": 7.204077717266439,
-                "delta": 7.204077717266439,
-                "diaID": []
-              },
-              "y": {
-                "originDelta": 128.44672359227673,
-                "delta": 128.44672359227673,
-                "diaID": []
-              },
-              "kind": "signal",
-              "sign": 1
-            },
-            "axis": "x",
-            "match": [
-              3
-            ],
-            "experimentLabel": "",
-            "pseudo": false
-          }
-        ],
-        "equivalence": 1,
-        "attachment": {
-          "C": [
-            3
           ]
         },
         "protonsCount": [],
@@ -1323,6 +1147,7 @@
         "id": "FNXE7N9o",
         "experimentType": "hsqc",
         "experimentID": "Dq4lA07n",
+        "integration": 1.977,
         "atomType": "H",
         "signal": {
           "id": "b6wETfG8",
@@ -1330,11 +1155,11 @@
           "sign": 1
         },
         "label": {
-          "origin": "H6"
+          "origin": "H4"
         },
         "link": [
           {
-            "id": "AE6evVmj",
+            "id": "X6QzPM9A",
             "experimentType": "1d",
             "experimentID": "onPMYRwi",
             "atomType": [
@@ -1399,7 +1224,7 @@
             "pseudo": false
           },
           {
-            "id": "rEqXPh6g",
+            "id": "CPC6LLkw",
             "experimentType": "hsqc",
             "experimentID": "Dq4lA07n",
             "atomType": [
@@ -1455,7 +1280,7 @@
     "options": {
       "tolerance": {
         "C": 0.25,
-        "H": 0.02,
+        "H": 0.03,
         "N": 0.25,
         "F": 0.25,
         "Si": 0.25,
@@ -1477,7 +1302,7 @@
           },
           "link": [
             {
-              "id": "JpYylGS7",
+              "id": "J4bHSzRo",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1516,56 +1341,6 @@
               ],
               "experimentLabel": "",
               "pseudo": false
-            },
-            {
-              "id": "mnedVIIA",
-              "experimentType": "hmbc",
-              "experimentID": "SJl9Ub4u",
-              "atomType": [
-                "H",
-                "C"
-              ],
-              "signal": {
-                "id": "RiPaV9zG",
-                "peak": [
-                  {
-                    "x": 2.452153062617252,
-                    "y": 16.18544978979054,
-                    "z": 163586907.1818375,
-                    "minX": 2.4479446033310146,
-                    "maxX": 2.464778440475963,
-                    "minY": 15.864805125411294,
-                    "maxY": 16.525541842403968
-                  },
-                  {
-                    "x": 2.4766259587167068,
-                    "y": 16.124177357679628,
-                    "z": 58511320.88814611,
-                    "minX": 2.4731953590484377,
-                    "maxX": 2.481612277620912,
-                    "minY": 15.864805125411294,
-                    "maxY": 16.30529627007308
-                  }
-                ],
-                "x": {
-                  "originDelta": 2.6117451147103443,
-                  "delta": 2.4586003967053305,
-                  "diaID": []
-                },
-                "y": {
-                  "originDelta": 16.169307693709932,
-                  "delta": 16.169307693709932,
-                  "diaID": []
-                },
-                "kind": "signal",
-                "sign": 0
-              },
-              "axis": "y",
-              "match": [
-                6
-              ],
-              "experimentLabel": "",
-              "pseudo": false
             }
           ],
           "equivalence": 1,
@@ -1597,7 +1372,7 @@
           },
           "link": [
             {
-              "id": "gFDmxBZH",
+              "id": "enYoZfXm",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1632,7 +1407,7 @@
               },
               "axis": "y",
               "match": [
-                7
+                6
               ],
               "experimentLabel": "",
               "pseudo": false
@@ -1641,7 +1416,7 @@
           "equivalence": 1,
           "attachment": {
             "H": [
-              7
+              6
             ]
           },
           "protonsCount": [
@@ -1666,7 +1441,7 @@
           },
           "link": [
             {
-              "id": "U1dAVxMY",
+              "id": "YvuGKh4e",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1701,7 +1476,7 @@
               },
               "axis": "y",
               "match": [
-                8
+                7
               ],
               "experimentLabel": "",
               "pseudo": false
@@ -1710,7 +1485,7 @@
           "equivalence": 1,
           "attachment": {
             "H": [
-              8
+              7
             ]
           },
           "protonsCount": [
@@ -1736,7 +1511,7 @@
           },
           "link": [
             {
-              "id": "eL5uqE9r",
+              "id": "CZRqva8a",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1771,7 +1546,7 @@
               },
               "axis": "y",
               "match": [
-                9
+                7
               ],
               "experimentLabel": "",
               "pseudo": false
@@ -1780,7 +1555,7 @@
           "equivalence": 1,
           "attachment": {
             "H": [
-              9
+              7
             ]
           },
           "protonsCount": [
@@ -1806,7 +1581,7 @@
           },
           "link": [
             {
-              "id": "1ycqyJoa",
+              "id": "hdnLzUUZ",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1841,7 +1616,7 @@
               },
               "axis": "y",
               "match": [
-                10
+                8
               ],
               "experimentLabel": "",
               "pseudo": false
@@ -1850,7 +1625,7 @@
           "equivalence": 1,
           "attachment": {
             "H": [
-              10
+              8
             ]
           },
           "protonsCount": [
@@ -1876,7 +1651,7 @@
           },
           "link": [
             {
-              "id": "zDg96V40",
+              "id": "QhZ6IOkI",
               "experimentType": "1d",
               "experimentID": "onPMYRwi",
               "atomType": [
@@ -1917,7 +1692,7 @@
               "pseudo": false
             },
             {
-              "id": "z7uVhFcU",
+              "id": "MeGH1sUQ",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -1970,6 +1745,78 @@
           "edited": {}
         },
         {
+          "id": "HUdWeEOA",
+          "experimentType": "hmbc",
+          "experimentID": "SJl9Ub4u",
+          "atomType": "H",
+          "signal": {
+            "id": "RiPaV9zG",
+            "delta": 2.4586003967053305,
+            "sign": 0
+          },
+          "label": {
+            "origin": "H2"
+          },
+          "link": [
+            {
+              "id": "MFH14XQx",
+              "experimentType": "hmbc",
+              "experimentID": "SJl9Ub4u",
+              "atomType": [
+                "H",
+                "C"
+              ],
+              "signal": {
+                "id": "RiPaV9zG",
+                "peak": [
+                  {
+                    "x": 2.452153062617252,
+                    "y": 16.18544978979054,
+                    "z": 163586907.1818375,
+                    "minX": 2.4479446033310146,
+                    "maxX": 2.464778440475963,
+                    "minY": 15.864805125411294,
+                    "maxY": 16.525541842403968
+                  },
+                  {
+                    "x": 2.4766259587167068,
+                    "y": 16.124177357679628,
+                    "z": 58511320.88814611,
+                    "minX": 2.4731953590484377,
+                    "maxX": 2.481612277620912,
+                    "minY": 15.864805125411294,
+                    "maxY": 16.30529627007308
+                  }
+                ],
+                "x": {
+                  "originDelta": 2.6117451147103443,
+                  "delta": 2.4586003967053305,
+                  "diaID": []
+                },
+                "y": {
+                  "originDelta": 16.169307693709932,
+                  "delta": 16.169307693709932,
+                  "diaID": []
+                },
+                "kind": "signal",
+                "sign": 0
+              },
+              "axis": "x",
+              "match": [
+                0
+              ],
+              "experimentLabel": "",
+              "pseudo": false
+            }
+          ],
+          "equivalence": 1,
+          "attachment": {},
+          "protonsCount": [],
+          "hybridization": "",
+          "pseudo": false,
+          "edited": {}
+        },
+        {
           "id": "y6nDSaN0",
           "experimentType": "hsqc",
           "experimentID": "Dq4lA07n",
@@ -1980,11 +1827,11 @@
             "sign": -1
           },
           "label": {
-            "origin": "H3"
+            "origin": "H2"
           },
           "link": [
             {
-              "id": "qXuiRTd9",
+              "id": "eAD5Zgdj",
               "experimentType": "1d",
               "experimentID": "onPMYRwi",
               "atomType": [
@@ -2030,7 +1877,7 @@
               "pseudo": false
             },
             {
-              "id": "CL6G744Z",
+              "id": "Kh3ojdt1",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -2093,11 +1940,52 @@
             "sign": 1
           },
           "label": {
-            "origin": "H4"
+            "origin": "H3"
           },
           "link": [
             {
-              "id": "sUJjCby4",
+              "id": "Z8f6P1tJ",
+              "experimentType": "hsqc",
+              "experimentID": "Dq4lA07n",
+              "atomType": [
+                "H",
+                "C"
+              ],
+              "signal": {
+                "id": "NLVyaLm8",
+                "peak": [
+                  {
+                    "x": 7.204077717266438,
+                    "y": 128.44672359227673,
+                    "z": 304910286.95745355,
+                    "minX": 7.190886505503449,
+                    "maxX": 7.222180179693232,
+                    "minY": 127.27267403063848,
+                    "maxY": 129.3951899269615
+                  }
+                ],
+                "x": {
+                  "originDelta": 7.204077717266439,
+                  "delta": 7.204077717266439,
+                  "diaID": []
+                },
+                "y": {
+                  "originDelta": 128.44672359227673,
+                  "delta": 128.44672359227673,
+                  "diaID": []
+                },
+                "kind": "signal",
+                "sign": 1
+              },
+              "axis": "x",
+              "match": [
+                3
+              ],
+              "experimentLabel": "",
+              "pseudo": false
+            },
+            {
+              "id": "Nu8R4cRb",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -2141,6 +2029,7 @@
           "equivalence": 1,
           "attachment": {
             "C": [
+              3,
               2
             ]
           },
@@ -2164,7 +2053,7 @@
           },
           "link": [
             {
-              "id": "lLg1Ax6V",
+              "id": "d2FRH3Rv",
               "experimentType": "1d",
               "experimentID": "onPMYRwi",
               "atomType": [
@@ -2194,47 +2083,6 @@
               "match": [],
               "experimentLabel": "",
               "pseudo": false
-            },
-            {
-              "id": "jr2ekdO8",
-              "experimentType": "hsqc",
-              "experimentID": "Dq4lA07n",
-              "atomType": [
-                "H",
-                "C"
-              ],
-              "signal": {
-                "id": "NLVyaLm8",
-                "peak": [
-                  {
-                    "x": 7.204077717266438,
-                    "y": 128.44672359227673,
-                    "z": 304910286.95745355,
-                    "minX": 7.190886505503449,
-                    "maxX": 7.222180179693232,
-                    "minY": 127.27267403063848,
-                    "maxY": 129.3951899269615
-                  }
-                ],
-                "x": {
-                  "originDelta": 7.204077717266439,
-                  "delta": 7.204077717266439,
-                  "diaID": []
-                },
-                "y": {
-                  "originDelta": 128.44672359227673,
-                  "delta": 128.44672359227673,
-                  "diaID": []
-                },
-                "kind": "signal",
-                "sign": 1
-              },
-              "axis": "x",
-              "match": [
-                3
-              ],
-              "experimentLabel": "",
-              "pseudo": false
             }
           ],
           "equivalence": 1,
@@ -2259,11 +2107,11 @@
             "sign": 1
           },
           "label": {
-            "origin": "H6"
+            "origin": "H4"
           },
           "link": [
             {
-              "id": "AE6evVmj",
+              "id": "X6QzPM9A",
               "experimentType": "1d",
               "experimentID": "onPMYRwi",
               "atomType": [
@@ -2328,7 +2176,7 @@
               "pseudo": false
             },
             {
-              "id": "rEqXPh6g",
+              "id": "CPC6LLkw",
               "experimentType": "hsqc",
               "experimentID": "Dq4lA07n",
               "atomType": [
@@ -2388,10 +2236,10 @@
         "error": {}
       },
       "H": {
-        "current": 6,
+        "current": 5,
         "error": {
-          "notAttached": [
-            6
+          "ambiguousAttachment": [
+            7
           ]
         }
       }

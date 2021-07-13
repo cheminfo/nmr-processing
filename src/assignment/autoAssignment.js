@@ -72,13 +72,15 @@ export async function autoAssignment(molecule, props = {}) {
       predictions[atomType][diaID] = {
         ...prediction,
         diaIDIndex: index,
-        allHydrogens,
-        protonsCount: prediction.nbAtoms * allHydrogens,
+        allHydrogens: prediction.nbAtoms * allHydrogens,
+        protonsCount: allHydrogens,
         pathLength: pathLengthMatrix[index],
       };
     }
     nSources += joinedSignals.length;
   }
+  // writeFileSync(join(__dirname, './data/ethylbenzenePredictions.json'), JSON.stringify(predictions));
+  // return
   const { targets, correlationsWithIndirectLinks } =
     formatCorrelations(correlations);
   let possibleAssignmentMap = createMapPossibleAssignment({
