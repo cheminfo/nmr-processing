@@ -19,7 +19,8 @@ export function createMapPossibleAssignment(props) {
       if (targetByAtomType) {
         for (const targetID in targetByAtomType) {
           let target = targetByAtomType[targetID];
-          const { nbAtoms, allHydrogens } = prediction;
+          const { nbAtoms, protonsCount: protonsCountFromPrediction } =
+            prediction;
           const { integration, protonsCount } = target;
           // console.log(
           //   `targetintegral ${integration} protonsCount ${nbAtoms}, ${allHydrogens}`,
@@ -28,7 +29,9 @@ export function createMapPossibleAssignment(props) {
             integration > 0 && atomType === 'H'
               ? nbAtoms - integration < 1
               : protonsCount.length > 0
-              ? protonsCount.some((count) => allHydrogens % count === 0)
+              ? protonsCount.some(
+                  (count) => protonsCountFromPrediction === count,
+                )
               : true;
 
           if (couldBeAssigned) {
@@ -36,6 +39,7 @@ export function createMapPossibleAssignment(props) {
               !chemicalShiftRestriction ||
               typeof prediction.delta === 'undefined'
             ) {
+              console.log('pasa aqui');
               // Chemical shift is not a restriction
               expandMap[predictionID].push(targetID);
             } else {
@@ -43,10 +47,12 @@ export function createMapPossibleAssignment(props) {
               if (prediction.error) {
                 error = Math.max(error, prediction.error);
               }
-              // console.log(
-              //   `error ${error}, errorAbs ${target.signal.delta} predict delta ${prediction.delta} targetID ${targetID} predID ${predictionID}`,
-              // );
-              let distAfterLimit = Math.abs(prediction.delta - target.signal.delta - errorAbs);
+              console.log(
+                `error ${error}, errorAbs ${target.signal.delta} predict delta ${prediction.delta} targetID ${targetID} predID ${predictionID}`,
+              );
+              let distAfterLimit = Math.abs(
+                prediction.delta - target.signal.delta - errorAbs,
+              );
               if (distAfterLimit < 4 * errorAbs) {
                 expandMap[predictionID].push(targetID);
               }

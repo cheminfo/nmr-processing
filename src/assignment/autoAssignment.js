@@ -1,7 +1,7 @@
 import {
   getConnectivityMatrix,
   addDiastereotopicMissingChirality,
-  getGroupedDiastereotopicAtomIDs,
+  getDiastereotopicAtomIDs,
 } from 'openchemlib-utils';
 
 import { predictCarbon } from '../prediction/predictCarbon';
@@ -27,6 +27,7 @@ export async function autoAssignment(molecule, props = {}) {
     maxSolutions = 10,
     unassigned = 0,
     timeout = 6000,
+    predictionOptions = {},
   } = props;
 
   const {
@@ -41,7 +42,6 @@ export async function autoAssignment(molecule, props = {}) {
   // molecule = molecule.getCompactCopy();
   molecule.addImplicitHydrogens();
   addDiastereotopicMissingChirality(molecule);
-  const diaIDs = getGroupedDiastereotopicAtomIDs(molecule);
 
   const pathLengthMatrix = getConnectivityMatrix(molecule, {
     pathLength: true,
@@ -60,15 +60,19 @@ export async function autoAssignment(molecule, props = {}) {
   let nSources = 0;
   const predictions = {};
 
+  const getAllHydrogens = {
+    'C': (m, i) => m.getAllHydrogens(i), 'H': () => 1
+  }
+
   //add error to predictions
   for (const atomType of atomTypesToPredict) {
-    const { joinedSignals } = await predictor[atomType](molecule);
-
+    const options = predictionOptions[atomType];
+    const { joinedSignals } = await predictor[atomType](molecule, options);
     if (!predictions[atomType]) predictions[atomType] = {};
     for (let prediction of joinedSignals) {
       const diaID = prediction.diaID[0];
-      const index = diaIDs.findIndex((dia) => dia.oclID === diaID);
-      const allHydrogens = molecule.getAllHydrogens(index);
+      const index = prediction.assignment[0];
+      const allHydrogens = getAllHydrogens[atomType](molecule, index);
       predictions[atomType][diaID] = {
         ...prediction,
         diaIDIndex: index,
@@ -80,8 +84,12 @@ export async function autoAssignment(molecule, props = {}) {
     nSources += joinedSignals.length;
   }
   // writeFileSync(join(__dirname, './data/ethylbenzenePredictions.json'), JSON.stringify(predictions));
-  // return
-  const { targets, correlationsWithIndirectLinks } =
+  // console.log(Object.keys(predictions.H).map(e => predictions.H[e].delta));
+  // console.log(predictions.H);
+  // console.log(predictions.C);/
+  // console.log(diaIDs);
+  // return;
+  const { targets, correlations: correlationsWithIndirectLinks } =
     formatCorrelations(correlations);
   let possibleAssignmentMap = createMapPossibleAssignment({
     restrictionByCS: {
@@ -92,7 +100,8 @@ export async function autoAssignment(molecule, props = {}) {
     predictions,
     targets,
   });
-
+  // console.log(possibleAssignmentMap)
+  // return
   const diaIDPeerPossibleAssignment = Object.keys(possibleAssignmentMap);
 
   const solutions = buildAssignment({
@@ -112,7 +121,6 @@ export async function autoAssignment(molecule, props = {}) {
     targets,
     possibleAssignmentMap,
   });
-  console.log(solutions);
   return solutions.solutions.elements;
 }
 

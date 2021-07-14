@@ -1,4 +1,4 @@
-import correlationData from '../data/correlations';
+import correlationData from '../../data/correlations';
 import { formatCorrelations } from '../formatCorrelations';
 import { getIntegrationOfAttachedProton } from '../getIntegrationOfAttachedProton';
 

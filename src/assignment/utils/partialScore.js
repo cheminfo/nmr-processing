@@ -34,7 +34,7 @@ export function partialScore(partial, props) {
 
   if (activeDomainOnTarget.length === 0) return 0;
 
-  console.log(partialInverse, partial)
+  // console.log(partialInverse, partial, activeDomainOnTarget);
   const targetByIntegral =
     atomType === 'C'
       ? groupTargetByIntegrationZone(
@@ -42,7 +42,10 @@ export function partialScore(partial, props) {
           targets[atomType],
           correlations,
         )
-      : activeDomainOnTarget.map((targetID) => [targetID]);
+      : activeDomainOnTarget.map((targetID) => ({
+          targetIDs: [targetID],
+        }));
+  // console.log('targetByIntegral', targetByIntegral)
 
   for (const group of targetByIntegral) {
     let total = 0;
@@ -55,12 +58,12 @@ export function partialScore(partial, props) {
     }
 
     const {
-      integration = group.reduce(
+      integration = group.attachments.reduce(
         (sum, index) => sum + Number(correlations[index].integration),
         0,
       ),
     } = targets[atomType][group.targetIDs[0]];
-    // console.log(`group: ${group.targetIDs}, integration: ${integration}, total:${total}`)
+    // console.log(`group: ${group.targetIDs[0]}, integration: ${integration}, total:${total}`)
     if (total - integration >= 0.5) {
       return 0;
     }

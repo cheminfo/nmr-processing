@@ -21,10 +21,10 @@ export function formatCorrelations(correlations) {
     const { signal, atomType } = correlation;
     if (!targets[atomType]) targets[atomType] = {};
     targets[atomType][signal.id] = correlation;
-    targets[atomType][signal.id].integration = getIntegrationOfAttachedProton(
-      correlation,
-      correlations,
-    );
+    // targets[atomType][signal.id].integration = getIntegrationOfAttachedProton(
+    //   correlation,
+    //   correlations,
+    // );
   }
 
   return { targets, correlations };

@@ -1,7 +1,5 @@
 import { partialScore } from './partialScore';
 
-
-
 export function exploreTreeRec(props, predictionIndex, partial, store) {
   const {
     nSources,
@@ -65,6 +63,7 @@ export function exploreTreeRec(props, predictionIndex, partial, store) {
             timeStart,
             targets,
             predictions,
+            correlations,
             lowerBound,
             unassigned,
             possibleAssignmentMap,
