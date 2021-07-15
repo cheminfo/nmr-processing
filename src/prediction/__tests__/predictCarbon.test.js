@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 import OCL from 'openchemlib/minimal';
 
 import { predictCarbon } from '../predictCarbon';
@@ -29,6 +32,22 @@ describe('carbon prediction', () => {
   it('ethylbenzene', async () => {
     const molecule = OCL.Molecule.fromMolfile(molfile);
     const prediction = await predictCarbon(molecule);
+    expect(prediction.joinedSignals).toHaveLength(6);
+    expect(prediction.signals).toHaveLength(8);
+    expect(prediction.joinedSignals[0]).toStrictEqual({
+      delta: 128.4,
+      assignment: [0, 6],
+      diaID: ['daD@@LdRTIT@E@@q@TGzP`NET'],
+      nbAtoms: 2,
+      j: [],
+    });
+  });
+  it('localDB', async () => {
+    const molecule = OCL.Molecule.fromMolfile(molfile);
+    const database = JSON.parse(
+      readFileSync(join(__dirname, 'data/carbon.json')),
+    );
+    const prediction = await predictCarbon(molecule, { database });
     expect(prediction.joinedSignals).toHaveLength(6);
     expect(prediction.signals).toHaveLength(8);
     expect(prediction.joinedSignals[0]).toStrictEqual({

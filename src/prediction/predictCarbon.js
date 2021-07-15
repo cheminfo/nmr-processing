@@ -21,8 +21,8 @@ async function loadDB(
 }
 
 export async function predictCarbon(molecule, options = {}) {
-  const { levels = [3, 2, 1, 0], url } = options;
-  const database = await loadDB(url);
+  let { levels = [3, 2, 1, 0], url, database } = options;
+  database = database || (await loadDB(url));
 
   molecule.addImplicitHydrogens();
   molecule.addMissingChirality();
