@@ -54,7 +54,7 @@
     "nmr-xy-testdata": "^0.2.1",
     "openchemlib": "^7.4.0",
     "prettier": "^2.3.2",
-    "rollup": "^2.53.0"
+    "rollup": "^2.53.2"
   },
   "dependencies": {
     "assign-deep": "^1.0.1",
