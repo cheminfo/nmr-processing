@@ -76,6 +76,7 @@
     "ml-sparse-matrix": "^2.1.0",
     "ml-spectra-processing": "^6.7.1",
     "openchemlib-utils": "^1.2.0",
+    "ml-tree-set": "^0.1.1",
     "spectrum-generator": "^4.7.1"
   }
 }

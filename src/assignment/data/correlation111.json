@@ -1,0 +1,46 @@
+[
+  {
+    "id": "5jj1",
+    "experimentType": "1d",
+    "experimentID": "RJSg6oBD",
+    "atomType": "H",
+    "integration": 1.8789318029398507,
+    "signal": {
+      "id": "signal-5jj1",
+      "sign": 0,
+      "delta": 3.81214
+    },
+    "label": {
+      "origin": "H1"
+    },
+    "link": [],
+    "equivalence": 1,
+    "attachment": {},
+    "protonsCount": [],
+    "hybridization": "",
+    "pseudo": false,
+    "edited": {}
+  },
+  {
+    "id": "5jj2",
+    "experimentType": "1d",
+    "experimentID": "RJSg6oBD",
+    "atomType": "H",
+    "integration": 2.1210681970601493,
+    "signal": {
+      "delta": 2.58162,
+      "id": "signal-5jj2",
+      "sign": 0
+    },
+    "label": {
+      "origin": "H2"
+    },
+    "link": [],
+    "equivalence": 1,
+    "attachment": {},
+    "protonsCount": [],
+    "hybridization": "",
+    "pseudo": false,
+    "edited": {}
+  }
+]
