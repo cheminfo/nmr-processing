@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.4.0...v1.5.0) (2021-07-15)
+
+
+### Features
+
+* add ache in carbon prediction ([745ba46](https://www.github.com/cheminfo/nmr-processing/commit/745ba46943b3742a851b9381673ffff0c211bd37))
+* add local database prediction ([d77000f](https://www.github.com/cheminfo/nmr-processing/commit/d77000f20d0ccda56b4c804130609162a0cc3916))
+* add predictionCarbon ([#65](https://www.github.com/cheminfo/nmr-processing/issues/65)) ([e394f97](https://www.github.com/cheminfo/nmr-processing/commit/e394f97b3450000b5d5847580cd9d333972c42f5))
+* put carbon db in the cloud ([8e65ac4](https://www.github.com/cheminfo/nmr-processing/commit/8e65ac4db5d4ecd5cd0e9a5bb08a7a1f40e3c175))
+
+
+### Bug Fixes
+
+* add dist in .gitignore ([c67bc30](https://www.github.com/cheminfo/nmr-processing/commit/c67bc308bb39bc457087e35dbc95702bcef89b28))
+* predictCarbon ([2fb1045](https://www.github.com/cheminfo/nmr-processing/commit/2fb1045d3f15c504e53f5b8cad8009cf71eecb25))
+
 ## [1.4.0](https://www.github.com/cheminfo/nmr-processing/compare/v1.3.0...v1.4.0) (2021-05-18)
 
 
